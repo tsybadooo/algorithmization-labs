@@ -1,8 +1,8 @@
-Breakpoint 1 at 0x140002367: file part3/matrix.c, line 62.
+Breakpoint 1 at 0x1400025f7: file part3/matrix.c, line 62.
 
-Thread 1 hit Breakpoint 1, is_local_min (mt=0x5ffe30, r=1, c=1) at part3/matrix.c:62
+Thread 1 hit Breakpoint 1, is_local_min (mt=0x5ffe10, r=1, c=1) at part3/matrix.c:62
 62	    int v = mt->data[r][c];
-mt = 0x5ffe30
+mt = 0x5ffe10
 r = 1
 c = 1
 $1 = 4
@@ -27,18 +27,18 @@ $4 = 1
 $5 = 0
 $6 = 0
 $7 = 5
-#0  is_local_min (mt=0x5ffe30, r=1, c=1) at part3/matrix.c:71
-#1  0x00007ff76b9424f9 in count_local_minima (mt=0x5ffe30, cells=0x7a49a0, max_cells=20) at part3/matrix.c:84
-#2  0x00007ff76b941c6c in main () at part3/main.c:131
-0x00007ff76b9424f9 in count_local_minima (mt=0x5ffe30, cells=0x7a49a0, max_cells=20) at part3/matrix.c:84
+#0  is_local_min (mt=0x5ffe10, r=1, c=1) at part3/matrix.c:71
+#1  0x00007ff677e62789 in count_local_minima (mt=0x5ffe10, cells=0x711a70, max_cells=20) at part3/matrix.c:84
+#2  0x00007ff677e61d6d in main () at part3/main.c:155
+0x00007ff677e62789 in count_local_minima (mt=0x5ffe10, cells=0x711a70, max_cells=20) at part3/matrix.c:84
 84	            if (is_local_min(mt, i, j)) {
 Value returned is $8 = 1
-Breakpoint 2 at 0x7ff76b942998: file part3/sort.c, line 58.
+Breakpoint 2 at 0x7ff677e62c28: file part3/sort.c, line 58.
 
-Thread 1 hit Breakpoint 2, quick_sort (arr=0x7a49a0, n=4, st=0x5ffe10) at part3/sort.c:58
+Thread 1 hit Breakpoint 2, quick_sort (arr=0x711a70, n=4, st=0x5ffde0) at part3/sort.c:58
 58	    if (arr == NULL || n < 2) return;
 $9 = 4
 $10 = {4, 8, 0, 3}
-main () at part3/main.c:150
-150	    print_array("Останній стовпець після сортування:", col, (size_t)n);
+main () at part3/main.c:172
+172	                print_array("Останній стовпець після сортування:", col, mt.rows);
 $11 = {0, 3, 4, 8}

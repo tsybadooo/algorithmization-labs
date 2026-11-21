@@ -247,6 +247,7 @@ static int cmp_keyed(const void *a, const void *b)
     return c != 0 ? c : strcmp(x->word, y->word);
 }
 
+/** Звільняє масив пар (слово, ключ) з n заповнених елементів. */
 static void free_keyed(KeyedWord *kw, size_t n)
 {
     for (size_t i = 0; i < n; i++) { free(kw[i].word); free(kw[i].key); }

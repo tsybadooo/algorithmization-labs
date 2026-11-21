@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @brief КПІЗ, частина 3 (варіант 19). Динамічна матриця n x m:
+ * @brief КПІЗ, частина 3 (варіант 19). Консольне меню; динамічна матриця n x m:
  *  - заповнення вручну або випадковими числами [-50; 50];
  *  - підрахунок локальних мінімумів;
  *  - сортування останнього стовпця бульбашкою (ітер.) та швидким (рекурс.),
@@ -107,67 +107,122 @@ int main(void)
     const char *names[2] = {"бульбашка", "швидке"};
 
     printf("КПІЗ. Частина 3. Варіант 19\n");
-    int n, m, mode;
-    if (!read_int("Кількість рядків n (1..50): ", 1, MAX_DIM, &n)) return 1;
-    if (!read_int("Кількість стовпців m (1..50): ", 1, MAX_DIM, &m)) return 1;
+    Matrix mt = {NULL, 0, 0};
+    int choice = -1;
 
-    Matrix mt;
-    if (!matrix_create(&mt, (size_t)n, (size_t)m)) {
-        printf("Помилка: не вдалося виділити пам'ять для матриці\n");
-        return 1;
+    while (choice != 0) {
+        printf("\nМЕНЮ\n"
+               " 1 - створити і заповнити матрицю\n"
+               " 2 - вивести матрицю\n"
+               " 3 - знайти локальні мінімуми\n"
+               " 4 - відсортувати останній стовпець (вибір алгоритму)\n"
+               " 5 - порівняти обидва алгоритми на останньому стовпці\n"
+               " 6 - пошук значення в останньому стовпці\n"
+               " 7 - експеримент зі складністю (10..10000 елементів)\n"
+               " 0 - вихід\n");
+        if (!read_int("Ваш вибір: ", 0, 7, &choice)) break;
+        if (choice >= 2 && choice <= 6 && mt.data == NULL) {
+            printf("Спочатку створіть матрицю (пункт 1).\n");
+            continue;
+        }
+        switch (choice) {
+            case 1: {
+                int n, m, mode;
+                if (!read_int("Кількість рядків n (1..50): ", 1, MAX_DIM, &n)) { choice = 0; break; }
+                if (!read_int("Кількість стовпців m (1..50): ", 1, MAX_DIM, &m)) { choice = 0; break; }
+                matrix_free(&mt);                       /* стара матриця, якщо була */
+                if (!matrix_create(&mt, (size_t)n, (size_t)m)) {
+                    printf("Помилка: не вдалося виділити пам'ять для матриці\n");
+                    break;
+                }
+                if (!read_int("Заповнення: 1 - вручну, 2 - випадкові [-50; 50]: ", 1, 2, &mode)) { choice = 0; break; }
+                if (mode == 1) {
+                    if (!fill_manual(&mt)) { choice = 0; break; }
+                } else {
+                    matrix_fill_random(&mt, -50, 50);
+                }
+                printf("Матрицю %d x %d створено.\n", n, m);
+                matrix_print(&mt);
+                break;
+            }
+            case 2:
+                matrix_print(&mt);
+                break;
+            case 3: {
+                size_t total = mt.rows * mt.cols;
+                Cell *cells = (Cell *)malloc(total * sizeof(Cell));
+                if (cells == NULL) { printf("Помилка пам'яті\n"); break; }
+                size_t cnt = count_local_minima(&mt, cells, total);
+                printf("Кількість локальних мінімумів: %zu\n", cnt);
+                for (size_t k = 0; k < cnt; k++)
+                    printf("  a[%zu][%zu] = %d\n", cells[k].row, cells[k].col, mt.data[cells[k].row][cells[k].col]);
+                free(cells);
+                break;
+            }
+            case 4: {
+                int alg;
+                if (!read_int("Алгоритм: 1 - бульбашка (ітераційний), 2 - швидке (рекурсивний): ", 1, 2, &alg)) { choice = 0; break; }
+                int *col = (int *)malloc(mt.rows * sizeof(int));
+                if (col == NULL) { printf("Помилка пам'яті\n"); break; }
+                matrix_get_last_col(&mt, col);
+                print_array("Останній стовпець до сортування:   ", col, mt.rows);
+                SortStats st = {0, 0};
+                sort_fn chosen = algs[alg - 1];         /* покажчик на обрану функцію */
+                chosen(col, mt.rows, &st);
+                print_array("Останній стовпець після сортування:", col, mt.rows);
+                printf("Алгоритм: %s; порівнянь: %llu; перестановок: %llu\n", names[alg - 1], st.comparisons, st.swaps);
+                matrix_set_last_col(&mt, col);
+                free(col);
+                printf("Матриця після сортування останнього стовпця:\n");
+                matrix_print(&mt);
+                break;
+            }
+            case 5: {
+                /* обидва алгоритми на однакових копіях стовпця; матриця не змінюється */
+                int *base = (int *)malloc(mt.rows * sizeof(int));
+                int *work = (int *)malloc(mt.rows * sizeof(int));
+                if (base == NULL || work == NULL) { printf("Помилка пам'яті\n"); free(base); free(work); break; }
+                matrix_get_last_col(&mt, base);
+                print_array("Останній стовпець:  ", base, mt.rows);
+                for (int a = 0; a < 2; a++) {
+                    SortStats st = {0, 0};
+                    memcpy(work, base, mt.rows * sizeof(int));
+                    algs[a](work, mt.rows, &st);
+                    printf("%s", a == 0 ? "Бульбашка:  " : "Швидке:     ");   /* вирівняно вручну (UTF-8) */
+                    print_array(" ", work, mt.rows);
+                    printf("             порівнянь: %llu, перестановок: %llu\n", st.comparisons, st.swaps);
+                }
+                free(base);
+                free(work);
+                break;
+            }
+            case 6: {
+                int *col = (int *)malloc(mt.rows * sizeof(int));
+                if (col == NULL) { printf("Помилка пам'яті\n"); break; }
+                matrix_get_last_col(&mt, col);
+                if (!is_sorted(col, mt.rows))
+                    printf("Увага: стовпець не відсортовано - бінарний пошук може бути некоректним (виконайте пункт 4).\n");
+                int key;
+                if (read_int("Значення для пошуку: ", -1000000, 1000000, &key)) {
+                    unsigned long cl, cb;
+                    long il = linear_search(col, mt.rows, key, &cl);
+                    long ib = binary_search(col, mt.rows, key, &cb);
+                    printf("Лінійний пошук: індекс %ld, порівнянь %lu\n", il, cl);
+                    printf("Бінарний пошук: індекс %ld, порівнянь %lu\n", ib, cb);
+                }
+                free(col);
+                break;
+            }
+            case 7:
+                complexity_experiment(algs, names, "complexity.csv");
+                break;
+            case 0:
+                printf("Завершення роботи.\n");
+                break;
+            default:
+                break;
+        }
     }
-    if (!read_int("Заповнення: 1 - вручну, 2 - випадкові [-50; 50]: ", 1, 2, &mode)) { matrix_free(&mt); return 1; }
-    if (mode == 1) {
-        if (!fill_manual(&mt)) { matrix_free(&mt); return 1; }
-    } else {
-        matrix_fill_random(&mt, -50, 50);
-    }
-    printf("\nМатриця %d x %d:\n", n, m);
-    matrix_print(&mt);
-
-    /* --- локальні мінімуми --- */
-    Cell *cells = (Cell *)malloc((size_t)n * (size_t)m * sizeof(Cell));
-    if (cells == NULL) { printf("Помилка пам'яті\n"); matrix_free(&mt); return 1; }
-    size_t cnt = count_local_minima(&mt, cells, (size_t)n * (size_t)m);
-    printf("\nКількість локальних мінімумів: %zu\n", cnt);
-    for (size_t k = 0; k < cnt; k++)
-        printf("  a[%zu][%zu] = %d\n", cells[k].row, cells[k].col, mt.data[cells[k].row][cells[k].col]);
-    free(cells);
-    cells = NULL;
-
-    /* --- сортування останнього стовпця --- */
-    int *col = (int *)malloc((size_t)n * sizeof(int));
-    if (col == NULL) { printf("Помилка пам'яті\n"); matrix_free(&mt); return 1; }
-    int alg;
-    if (!read_int("\nАлгоритм сортування останнього стовпця: 1 - бульбашка, 2 - швидке: ", 1, 2, &alg)) {
-        free(col); matrix_free(&mt); return 1;
-    }
-    matrix_get_last_col(&mt, col);
-    print_array("Останній стовпець до сортування:   ", col, (size_t)n);
-    SortStats st = {0, 0};
-    sort_fn chosen = algs[alg - 1];                 /* покажчик на обрану функцію */
-    chosen(col, (size_t)n, &st);
-    print_array("Останній стовпець після сортування:", col, (size_t)n);
-    printf("Алгоритм: %s; порівнянь: %llu; перестановок: %llu\n", names[alg - 1], st.comparisons, st.swaps);
-    matrix_set_last_col(&mt, col);
-    printf("Матриця після сортування останнього стовпця:\n");
-    matrix_print(&mt);
-
-    /* --- пошук --- */
-    int key;
-    if (read_int("\nЗначення для пошуку: ", -1000000, 1000000, &key)) {
-        unsigned long cl, cb;
-        long il = linear_search(col, (size_t)n, key, &cl);
-        long ib = binary_search(col, (size_t)n, key, &cb);
-        printf("Лінійний пошук: індекс %ld, порівнянь %lu\n", il, cl);
-        printf("Бінарний пошук: індекс %ld, порівнянь %lu\n", ib, cb);
-    }
-    free(col);
-    col = NULL;
     matrix_free(&mt);
-
-    int exp_choice;
-    if (read_int("\nВиконати експеримент зі складністю (1 - так, 0 - ні): ", 0, 1, &exp_choice) && exp_choice == 1)
-        complexity_experiment(algs, names, "complexity.csv");
     return 0;
 }
