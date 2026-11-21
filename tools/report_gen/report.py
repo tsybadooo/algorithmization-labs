@@ -76,6 +76,8 @@ def title_page(kind_line, topic, number=None, teacher='ст. викл. Смол�
 <p>Виконав: студент групи {GROUP}</p>
 <p>{STUDENT}</p>
 <p style="margin-top:10mm">Перевірив: {teacher}</p>
+<p style="margin-top:4mm">__________ (підпис)</p>
+<p>«___» ____________ 2026 р.</p>
 </div>
 <div class="city"><p>Луцьк – 2026</p></div>
 </div>
