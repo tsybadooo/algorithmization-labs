@@ -1,0 +1,25 @@
+
+
+     CUnit - A unit testing framework for C - Version 2.1-3
+     http://cunit.sourceforge.net/
+
+
+Suite: Частина 3: матриця, сортування, пошук
+  Test: створення/звільнення матриці ...passed
+  Test: локальні мінімуми: кути та центр ...passed
+  Test: останній стовпець: читання/запис ...passed
+  Test: сортування через покажчик на функцію ...passed
+  Test: кількість порівнянь: швидке << бульбашка ...passed
+  Test: бінарний пошук усіх позицій ...passed
+Suite: Частина 4: опрацювання тексту
+  Test: UTF-8: декодування/кодування ...passed
+  Test: групи анаграм: латиниця і кирилиця ...passed
+  Test: рядок без слів ...passed
+  Test: is_anagram (розроблено за TDD) ...passed
+
+Run Summary:    Type  Total    Ran Passed Failed Inactive
+              suites      2      2    n/a      0        0
+               tests     10     10     10      0        0
+             asserts    189    189    189      0      n/a
+
+Elapsed time =    0.018 seconds

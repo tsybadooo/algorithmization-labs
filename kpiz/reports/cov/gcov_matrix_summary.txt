@@ -1,0 +1,56 @@
+Function 'matrix_set_last_col'
+Lines executed:0.00% of 3
+Branches executed:0.00% of 2
+Taken at least once:0.00% of 2
+No calls
+
+Function 'matrix_get_last_col'
+Lines executed:0.00% of 4
+Branches executed:0.00% of 8
+Taken at least once:0.00% of 8
+No calls
+
+Function 'count_local_minima'
+Lines executed:100.00% of 11
+Branches executed:100.00% of 14
+Taken at least once:100.00% of 14
+Calls executed:100.00% of 1
+
+Function 'is_local_min'
+Lines executed:100.00% of 11
+Branches executed:100.00% of 14
+Taken at least once:100.00% of 14
+No calls
+
+Function 'matrix_print'
+Lines executed:0.00% of 9
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+Calls executed:0.00% of 6
+
+Function 'matrix_fill_random'
+Lines executed:0.00% of 5
+Branches executed:0.00% of 4
+Taken at least once:0.00% of 4
+Calls executed:0.00% of 1
+
+Function 'matrix_free'
+Lines executed:100.00% of 6
+Branches executed:100.00% of 6
+Taken at least once:66.67% of 6
+No calls
+
+Function 'matrix_create'
+Lines executed:82.35% of 17
+Branches executed:85.71% of 14
+Taken at least once:57.14% of 14
+No calls
+
+File '../../part3/matrix.c'
+Lines executed:63.64% of 66
+Branches executed:67.65% of 68
+Taken at least once:58.82% of 68
+Calls executed:12.50% of 8
+Creating 'matrix.c.gcov'
+
+Lines executed:63.64% of 66

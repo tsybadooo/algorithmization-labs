@@ -1,0 +1,2 @@
+part4\main.c:56: [style] constParameter: Parameter 'argv' can be declared as const array
+part5\storage.c:50: [style] constVariablePointer: Variable 'p' can be declared as pointer to const

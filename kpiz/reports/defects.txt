@@ -1,0 +1,31 @@
+=== BUG-04-01: навмисно вилучено звільнення рядків у strlist_free() ===
+
+==MEMTRACK== ЗВІТ ПРО ВИКОРИСТАННЯ ДИНАМІЧНОЇ ПАМ'ЯТІ
+==MEMTRACK== виділень: 23, звільнень: 14, усього виділено: 590 байт, пік: 580 байт
+==MEMTRACK== ВИТІК: 26 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 23 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 11 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 3 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 11 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 11 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 11 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 22 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ВИТІК: 22 байт, виділено у build/defect/text_bug.c:32
+==MEMTRACK== ПІДСУМОК: втрачено 140 байт
+
+=== BUG-03-02: навмисна помилка межі: r + 1 <= rows замість r + 1 < rows у is_local_min() ===
+[код завершення: 139]
+$ gdb -batch -ex run -ex bt -ex "frame 1" -ex "info locals" build/defect/t_bug.exe
+
+Thread 1 received signal SIGSEGV, Segmentation fault.
+0x00007ff76505359a in is_local_min (mt=0x5ffe60, r=0, c=0) at build/defect/matrix_bug.c:73
+73	            if (mt->data[i][j] <= v) return 0;       /* знайдено не більшого сусіда */
+#0  0x00007ff76505359a in is_local_min (mt=0x5ffe60, r=0, c=0) at build/defect/matrix_bug.c:73
+#1  0x00007ff765053639 in count_local_minima (mt=0x5ffe60, cells=0x5ffd60, max_cells=16) at build/defect/matrix_bug.c:84
+#2  0x00007ff765051e32 in test_local_minima () at tests/test_assert.c:80
+#3  0x00007ff765052e5e in main () at tests/test_assert.c:227
+#1  0x00007ff765053639 in count_local_minima (mt=0x5ffe60, cells=0x5ffd60, max_cells=16) at build/defect/matrix_bug.c:84
+84	            if (is_local_min(mt, i, j)) {
+j = 0
+i = 0
+count = 0

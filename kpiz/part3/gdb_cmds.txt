@@ -1,0 +1,32 @@
+set pagination off
+set print pretty off
+break is_local_min if r == 1 && c == 1
+run < gdb_input.txt > NUL
+info args
+print mt->rows
+print mt->cols
+print mt->data[r][c]
+next
+next
+next
+next
+next
+info locals
+print v
+next
+next
+next
+next
+print i
+print j
+print mt->data[i][j]
+bt
+finish
+delete
+break quick_sort
+continue
+print n
+print *arr@n
+finish
+print *col@4
+continue

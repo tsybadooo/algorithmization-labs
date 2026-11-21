@@ -1,0 +1,44 @@
+=== ЦИКЛ 1. ЧЕРВОНИЙ: тест написано, функції is_anagram ще немає ===
+$ gcc -std=c11 -Wall -Wextra -pedantic -DCYCLE=1 test_tdd.c ../part4/text.c -o test_tdd.exe
+In file included from test_tdd.c:8:
+test_tdd.c: In function 'main':
+test_tdd.c:20:12: error: implicit declaration of function 'is_anagram' [-Wimplicit-function-declaration]
+   20 |     assert(is_anagram("Кабан", "банка") == 1);
+      |            ^~~~~~~~~~
+[код: 1]
+
+=== ЦИКЛ 1. ЗЕЛЕНИЙ: is_anagram порівнює ключі анаграм ===
+$ gcc -std=c11 -Wall -Wextra -pedantic -DCYCLE=1 test_tdd.c ../part4/text.c -o test_tdd.exe && ./test_tdd.exe
+cycle 1 OK
+[код: 0]
+
+=== ЦИКЛ 2. ЧЕРВОНИЙ: додано тест «те саме слово не є анаграмою» ===
+$ gcc -std=c11 -Wall -Wextra -pedantic -DCYCLE=2 test_tdd.c ../part4/text.c -o test_tdd.exe && ./test_tdd.exe
+Assertion failed: is_anagram("кабан", "КАБАН") == 0, file test_tdd.c, line 25
+[код: 127]
+
+=== ЦИКЛ 2. ЗЕЛЕНИЙ: додано порівняння слів у нижньому регістрі ===
+$ gcc -std=c11 -Wall -Wextra -pedantic -DCYCLE=2 test_tdd.c ../part4/text.c -o test_tdd.exe && ./test_tdd.exe
+cycle 1 OK
+cycle 2 OK
+[код: 0]
+
+=== ЦИКЛ 3. ЧЕРВОНИЙ: тест з порожніми і дуже довгими (1199 символів) словами ===
+$ gcc -std=c11 -Wall -Wextra -pedantic -DCYCLE=3 test_tdd.c ../part4/text.c -o test_tdd.exe && ./test_tdd.exe
+cycle 1 OK
+cycle 2 OK
+cycle 3 OK
+[код: 0]
+
+Примітка: тест формально пройшов, але word_to_lower записує 1199 байт у буфер на 1021 байт -
+невизначена поведінка. Повторний запуск з захистом стека (-fstack-protector-all):
+$ gcc -std=c11 -Wall -Wextra -pedantic -fstack-protector-all -DCYCLE=3 test_tdd.c ../part4/text.c -o test_tdd.exe && ./test_tdd.exe
+*** stack smashing detected ***: terminated
+[код: 127]
+
+=== ЦИКЛ 3. ЗЕЛЕНИЙ + РЕФАКТОРИНГ: перевірка довжини, масиви буферів замість дублювання коду ===
+$ gcc -std=c11 -Wall -Wextra -pedantic -fstack-protector-all -DCYCLE=3 test_tdd.c ../part4/text.c -o test_tdd.exe && ./test_tdd.exe
+cycle 1 OK
+cycle 2 OK
+cycle 3 OK
+[код: 0]

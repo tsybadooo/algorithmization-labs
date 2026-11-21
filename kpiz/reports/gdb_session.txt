@@ -1,0 +1,44 @@
+Breakpoint 1 at 0x140002367: file part3/matrix.c, line 62.
+
+Thread 1 hit Breakpoint 1, is_local_min (mt=0x5ffe30, r=1, c=1) at part3/matrix.c:62
+62	    int v = mt->data[r][c];
+mt = 0x5ffe30
+r = 1
+c = 1
+$1 = 4
+$2 = 5
+$3 = 1
+65	    size_t r0 = (r > 0) ? r - 1 : 0;
+66	    size_t r1 = (r + 1 < mt->rows) ? r + 1 : r;
+67	    size_t c0 = (c > 0) ? c - 1 : 0;
+68	    size_t c1 = (c + 1 < mt->cols) ? c + 1 : c;
+70	    for (size_t i = r0; i <= r1; i++)
+i = 0
+v = 1
+r0 = 0
+r1 = 2
+c0 = 0
+c1 = 2
+$4 = 1
+71	        for (size_t j = c0; j <= c1; j++) {
+72	            if (i == r && j == c) continue;          /* сам елемент пропускаємо */
+73	            if (mt->data[i][j] <= v) return 0;       /* знайдено не більшого сусіда */
+71	        for (size_t j = c0; j <= c1; j++) {
+$5 = 0
+$6 = 0
+$7 = 5
+#0  is_local_min (mt=0x5ffe30, r=1, c=1) at part3/matrix.c:71
+#1  0x00007ff76b9424f9 in count_local_minima (mt=0x5ffe30, cells=0x7a49a0, max_cells=20) at part3/matrix.c:84
+#2  0x00007ff76b941c6c in main () at part3/main.c:131
+0x00007ff76b9424f9 in count_local_minima (mt=0x5ffe30, cells=0x7a49a0, max_cells=20) at part3/matrix.c:84
+84	            if (is_local_min(mt, i, j)) {
+Value returned is $8 = 1
+Breakpoint 2 at 0x7ff76b942998: file part3/sort.c, line 58.
+
+Thread 1 hit Breakpoint 2, quick_sort (arr=0x7a49a0, n=4, st=0x5ffe10) at part3/sort.c:58
+58	    if (arr == NULL || n < 2) return;
+$9 = 4
+$10 = {4, 8, 0, 3}
+main () at part3/main.c:150
+150	    print_array("Останній стовпець після сортування:", col, (size_t)n);
+$11 = {0, 3, 4, 8}

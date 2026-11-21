@@ -1,0 +1,9 @@
+n,algorithm,comparisons,swaps
+10,bubble,44,20
+10,quick,38,6
+100,bubble,4872,2128
+100,quick,778,166
+1000,bubble,498225,241877
+1000,quick,11653,2835
+10000,bubble,49975890,24525630
+10000,quick,152087,43243
