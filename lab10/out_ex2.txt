@@ -1,0 +1,10 @@
+> lab10_ex2.exe
+[ввід] Hello World
+[ввід] 3
+Рядок: Зсув: Оригінал:    Hello World
+Зашифровано: Khoor Zruog
+Розшифровано:Hello World
+Слів у рядку: 2
+Слова навпаки: World Hello
+[код завершення: 0]
+
