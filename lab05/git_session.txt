@@ -285,13 +285,13 @@ $ git log --oneline --graph --all
 
 $ git log -- README.md
 commit 16eb16d32a1ec062ac6c947167f741613bd0cf17
-Author: Andrii Tsybulskyi <student@example.com>
+Author: Andrii Tsybulskyi <tsybadoo@gmail.com>
 Date:   Sat Nov 21 16:32:08 2026 +0100
 
     README: додано зміст репозиторію
 
 commit 8e149d864179b4409501733e3a07fcd9a2579133
-Author: Andrii Tsybulskyi <student@example.com>
+Author: Andrii Tsybulskyi <tsybadoo@gmail.com>
 Date:   Sat Nov 21 16:32:06 2026 +0100
 
     Лабораторні роботи 1, 2, 4, 6-10: програми та результати тестування
