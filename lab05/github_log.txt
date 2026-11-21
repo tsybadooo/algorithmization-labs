@@ -1,0 +1,8 @@
+*   90b8913 Merge pull request #1 from tsybadooo/edit-readme-file
+|\  
+| * a22bc60 README: додано розділ GitHub
+|/  
+* b9699ce Звіти: викладач Смолянкін О. О.
+* 588673d Лабораторна 5: e-mail автора в журналі Git
+* 5cb24ba Генератор звітів, README
+* 8fb641c КПІЗ: TC-03-10, виправлення BUG-05-01, протоколи тестування частини 5

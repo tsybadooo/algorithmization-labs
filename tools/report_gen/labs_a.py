@@ -216,13 +216,16 @@ def lab05():
     log = _re.sub(r'((?: create mode 100644 .*\n){6})(?: create mode 100644 .*\n)+', r'\1 ... (інші файли)\n', log)
     b += console_text(log, max_lines=170)
     b += h('4 Робота з GitHub', 3)
-    b += p('Для виконання другої частини роботи на GitHub необхідно: зареєструвати обліковий запис; натиснути New repository, вказати назву (напр. algorithmization-labs), опис, '
-           'позначку Initialize this repository with a README і натиснути Create repository; створити гілку edit-readme-file через список Branch: master; змінити README.md (іконка олівця) і виконати Commit changes; '
-           'на вкладці Pull requests натиснути New pull request, вибрати гілки master ← edit-readme-file, переглянути зміни (зелене — додано, червоне — вилучено), натиснути Create pull request, '
-           'потім Merge pull request → Confirm merge → Delete branch.')
-    b += p('Локальний репозиторій, створений у цій роботі, публікується на GitHub командами:')
-    b += code_text('git remote add origin https://github.com/<логін>/algorithmization-labs.git\ngit push -u origin master')
-    b += p('Посилання на репозиторій: https://github.com/<логін>/algorithmization-labs <i>(вказати після публікації)</i>.')
+    b += p('На GitHub в обліковому записі tsybadooo через New repository створено публічний репозиторій algorithmization-labs з описом. Оскільки історія проєкту вже існувала локально, '
+           'репозиторій створено без README, а локальні гілки master і development відправлено на сервер:')
+    b += code_text('git remote add origin https://github.com/tsybadooo/algorithmization-labs.git\ngit push -u origin master development')
+    b += p('Далі у вебінтерфейсі GitHub виконано дії з методичних вказівок: на сторінці Branches кнопкою New branch від гілки master створено гілку edit-readme-file; '
+           'у цій гілці відкрито README.md (іконка олівця), додано розділ «GitHub» і виконано Commit changes з повідомленням «README: додано розділ GitHub»; '
+           'на вкладці Pull requests порівняно гілки master ← edit-readme-file (зміни підсвічено зеленим), з назвою і описом створено Pull Request #1; '
+           'натиснуто Merge pull request → Confirm merge, після чого гілку видалено кнопкою Delete branch. У налаштуваннях репозиторію основною гілкою (default branch) встановлено master. '
+           'Результат злиття отримано в локальний репозиторій командою git pull:')
+    b += console_file('lab05/github_log.txt')
+    b += p('Посилання на репозиторій: <b>https://github.com/tsybadooo/algorithmization-labs</b>; Pull Request: https://github.com/tsybadooo/algorithmization-labs/pull/1.')
     b += h('Висновки')
     b += p('Ознайомилися з основним функціоналом системи контролю версій Git: створенням локального репозиторію, індексацією та фіксацією змін, видаленням файлів, створенням і перемиканням гілок, '
            'переглядом історії та відмінностей, злиттям гілок. Розглянуто роботу з сервісом GitHub: створення репозиторію, гілки, коміт змін через вебінтерфейс, Pull Request і Merge.')
