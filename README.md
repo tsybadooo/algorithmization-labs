@@ -15,3 +15,20 @@
 - lab09 — вказівники та динамічна памʼять
 - lab10 — рядки та символи
 - kpiz — комплексне практичне індивідуальне завдання
+- tools/report_gen — генератор звітів (HTML → PDF через Microsoft Edge)
+
+Файли `out*.txt` у кожній теці — протоколи запусків програм, використані у звітах.
+Готові звіти у PDF лежать у теці `../Звіти`.
+
+## Збирання
+
+Лабораторні (GCC, MSYS2 / Git Bash):
+
+    gcc -std=c11 -Wall -Wextra -pedantic -o prog.exe prog.c -lm
+    g++ -Wall -Wextra -o prog.exe prog.cpp
+
+КПІЗ — повне збирання і регресійне тестування:
+
+    cd kpiz && sh build_and_test.sh      # або: make && make test
+
+Для КПІЗ потрібні пакети MSYS2: `mingw-w64-ucrt-x86_64-cunit`, `-gdb`, `-cppcheck`.
