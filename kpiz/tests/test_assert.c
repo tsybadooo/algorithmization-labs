@@ -116,6 +116,15 @@ static void test_local_minima(void)
     assert(count_local_minima(&m, cells, 16) == 0);
     assert(count_local_minima(NULL, cells, 16) == 0);
     PASS("TC-03-06", "некоректний розмір 0x5 / NULL - відмова, 0 мінімумів");
+
+    /* максимальна кількість ітерацій: матриця 50x50 (MAX_DIM), «шахівниця» з нулів
+       на парних позиціях (i, j парні) серед одиниць - 25*25 = 625 мінімумів */
+    assert(matrix_create(&m, 50, 50));
+    for (size_t i = 0; i < 50; i++)
+        for (size_t j = 0; j < 50; j++) m.data[i][j] = (i % 2 == 0 && j % 2 == 0) ? 0 : 1;
+    assert(count_local_minima(&m, NULL, 0) == 625);
+    matrix_free(&m);
+    PASS("TC-03-10", "максимальний розмір 50x50: 625 мінімумів");
 }
 
 static void test_sorts(void)

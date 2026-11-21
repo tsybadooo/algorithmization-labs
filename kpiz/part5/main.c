@@ -84,7 +84,11 @@ static int input_bus(Bus *b, const Bus *old)
     if (old != NULL) printf("(Enter - залишити поточне значення)\n");
 
     snprintf(prompt, sizeof prompt, "Держномер%s%s%s: ", old ? " [" : "", old ? old->reg_number : "", old ? "]" : "");
-    if (!read_text(prompt, b->reg_number, REG_LEN, old ? old->reg_number : NULL)) return 0;
+    for (;;) {   /* BUG-05-01: довжину держномера перевіряємо одразу, а не після введення всіх полів */
+        if (!read_text(prompt, b->reg_number, REG_LEN, old ? old->reg_number : NULL)) return 0;
+        if (strlen(b->reg_number) >= 4) break;
+        printf("  Помилка: держномер має містити від 4 до %d символів.\n", REG_LEN - 1);
+    }
     snprintf(prompt, sizeof prompt, "Модель%s%s%s: ", old ? " [" : "", old ? old->model : "", old ? "]" : "");
     if (!read_text(prompt, b->model, MODEL_LEN, old ? old->model : NULL)) return 0;
 

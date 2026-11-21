@@ -1,0 +1,6 @@
+$ g++ -Wall -o error_demo.exe error_demo.cpp
+error_demo.cpp: In function 'int main()':
+error_demo.cpp:6:13: error: 'j' was not declared in this scope
+    6 |     int i = j;      /* навмисна помилка: j ще не оголошено */
+      |             ^
+[код завершення: 1]
