@@ -32,3 +32,7 @@
     cd kpiz && sh build_and_test.sh      # або: make && make test
 
 Для КПІЗ потрібні пакети MSYS2: `mingw-w64-ucrt-x86_64-cunit`, `-gdb`, `-cppcheck`.
+
+## GitHub
+
+Зміни до README внесено через вебінтерфейс GitHub у гілці edit-readme-file та злито в master через Pull Request (лабораторна робота 5).
