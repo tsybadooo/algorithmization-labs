@@ -1,0 +1,171 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_6_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №6</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Програмування циклічних алгоритмів»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><p>Набути навичок програмування циклічних алгоритмів мовою С з використанням операторів циклу for, while та do–while.</p><h2>Завдання (варіант 19)</h2><p>Дано натуральне число n. Обчислити S = √(2 + √(2 + … + √2)) (n коренів).</p><h2>Хід роботи</h2><p>Вкладений вираз обчислюється «зсередини назовні». Позначимо s₀ = 0, тоді s<sub>k</sub> = √(2 + s<sub>k−1</sub>), k = 1, 2, …, n, і S = s<sub>n</sub>. Таке рекурентне співвідношення природно реалізується циклом з відомою кількістю повторень. Для перевірки використано відому тотожність S = 2·cos(π / 2ⁿ⁺¹), з якої випливає, що при n → ∞ значення S прямує до 2.</p><p>Обчислення реалізовано трьома видами циклів: з параметром (for), з передумовою (while) і з післяумовою (do–while). Цикл do–while виконує тіло щонайменше один раз, тому його застосування коректне лише завдяки попередній перевірці n ≥ 1.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 558 645" width="558" height="645"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="44.0" y="14.0" width="220" height="40" rx="20.0"/><text x="154.0" y="38.5" text-anchor="middle">Початок</text><line x1="154.0" y1="54.0" x2="154.0" y2="80.0"/><polygon points="60.0,80.0 264.0,80.0 248.0,120.0 44.0,120.0"/><text x="154.0" y="104.5" text-anchor="middle">Ввести n</text><line x1="154.0" y1="120.0" x2="154.0" y2="146.0"/><polygon points="154.0,146.0 264.0,178.0 154.0,210.0 44.0,178.0"/><text x="154.0" y="182.5" text-anchor="middle">n &lt; 1</text><line x1="264.0" y1="178.0" x2="434.0" y2="178.0"/><text x="268.0" y="173.0" class="lbl" text-anchor="start">так</text><line x1="434.0" y1="178.0" x2="434.0" y2="236.0"/><polygon points="340.0,236.0 544.0,236.0 528.0,276.0 324.0,276.0"/><text x="434.0" y="260.5" text-anchor="middle">Вивести «помилка»</text><line x1="434.0" y1="276.0" x2="434.0" y2="302.0"/><rect x="324.0" y="302.0" width="220" height="40" rx="20.0"/><text x="434.0" y="326.5" text-anchor="middle">Кінець</text><text x="160.0" y="222.0" class="lbl" text-anchor="start">ні</text><line x1="154.0" y1="210.0" x2="154.0" y2="236.0"/><rect x="44.0" y="236.0" width="220" height="40"/><text x="154.0" y="260.5" text-anchor="middle">s = 0</text><line x1="154.0" y1="276.0" x2="154.0" y2="302.0"/><line x1="154.0" y1="302.0" x2="154.0" y2="315.0"/><polygon points="62.0,315.0 246.0,315.0 264.0,335.0 246.0,355.0 62.0,355.0 44.0,335.0"/><text x="154.0" y="339.5" text-anchor="middle">k = 1, n</text><line x1="154.0" y1="355.0" x2="154.0" y2="381.0"/><rect x="44.0" y="381.0" width="220" height="40"/><text x="154.0" y="405.5" text-anchor="middle">s = sqrt(2 + s)</text><line x1="154.0" y1="421.0" x2="154.0" y2="434.0"/><line x1="154.0" y1="434.0" x2="20.0" y2="434.0" marker-end="url(#arr)"/><line x1="20.0" y1="434.0" x2="20.0" y2="308.5" marker-end="url(#arr)"/><line x1="20.0" y1="308.5" x2="154.0" y2="308.5"/><line x1="264.0" y1="335.0" x2="288.0" y2="335.0"/><line x1="288.0" y1="335.0" x2="288.0" y2="460.0"/><line x1="288.0" y1="460.0" x2="154.0" y2="460.0" marker-end="url(#arr)"/><line x1="154.0" y1="460.0" x2="154.0" y2="473.0"/><line x1="154.0" y1="473.0" x2="154.0" y2="499.0"/><polygon points="60.0,499.0 264.0,499.0 248.0,539.0 44.0,539.0"/><text x="154.0" y="523.5" text-anchor="middle">Вивести s</text><line x1="154.0" y1="539.0" x2="154.0" y2="552.0"/><line x1="154.0" y1="552.0" x2="154.0" y2="565.0"/><line x1="154.0" y1="565.0" x2="154.0" y2="591.0"/><rect x="44.0" y="591.0" width="220" height="40" rx="20.0"/><text x="154.0" y="615.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема алгоритму (цикл з параметром)</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 308 355" width="308" height="355"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="44.0" y="14.0" width="220" height="40"/><text x="154.0" y="38.5" text-anchor="middle">s = 0; k = 0</text><line x1="154.0" y1="54.0" x2="154.0" y2="80.0"/><line x1="154.0" y1="80.0" x2="154.0" y2="93.0"/><polygon points="154.0,93.0 264.0,125.0 154.0,157.0 44.0,125.0"/><text x="154.0" y="129.5" text-anchor="middle">k &lt; n</text><line x1="154.0" y1="157.0" x2="154.0" y2="183.0"/><text x="160.0" y="169.0" class="lbl" text-anchor="start">так</text><rect x="44.0" y="183.0" width="220" height="40"/><text x="154.0" y="207.5" text-anchor="middle">s = sqrt(2 + s)</text><line x1="154.0" y1="223.0" x2="154.0" y2="249.0"/><rect x="44.0" y="249.0" width="220" height="40"/><text x="154.0" y="273.5" text-anchor="middle">k = k + 1</text><line x1="154.0" y1="289.0" x2="154.0" y2="302.0"/><line x1="154.0" y1="302.0" x2="20.0" y2="302.0" marker-end="url(#arr)"/><line x1="20.0" y1="302.0" x2="20.0" y2="86.5" marker-end="url(#arr)"/><line x1="20.0" y1="86.5" x2="154.0" y2="86.5"/><line x1="264.0" y1="125.0" x2="288.0" y2="125.0"/><text x="268.0" y="120.0" class="lbl" text-anchor="start">ні</text><line x1="288.0" y1="125.0" x2="288.0" y2="328.0"/><line x1="288.0" y1="328.0" x2="154.0" y2="328.0" marker-end="url(#arr)"/><line x1="154.0" y1="328.0" x2="154.0" y2="341.0"/></svg></div><p class="caption">Рисунок 2 – Фрагмент блок-схеми з циклом з передумовою (while)</p><div class="fname">Файл lab06_var19.c</div><pre class="code">/*
+ * Лабораторна робота №6 "Програмування циклічних алгоритмів". Варіант 19.
+ *
+ * Дано натуральне число n. Обчислити
+ *
+ *     S = sqrt(2 + sqrt(2 + ... + sqrt(2)))      (n коренів)
+ *
+ * Рекурентне співвідношення: s1 = sqrt(2),  s(k) = sqrt(2 + s(k-1)).
+ * Обчислення виконано трьома видами циклів (for, while, do-while),
+ * результати мають збігатися. Для контролю виведено також
+ * відоме точне значення 2*cos(pi / 2^(n+1)); при n -&gt; ∞ S -&gt; 2.
+ */
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "../common_console.h"
+
+int main(void)
+{
+    console_utf8();
+    const double PI = 3.14159265358979323846;
+    int n, k;
+    double s_for, s_while, s_do;
+
+    printf("Введіть натуральне n: ");
+    if (scanf("%d", &amp;n) != 1 || n &lt; 1) {
+        printf("Помилка: n має бути натуральним числом (n &gt;= 1)\n");
+        return 1;
+    }
+
+    /* 1) цикл for: s починається з 0, кожен крок додає один корінь */
+    s_for = 0.0;
+    for (k = 1; k &lt;= n; k++)
+        s_for = sqrt(2.0 + s_for);
+
+    /* 2) цикл while (з передумовою) */
+    s_while = 0.0;
+    k = 0;
+    while (k &lt; n) {
+        s_while = sqrt(2.0 + s_while);
+        k++;
+    }
+
+    /* 3) цикл do-while (з післяумовою); n &gt;= 1, тому хоча б одна ітерація коректна */
+    s_do = 0.0;
+    k = 0;
+    do {
+        s_do = sqrt(2.0 + s_do);
+        k++;
+    } while (k &lt; n);
+
+    printf("n = %d\n", n);
+    printf("S (for)      = %.12f\n", s_for);
+    printf("S (while)    = %.12f\n", s_while);
+    printf("S (do-while) = %.12f\n", s_do);
+    printf("Контроль 2*cos(pi/2^(n+1)) = %.12f\n", 2.0 * cos(PI / pow(2.0, n + 1)));
+
+    /* Таблиця проміжних значень для перших кроків */
+    printf("\n  k |      s(k)\n ---+----------------\n");
+    s_for = 0.0;
+    for (k = 1; k &lt;= n &amp;&amp; k &lt;= 10; k++) {
+        s_for = sqrt(2.0 + s_for);
+        printf(" %2d | %.12f\n", k, s_for);
+    }
+    return 0;
+}</pre><h2>Результати виконання</h2><pre class="console"><span class="cmd">&gt; lab06_var19.exe</span>
+<span class="in">1</span>
+Введіть натуральне n: n = 1
+S (for)      = 1.414213562373
+S (while)    = 1.414213562373
+S (do-while) = 1.414213562373
+Контроль 2*cos(pi/2^(n+1)) = 1.414213562373
+
+  k |      s(k)
+ ---+----------------
+  1 | 1.414213562373
+[код завершення: 0]
+
+<span class="cmd">&gt; lab06_var19.exe</span>
+<span class="in">5</span>
+Введіть натуральне n: n = 5
+S (for)      = 1.997590912410
+S (while)    = 1.997590912410
+S (do-while) = 1.997590912410
+Контроль 2*cos(pi/2^(n+1)) = 1.997590912410
+
+  k |      s(k)
+ ---+----------------
+  1 | 1.414213562373
+  2 | 1.847759065023
+  3 | 1.961570560806
+  4 | 1.990369453344
+  5 | 1.997590912410
+[код завершення: 0]
+
+<span class="cmd">&gt; lab06_var19.exe</span>
+<span class="in">20</span>
+Введіть натуральне n: n = 20
+S (for)      = 1.999999999998
+S (while)    = 1.999999999998
+S (do-while) = 1.999999999998
+Контроль 2*cos(pi/2^(n+1)) = 1.999999999998
+
+  k |      s(k)
+ ---+----------------
+  1 | 1.414213562373
+  2 | 1.847759065023
+  3 | 1.961570560806
+  4 | 1.990369453344
+  5 | 1.997590912410
+  6 | 1.999397637392
+  7 | 1.999849403678
+  8 | 1.999962350565
+  9 | 1.999990587619
+ 10 | 1.999997646903
+[код завершення: 0]
+
+<span class="cmd">&gt; lab06_var19.exe</span>
+<span class="in">0</span>
+Введіть натуральне n: Помилка: n має бути натуральним числом (n &gt;= 1)
+[код завершення: 1]</pre><p>Результати всіх трьох циклів збігаються між собою і з контрольною формулою 2·cos(π/2ⁿ⁺¹) з точністю до 12 знаків. Послідовність швидко збігається до 2: уже при n = 20 відхилення становить близько 2·10⁻¹².</p><h2>Висновки</h2><p>Засвоєно програмування циклічних алгоритмів із використанням рекурентних співвідношень. Одне й те саме обчислення реалізовано трьома видами циклів і показано їх еквівалентність та особливості (do–while виконується хоча б раз). Правильність підтверджено аналітичною формулою.</p></body></html>

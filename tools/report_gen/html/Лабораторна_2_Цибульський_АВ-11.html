@@ -1,0 +1,444 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_2_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №2</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Програмування лінійних процесів, введення та виведення даних засобами мови С++»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><ul><li>ознайомитися з концепцією потокового введення та виведення даних різних типів засобами мови С++;</li><li>ознайомитися з інструментами потокового введення та виведення даних різних типів;</li><li>ознайомитися з маніпуляторами потоків мови С++ і особливостями їх застосування.</li></ul><h2>Хід роботи</h2><h3>1 Програма lab_work_02_01 — параметри циліндра</h3><p>Програму з методичних вказівок введено, відлагоджено та протестовано. Під час налагодження виявлено і виправлено помилки в наведеному тексті: площа повної поверхні обчислювалась як sb + 2πr²<b>h</b> (зайвий множник h), а об’єм — як πr<b>h²</b>; правильні формули sp = sb + 2πr², v = πr²h. Застарілі заголовки &lt;iostream.h&gt;, &lt;conio.h&gt; і функції clrscr()/getch() замінено засобами стандартного С++. Додано перевірку коректності введення.</p><div class="fname">Файл lab_work_02_01.cpp</div><pre class="code">/*****************************************************/
+/*  lab_work_02_01.                                  */
+/*  Лінійні обчислювальні процеси засобами мови С++  */
+/*  Дано: r - радіус основи прямого кругового        */
+/*  циліндра; h - висота циліндра.                   */
+/*  Обчислити: sb = 2*pi*r*h - площу бічної поверхні;*/
+/*  sp = sb + 2*pi*r*r - площу повної поверхні;      */
+/*  v = pi*r*r*h - об'єм циліндра. Результати подати */
+/*  у вигляді таблиці.                               */
+/*  Під час налагодження виправлено помилки методички:*/
+/*  sp=sb+2*pi*r*r*h -&gt; sp=sb+2*pi*r*r;              */
+/*  v=pi*r*h*h       -&gt; v=pi*r*r*h;                  */
+/*  &lt;iostream.h&gt;, clrscr(), getch() -&gt; стандарт C++. */
+/*****************************************************/
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include "../common_console.h"
+using namespace std;
+
+int main()
+{
+    console_utf8();
+    const double pi = 3.14159265358979; // константа pi
+    double r;   // радіус основи циліндра
+    double h;   // висота циліндра
+    double sb;  // площа бічної поверхні
+    double sp;  // площа повної поверхні
+    double v;   // об'єм циліндра
+
+    // Введення заданих величин
+    cout &lt;&lt; " Введіть радіус основи циліндра: "; cin &gt;&gt; r;
+    cout &lt;&lt; " Введіть висоту циліндра: ";        cin &gt;&gt; h;
+    if (!cin || r &lt;= 0 || h &lt;= 0) { cout &lt;&lt; " Помилка: r та h мають бути додатними числами\n"; return 1; }
+
+    // Обчислення параметрів циліндра
+    sb = 2 * pi * r * h;
+    sp = sb + 2 * pi * r * r;
+    v  = pi * r * r * h;
+
+    // Друк результатів у вигляді таблиці
+    cout &lt;&lt; fixed &lt;&lt; setprecision(3);
+    cout &lt;&lt; "\n Вхідні величини та результати обчислень:\n";
+    cout &lt;&lt; " +----------------------------+------------+\n";
+    cout &lt;&lt; " |        Вхідні величини     |            |\n";
+    cout &lt;&lt; " +----------------------------+------------+\n";
+    cout &lt;&lt; " | Радіус основи циліндра     |" &lt;&lt; setw(11) &lt;&lt; r  &lt;&lt; " |\n";
+    cout &lt;&lt; " | Висота циліндра            |" &lt;&lt; setw(11) &lt;&lt; h  &lt;&lt; " |\n";
+    cout &lt;&lt; " +----------------------------+------------+\n";
+    cout &lt;&lt; " |    Результати обчислень    |            |\n";
+    cout &lt;&lt; " +----------------------------+------------+\n";
+    cout &lt;&lt; " | Бічна поверхня циліндра    |" &lt;&lt; setw(11) &lt;&lt; sb &lt;&lt; " |\n";
+    cout &lt;&lt; " | Повна поверхня циліндра    |" &lt;&lt; setw(11) &lt;&lt; sp &lt;&lt; " |\n";
+    cout &lt;&lt; " | Об'єм циліндра             |" &lt;&lt; setw(11) &lt;&lt; v  &lt;&lt; " |\n";
+    cout &lt;&lt; " +----------------------------+------------+\n";
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab_work_02_01.exe</span>
+<span class="in">4</span>
+<span class="in">5</span>
+ Введіть радіус основи циліндра:  Введіть висоту циліндра: 
+ Вхідні величини та результати обчислень:
+ +----------------------------+------------+
+ |        Вхідні величини     |            |
+ +----------------------------+------------+
+ | Радіус основи циліндра     |      4.000 |
+ | Висота циліндра            |      5.000 |
+ +----------------------------+------------+
+ |    Результати обчислень    |            |
+ +----------------------------+------------+
+ | Бічна поверхня циліндра    |    125.664 |
+ | Повна поверхня циліндра    |    226.195 |
+ | Об'єм циліндра             |    251.327 |
+ +----------------------------+------------+
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_02_01.exe</span>
+<span class="in">-1</span>
+<span class="in">2</span>
+ Введіть радіус основи циліндра:  Введіть висоту циліндра:  Помилка: r та h мають бути додатними числами
+[код завершення: 1]</pre><p>Перевірка для r = 4, h = 5: sb = 2π·4·5 ≈ 125,664; sp = 125,664 + 2π·16 ≈ 226,195; v = π·16·5 ≈ 251,327. У методичці наведено неправильні значення 628,318 і 314,159, які є наслідком зазначених помилок.</p><h3>2 Програма lab_work_02_02 — бібліотека математичних функцій</h3><p>У тексті методички вирази pow(a3, 1/2) і pow(b3, 1/3) завжди дорівнюють 1, оскільки 1/2 і 1/3 — цілочисельне ділення, що дає 0. Їх замінено на sqrt(a3) і cbrt(b3). Через це результати відрізняються від наведених у методичці (там a4 = b4 = 1,00).</p><div class="fname">Файл lab_work_02_02.cpp</div><pre class="code">/*****************************************************/
+/* lab_work_02_02.                                   */
+/*  Бібліотека арифметичних функцій С++.             */
+/*  Дано: x,y,z - змінні дійсного типу.              */
+/*  Обчислити a=f1(x,y,z) та b=f2(x,y,z), вивести    */
+/*  вхідні величини, проміжні величини і результати  */
+/*  у вигляді таблиці.                               */
+/*  Виправлено помилки методички: pow(a3,1/2) та     */
+/*  pow(b3,1/3) давали pow(..,0)=1 через цілочисельне*/
+/*  ділення; замінено на sqrt() та cbrt().           */
+/*****************************************************/
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include "../common_console.h"
+using namespace std;
+
+int main()
+{
+    console_utf8();
+    const double pi = 3.14159265358979;
+    double x, y, z;
+    double a1, a2, a3, a4, a5, a;
+    double b1, b2, b3, b4, b5, b;
+
+    cout &lt;&lt; " Введіть значення трьох дійсних змінних x y z:\n "; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+    if (!cin) { cout &lt;&lt; " Помилка введення\n"; return 1; }
+
+    // Обчислення виразу a
+    a1 = y / (2 + y * y + fabs(y * z));
+    a2 = acos(a1);
+    a3 = pi + x * x + pow(sin(y * z), 2);
+    a4 = sqrt(a3);                       // було pow(a3, 1/2)
+    a5 = log10(2 / (x * x + y * y + 1));
+    a  = a2 * (a4 - a5);
+
+    // Обчислення виразу b
+    b1 = exp(-3 * x * x + y / 3 - z);
+    b2 = pow(tan(x), 2);
+    b3 = b2 / (1 + sin(pi * y / 2));
+    b4 = cbrt(b3);                       // було pow(b3, 1/3)
+    b5 = (x + y + z) / (x * y * z);
+    b  = b1 + b4 - pow(b5, 2);
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(3);
+    cout &lt;&lt; "\n Вхідні величини та результати обчислень:\n";
+    cout &lt;&lt; " +-----------------------------------+\n";
+    cout &lt;&lt; " |          Вхідні величини          |\n";
+    cout &lt;&lt; " +-----------------------------------+\n";
+    cout &lt;&lt; " | x = " &lt;&lt; setw(10) &lt;&lt; x &lt;&lt; "                    |\n";
+    cout &lt;&lt; " | y = " &lt;&lt; setw(10) &lt;&lt; y &lt;&lt; "                    |\n";
+    cout &lt;&lt; " | z = " &lt;&lt; setw(10) &lt;&lt; z &lt;&lt; "                    |\n";
+    cout &lt;&lt; " +-----------------------------------+\n";
+    cout &lt;&lt; " |        Результати обчислень       |\n";
+    cout &lt;&lt; " +-----------------+-----------------+\n";
+    cout &lt;&lt; " | a1 = " &lt;&lt; setw(10) &lt;&lt; a1 &lt;&lt; " | b1 = " &lt;&lt; setw(10) &lt;&lt; b1 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a2 = " &lt;&lt; setw(10) &lt;&lt; a2 &lt;&lt; " | b2 = " &lt;&lt; setw(10) &lt;&lt; b2 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a3 = " &lt;&lt; setw(10) &lt;&lt; a3 &lt;&lt; " | b3 = " &lt;&lt; setw(10) &lt;&lt; b3 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a4 = " &lt;&lt; setw(10) &lt;&lt; a4 &lt;&lt; " | b4 = " &lt;&lt; setw(10) &lt;&lt; b4 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a5 = " &lt;&lt; setw(10) &lt;&lt; a5 &lt;&lt; " | b5 = " &lt;&lt; setw(10) &lt;&lt; b5 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a  = " &lt;&lt; setw(10) &lt;&lt; a  &lt;&lt; " | b  = " &lt;&lt; setw(10) &lt;&lt; b  &lt;&lt; " |\n";
+    cout &lt;&lt; " +-----------------+-----------------+\n";
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab_work_02_02.exe</span>
+<span class="in">1 2 3</span>
+ Введіть значення трьох дійсних змінних x y z:
+ 
+ Вхідні величини та результати обчислень:
+ +-----------------------------------+
+ |          Вхідні величини          |
+ +-----------------------------------+
+ | x =      1.000                    |
+ | y =      2.000                    |
+ | z =      3.000                    |
+ +-----------------------------------+
+ |        Результати обчислень       |
+ +-----------------+-----------------+
+ | a1 =      0.167 | b1 =      0.005 |
+ | a2 =      1.403 | b2 =      2.426 |
+ | a3 =      4.220 | b3 =      2.426 |
+ | a4 =      2.054 | b4 =      1.344 |
+ | a5 =     -0.477 | b5 =      1.000 |
+ | a  =      3.552 | b  =      0.348 |
+ +-----------------+-----------------+
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_02_02.exe</span>
+<span class="in">0.5 1.5 2</span>
+ Введіть значення трьох дійсних змінних x y z:
+ 
+ Вхідні величини та результати обчислень:
+ +-----------------------------------+
+ |          Вхідні величини          |
+ +-----------------------------------+
+ | x =      0.500                    |
+ | y =      1.500                    |
+ | z =      2.000                    |
+ +-----------------------------------+
+ |        Результати обчислень       |
+ +-----------------+-----------------+
+ | a1 =      0.207 | b1 =      0.105 |
+ | a2 =      1.362 | b2 =      0.298 |
+ | a3 =      3.412 | b3 =      0.175 |
+ | a4 =      1.847 | b4 =      0.559 |
+ | a5 =     -0.243 | b5 =      2.667 |
+ | a  =      2.847 | b  =     -6.447 |
+ +-----------------+-----------------+
+[код завершення: 0]</pre><h3>3 Програма lab_work_02_03 — маніпулятори потоків</h3><div class="fname">Файл lab_work_02_03.cpp</div><pre class="code">/*****************************************************/
+/* lab_work_02_03.                                   */
+/*  Введення/виведення даних різних типів засобами   */
+/*  мови С++ з використанням маніпуляторів.          */
+/*****************************************************/
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include "../common_console.h"
+using namespace std;
+
+int main()
+{
+    console_utf8();
+    char ac = 'A', bc = 'B', cc, dc;
+    int ai = 18, bi = -18, ci, di;
+    unsigned int au = 18, bu = 24, cu, du;
+    float af = 12.34567f, bf = 12.234567f, cf, df;
+
+    // Символьний тип
+    cout &lt;&lt; "\n Введіть значення змінних cc та dc символьного типу:" &lt;&lt; endl;
+    cin &gt;&gt; cc &gt;&gt; dc;
+    cout &lt;&lt; "\n Значення змінної ac=" &lt;&lt; setw(10) &lt;&lt; right &lt;&lt; ac &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної bc=" &lt;&lt; setw(10) &lt;&lt; left  &lt;&lt; bc &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної cc=" &lt;&lt; setw(10) &lt;&lt; right &lt;&lt; cc &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної dc="; cout.width(10); cout &lt;&lt; left &lt;&lt; dc &lt;&lt; endl;
+
+    // Цілий тип зі знаком
+    cout &lt;&lt; "\n Введіть значення змінних ci та di цілого типу зі знаком:" &lt;&lt; endl;
+    cin &gt;&gt; ci &gt;&gt; di;
+    cout &lt;&lt; "\n Значення змінної ai=" &lt;&lt; setw(10) &lt;&lt; right &lt;&lt; ai &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної bi=" &lt;&lt; setw(10) &lt;&lt; right &lt;&lt; bi &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної ci=" &lt;&lt; setw(10) &lt;&lt; left  &lt;&lt; ci &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної di=" &lt;&lt; setw(10) &lt;&lt; left  &lt;&lt; di &lt;&lt; endl;
+
+    // Цілий тип без знаку - у 10-й, 8-й і 16-й системах
+    cout &lt;&lt; "\n Введіть значення змінних cu та du цілого типу без знаку:" &lt;&lt; endl;
+    cin &gt;&gt; cu &gt;&gt; du;
+    unsigned int uv[4] = {au, bu, cu, du};
+    const char *un[4] = {"au", "bu", "cu", "du"};
+    for (int i = 0; i &lt; 4; i++) {
+        cout &lt;&lt; "\n Значення змінної " &lt;&lt; un[i] &lt;&lt; "=\n"
+             &lt;&lt; setw(5) &lt;&lt; dec &lt;&lt; right &lt;&lt; uv[i] &lt;&lt; " - в 10-й нотації\n"
+             &lt;&lt; setw(5) &lt;&lt; oct &lt;&lt; right &lt;&lt; uv[i] &lt;&lt; " - у 8-й нотації\n"
+             &lt;&lt; setw(5) &lt;&lt; hex &lt;&lt; right &lt;&lt; uv[i] &lt;&lt; " - в 16-й нотації" &lt;&lt; dec &lt;&lt; endl;
+    }
+
+    // Дійсний тип
+    cout &lt;&lt; "\n Введіть значення змінних cf та df дійсного типу:" &lt;&lt; endl;
+    cin &gt;&gt; cf &gt;&gt; df;
+    cout &lt;&lt; setprecision(4);
+    cout &lt;&lt; "\n Значення змінної af=" &lt;&lt; right &lt;&lt; fixed &lt;&lt; af &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної bf=" &lt;&lt; right &lt;&lt; fixed &lt;&lt; bf &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної cf=" &lt;&lt; left &lt;&lt; scientific &lt;&lt; cf &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної df=" &lt;&lt; left &lt;&lt; scientific &lt;&lt; df &lt;&lt; endl;
+    cout &lt;&lt; "\n Значення змінної af=" &lt;&lt; setw(12) &lt;&lt; showpoint &lt;&lt; setfill('X') &lt;&lt; right &lt;&lt; fixed &lt;&lt; af &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної af=" &lt;&lt; setw(12) &lt;&lt; showpoint &lt;&lt; setfill('X') &lt;&lt; left  &lt;&lt; fixed &lt;&lt; af &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної af=" &lt;&lt; setw(12) &lt;&lt; showpoint &lt;&lt; setfill('X') &lt;&lt; right &lt;&lt; scientific &lt;&lt; af &lt;&lt; endl;
+    cout &lt;&lt; " Значення змінної af=" &lt;&lt; setw(12) &lt;&lt; showpoint &lt;&lt; setfill('X') &lt;&lt; left  &lt;&lt; scientific &lt;&lt; af &lt;&lt; endl;
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab_work_02_03.exe</span>
+<span class="in">C D</span>
+<span class="in">123 -123</span>
+<span class="in">124 421</span>
+<span class="in">35.3456789 -35.3456789</span>
+
+ Введіть значення змінних cc та dc символьного типу:
+
+ Значення змінної ac=         A
+ Значення змінної bc=B         
+ Значення змінної cc=         C
+ Значення змінної dc=D         
+
+ Введіть значення змінних ci та di цілого типу зі знаком:
+
+ Значення змінної ai=        18
+ Значення змінної bi=       -18
+ Значення змінної ci=123       
+ Значення змінної di=-123      
+
+ Введіть значення змінних cu та du цілого типу без знаку:
+
+ Значення змінної au=
+   18 - в 10-й нотації
+   22 - у 8-й нотації
+   12 - в 16-й нотації
+
+ Значення змінної bu=
+   24 - в 10-й нотації
+   30 - у 8-й нотації
+   18 - в 16-й нотації
+
+ Значення змінної cu=
+  124 - в 10-й нотації
+  174 - у 8-й нотації
+   7c - в 16-й нотації
+
+ Значення змінної du=
+  421 - в 10-й нотації
+  645 - у 8-й нотації
+  1a5 - в 16-й нотації
+
+ Введіть значення змінних cf та df дійсного типу:
+
+ Значення змінної af=12.3457
+ Значення змінної bf=12.2346
+ Значення змінної cf=3.5346e+01
+ Значення змінної df=-3.5346e+01
+
+ Значення змінної af=XXXXX12.3457
+ Значення змінної af=12.3457XXXXX
+ Значення змінної af=XX1.2346e+01
+ Значення змінної af=1.2346e+01XX
+[код завершення: 0]</pre><p>Використано маніпулятори setw, left/right, dec/oct/hex, fixed/scientific, setprecision, showpoint, setfill. Маніпулятори формату (крім setw) діють до наступної зміни, тому після виведення у 16-й системі повертаємо dec.</p><h3>4 Індивідуальне завдання (варіант 19)</h3><p>Обчислити значення a і b при заданих x, y, z:</p><p class="formula">a = cos² [ (π − ln(1 + 3/(x² + 2)) + |x + y/2| − (x − 4,2)(y + 2,8)) / ((2x² + 3y² + ln(1 + |z|)) · sin((x + y)² + 1)) ];</p><p class="formula">b = √( lg(25 + (3y² + x² + 1,43)/(4 + sin(x/2))) · (4 + arctg((y − 0,1x)/(z² + 8))) ).</p><p>Аналіз області визначення: знаменник у b завжди додатний (4 + sin(x/2) ≥ 3, z² + 8 ≥ 8), аргумент lg більший за 25, а 4 + arctg(...) &gt; 0, тому b визначене при будь-яких x, y, z. Вираз a не визначений, якщо знаменник дорівнює нулю, — цей випадок програма перевіряє.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 498 776" width="498" height="776"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="14.0" y="14.0" width="220" height="40" rx="20.0"/><text x="124.0" y="38.5" text-anchor="middle">Початок</text><line x1="124.0" y1="54.0" x2="124.0" y2="80.0"/><polygon points="30.0,80.0 234.0,80.0 218.0,120.0 14.0,120.0"/><text x="124.0" y="104.5" text-anchor="middle">Ввести x, y, z</text><line x1="124.0" y1="120.0" x2="124.0" y2="146.0"/><rect x="14.0" y="146.0" width="220" height="48"/><text x="124.0" y="166.5" text-anchor="middle">a1 = π − ln(1+3/(x²+2)); a2 =</text><text x="124.0" y="182.5" text-anchor="middle">|x+y/2|; a3 = (x−4,2)(y+2,8)</text><line x1="124.0" y1="194.0" x2="124.0" y2="220.0"/><rect x="14.0" y="220.0" width="220" height="48"/><text x="124.0" y="240.5" text-anchor="middle">a4 = 2x²+3y²+ln(1+|z|); a5 =</text><text x="124.0" y="256.5" text-anchor="middle">sin((x+y)²+1); den = a4·a5</text><line x1="124.0" y1="268.0" x2="124.0" y2="294.0"/><polygon points="124.0,294.0 234.0,326.0 124.0,358.0 14.0,326.0"/><text x="124.0" y="330.5" text-anchor="middle">|den| &lt; 1e-12</text><line x1="234.0" y1="326.0" x2="374.0" y2="326.0"/><text x="238.0" y="321.0" class="lbl" text-anchor="start">так</text><line x1="374.0" y1="326.0" x2="374.0" y2="384.0"/><polygon points="280.0,384.0 484.0,384.0 468.0,424.0 264.0,424.0"/><text x="374.0" y="408.5" text-anchor="middle">Вивести «a не визначено»</text><line x1="374.0" y1="424.0" x2="374.0" y2="450.0"/><rect x="264.0" y="450.0" width="220" height="40" rx="20.0"/><text x="374.0" y="474.5" text-anchor="middle">Кінець</text><text x="130.0" y="370.0" class="lbl" text-anchor="start">ні</text><line x1="124.0" y1="358.0" x2="124.0" y2="384.0"/><rect x="14.0" y="384.0" width="220" height="40"/><text x="124.0" y="408.5" text-anchor="middle">a = cos²((a1+a2−a3)/den)</text><line x1="124.0" y1="424.0" x2="124.0" y2="450.0"/><rect x="14.0" y="450.0" width="220" height="80"/><text x="124.0" y="470.5" text-anchor="middle">b1 =</text><text x="124.0" y="486.5" text-anchor="middle">25+(3y²+x²+1,43)/(4+sin(x/2)); b2</text><text x="124.0" y="502.5" text-anchor="middle">= lg b1; b3 =</text><text x="124.0" y="518.5" text-anchor="middle">4+arctg((y−0,1x)/(z²+8))</text><line x1="124.0" y1="530.0" x2="124.0" y2="556.0"/><rect x="14.0" y="556.0" width="220" height="40"/><text x="124.0" y="580.5" text-anchor="middle">b = sqrt(b2·b3)</text><line x1="124.0" y1="596.0" x2="124.0" y2="622.0"/><polygon points="30.0,622.0 234.0,622.0 218.0,670.0 14.0,670.0"/><text x="124.0" y="642.5" text-anchor="middle">Вивести таблицю x, y, z,</text><text x="124.0" y="658.5" text-anchor="middle">проміжні, a, b</text><line x1="124.0" y1="670.0" x2="124.0" y2="683.0"/><line x1="124.0" y1="683.0" x2="124.0" y2="696.0"/><line x1="124.0" y1="696.0" x2="124.0" y2="722.0"/><rect x="14.0" y="722.0" width="220" height="40" rx="20.0"/><text x="124.0" y="746.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема алгоритму індивідуального завдання</p><div class="fname">Файл lab_work_02_ind.cpp</div><pre class="code">/*****************************************************************/
+/* lab_work_02_ind. Індивідуальне завдання, варіант 19.          */
+/* Обчислити при заданих x, y, z:                                */
+/*        pi - ln(1 + 3/(x^2+2)) + |x + y/2| - (x-4.2)(y+2.8)    */
+/* a = cos^2 ---------------------------------------------------- */
+/*         (2x^2 + 3y^2 + ln(1+|z|)) * sin((x+y)^2 + 1)          */
+/*                                                               */
+/* b = sqrt( lg(25 + (3y^2+x^2+1.43)/(4+sin(x/2)))               */
+/*           * (4 + arctg((y-0.1x)/(z^2+8))) )                   */
+/*****************************************************************/
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include "../common_console.h"
+using namespace std;
+
+int main()
+{
+    console_utf8();
+    const double pi = 3.14159265358979;
+    double x, y, z;
+    cout &lt;&lt; " Введіть x, y, z: "; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+    if (!cin) { cout &lt;&lt; " Помилка введення\n"; return 1; }
+
+    // ---- обчислення a через проміжні величини ----
+    double a1 = pi - log(1 + 3 / (x * x + 2));            // pi - ln(1+3/(x^2+2))
+    double a2 = fabs(x + y / 2);                          // |x + y/2|
+    double a3 = (x - 4.2) * (y + 2.8);                    // (x-4.2)(y+2.8)
+    double a4 = 2 * x * x + 3 * y * y + log(1 + fabs(z)); // перший множник знаменника
+    double a5 = sin(pow(x + y, 2) + 1);                   // sin((x+y)^2+1)
+    double den = a4 * a5;
+    if (fabs(den) &lt; 1e-12) { cout &lt;&lt; " Знаменник дорівнює нулю - a не визначено\n"; return 1; }
+    double a = pow(cos((a1 + a2 - a3) / den), 2);
+
+    // ---- обчислення b ----
+    double b1 = 25 + (3 * y * y + x * x + 1.43) / (4 + sin(x / 2)); // 4+sin&gt;=3, ділення безпечне
+    double b2 = log10(b1);
+    double b3 = 4 + atan((y - 0.1 * x) / (z * z + 8));
+    double b  = sqrt(b2 * b3);                            // b2&gt;1, b3&gt;0 - корінь визначений
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(5);
+    cout &lt;&lt; "\n +------------------------------------------+\n";
+    cout &lt;&lt; " |  x = " &lt;&lt; setw(12) &lt;&lt; x &lt;&lt; "                        |\n";
+    cout &lt;&lt; " |  y = " &lt;&lt; setw(12) &lt;&lt; y &lt;&lt; "                        |\n";
+    cout &lt;&lt; " |  z = " &lt;&lt; setw(12) &lt;&lt; z &lt;&lt; "                        |\n";
+    cout &lt;&lt; " +--------------------+---------------------+\n";
+    cout &lt;&lt; " | a1 = " &lt;&lt; setw(13) &lt;&lt; a1 &lt;&lt; " | b1 = " &lt;&lt; setw(14) &lt;&lt; b1 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a2 = " &lt;&lt; setw(13) &lt;&lt; a2 &lt;&lt; " | b2 = " &lt;&lt; setw(14) &lt;&lt; b2 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a3 = " &lt;&lt; setw(13) &lt;&lt; a3 &lt;&lt; " | b3 = " &lt;&lt; setw(14) &lt;&lt; b3 &lt;&lt; " |\n";
+    cout &lt;&lt; " | a4 = " &lt;&lt; setw(13) &lt;&lt; a4 &lt;&lt; " |                     |\n";
+    cout &lt;&lt; " | a5 = " &lt;&lt; setw(13) &lt;&lt; a5 &lt;&lt; " |                     |\n";
+    cout &lt;&lt; " +--------------------+---------------------+\n";
+    cout &lt;&lt; " | a  = " &lt;&lt; setw(13) &lt;&lt; a  &lt;&lt; " | b  = " &lt;&lt; setw(14) &lt;&lt; b  &lt;&lt; " |\n";
+    cout &lt;&lt; " +--------------------+---------------------+\n";
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab_work_02_ind.exe</span>
+<span class="in">1.5 -0.7 2.3</span>
+ Введіть x, y, z: 
+ +------------------------------------------+
+ |  x =      1.50000                        |
+ |  y =     -0.70000                        |
+ |  z =      2.30000                        |
+ +--------------------+---------------------+
+ | a1 =       2.60751 | b1 =       26.10004 |
+ | a2 =       1.15000 | b2 =        1.41664 |
+ | a3 =      -5.67000 | b3 =        3.93613 |
+ | a4 =       7.16392 |                     |
+ | a5 =       0.99761 |                     |
+ +--------------------+---------------------+
+ | a  =       0.06201 | b  =        2.36137 |
+ +--------------------+---------------------+
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_02_ind.exe</span>
+<span class="in">-2 3.1 0</span>
+ Введіть x, y, z: 
+ +------------------------------------------+
+ |  x =     -2.00000                        |
+ |  y =      3.10000                        |
+ |  z =      0.00000                        |
+ +--------------------+---------------------+
+ | a1 =       2.73613 | b1 =       35.84682 |
+ | a2 =       0.45000 | b2 =        1.55445 |
+ | a3 =     -36.58000 | b3 =        4.39124 |
+ | a4 =      36.83000 |                     |
+ | a5 =       0.80257 |                     |
+ +--------------------+---------------------+
+ | a  =       0.04998 | b  =        2.61265 |
+ +--------------------+---------------------+
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_02_ind.exe</span>
+<span class="in">0 0 0</span>
+ Введіть x, y, z:  Знаменник дорівнює нулю - a не визначено
+[код завершення: 1]</pre><p>Контрольний ручний розрахунок для x = 1,5: a1 = π − ln(1 + 3/4,25) = 3,14159 − 0,53408 = 2,60751 — збігається з виведеним значенням.</p><h2>Висновки</h2><p>Вивчено потокове введення/виведення С++ (cin, cout) та маніпулятори форматування. Відлагоджено програми з методичних вказівок, при цьому виявлено й виправлено чотири помилки (дві у формулах циліндра і два випадки цілочисельного ділення в показнику степеня). Розроблено лінійну програму для індивідуального варіанта 19 з виведенням проміжних величин у вигляді таблиці та контролем області визначення.</p></body></html>

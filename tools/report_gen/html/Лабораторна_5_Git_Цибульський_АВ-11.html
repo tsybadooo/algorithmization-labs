@@ -1,0 +1,223 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_5_Git_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №5</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Знайомство з системою контролю версій Git»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><p>Знайомство з порядком застосування, завантаження, встановлення та налагодження системи контролю версій Git і навчання використанню основних інструментів GitHub.</p><h2>Хід роботи</h2><h3>1 Встановлення та налаштування Git</h3><p>Використано Git for Windows (версія 2.56.0) з оболонкою Git Bash. Для репозиторію задано ім’я автора і e-mail (git config user.name / user.email), основну гілку названо master (git init -b master).</p><h3>2 Робота з локальним репозиторієм</h3><p>Репозиторієм обрано каталог з усіма лабораторними роботами. Послідовно виконано дії з методичних вказівок: ініціалізація (git init), створення файла example.txt і перегляд стану (git status), додавання файла під контроль версій (git add) і фіксація (git commit -m 'Added file'), видалення файла (git rm) і фіксація, створення та перехід на гілку development (git checkout -b development), додавання всіх файлів лабораторних робіт і коміт, перегляд історії (git log). Далі гілку development злито в master, створено гілку edit-readme-file, змінено README.md, переглянуто відмінності (git diff), зафіксовано зміни, злито гілку в master командою git merge --no-ff (аналог Merge pull request на GitHub) і видалено злиту гілку.</p><h3>3 Протокол роботи в Git Bash</h3><pre class="console"><span class="cmd">$ git init -b master</span>
+Initialized empty Git repository in D:/Downloads/alg/vykonannya/.git/
+
+<span class="cmd">$ touch example.txt</span>
+
+<span class="cmd">$ git status</span>
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+	common_console.h
+	example.txt
+	lab01/
+	lab02/
+	lab02_cond/
+	lab04/
+	lab06/
+	lab07/
+	lab08/
+	lab09/
+	lab10/
+	run.sh
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+<span class="cmd">$ git add example.txt</span>
+
+<span class="cmd">$ git commit -m 'Added file'</span>
+[master (root-commit) bad765a] Added file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 example.txt
+
+<span class="cmd">$ git rm example.txt</span>
+rm 'example.txt'
+
+<span class="cmd">$ git commit -m 'removed file'</span>
+[master c93f27c] removed file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 example.txt
+
+<span class="cmd">$ git checkout -b development</span>
+Switched to a new branch 'development'
+
+<span class="cmd">$ git add .</span>
+
+<span class="cmd">$ git commit -m "Лабораторні роботи 1, 2, 4, 6-10"</span>
+
+<span class="cmd">$ git log --oneline</span>
+8e149d8 Лабораторні роботи 1, 2, 4, 6-10: програми та результати тестування
+c93f27c removed file
+bad765a Added file
+
+<span class="cmd">$ git checkout master</span>
+Switched to branch 'master'
+
+<span class="cmd">$ git merge development</span>
+Updating c93f27c..8e149d8
+Fast-forward
+ .gitignore                |   3 ++
+ README.md                 |   3 ++
+ common_console.h          |  11 +++++
+ lab01/lab01a.cpp          |  29 +++++++++++
+ lab01/lab01a.h            |  10 ++++
+ lab02/lab_work_02_01.cpp  |  57 ++++++++++++++++++++++
+ lab02/lab_work_02_02.cpp  |  64 ++++++++++++++++++++++++
+ lab02/lab_work_02_03.cpp  |  60 +++++++++++++++++++++++
+ lab02/lab_work_02_ind.cpp |  56 +++++++++++++++++++++
+ lab02/out_02_01.txt       |  25 ++++++++++
+ lab02/out_02_02.txt       |  46 +++++++++++++++++
+ lab02/out_02_03.txt       |  55 +++++++++++++++++++++
+ lab02/out_02_ind.txt      |  41 ++++++++++++++++
+ lab02_cond/lab2_cond.c    |  56 +++++++++++++++++++++
+ lab02_cond/out.txt        |  29 +++++++++++
+ lab04/lab04_var19.c       |  46 +++++++++++++++++
+ lab04/lab_work_06_01.c    |  25 ++++++++++
+ lab04/out_06_01.txt       |  42 ++++++++++++++++
+ lab04/out_var19.txt       |  48 ++++++++++++++++++
+ lab06/lab06_var19.c       |  65 ++++++++++++++++++++++++
+ lab06/out.txt             |  57 ++++++++++++++++++++++
+ lab07/lab07_ex1.c         |  51 +++++++++++++++++++
+ lab07/lab07_ex2.c         |  51 +++++++++++++++++++
+ lab07/lab07_ex3.c         |  53 ++++++++++++++++++++
+ lab07/lab07_ex4.c         |  39 +++++++++++++++
+ lab07/lab07_ex5.c         |  42 ++++++++++++++++
+ lab07/lab07_var19_t1.c    |  76 +++++++++++++++++++++++++++++
+ lab07/lab07_var19_t2.c    |  63 ++++++++++++++++++++++++
+ lab07/out_ex1.txt         |   9 ++++
+ lab07/out_ex2.txt         |  13 +++++
+ lab07/out_ex3.txt         |  18 +++++++
+ lab07/out_ex4.txt         |  10 ++++
+ lab07/out_ex5.txt         |  20 ++++++++
+ lab07/out_var19_t1.txt    |  41 ++++++++++++++++
+ lab07/out_var19_t2.txt    |  26 ++++++++++
+ lab08/lab08_ex1.c         |  64 ++++++++++++++++++++++++
+ lab08/lab08_ex2.c         |  48 ++++++++++++++++++
+ lab08/lab08_ex3.c         |  37 ++++++++++++++
+ lab08/lab08_ex4.c         |  72 +++++++++++++++++++++++++++
+ lab08/lab08_ex5.c         |  26 ++++++++++
+ lab08/lab08_var19_t1.c    | 119 ++++++++++++++++++++++++++++++++++++++++++++
+ lab08/lab08_var19_t2.c    |  78 +++++++++++++++++++++++++++++
+ lab08/out_ex1.txt         |  24 +++++++++
+ lab08/out_ex2.txt         |  26 ++++++++++
+ lab08/out_ex3.txt         |  45 +++++++++++++++++
+ lab08/out_ex4.txt         |  11 +++++
+ lab08/out_ex5.txt         |  20 ++++++++
+ lab08/out_var19_t1.txt    |  41 ++++++++++++++++
+ lab08/out_var19_t2.txt    |  26 ++++++++++
+ lab09/lab09_ex1.c         |  43 ++++++++++++++++
+ lab09/lab09_ex2.c         |  44 +++++++++++++++++
+ lab09/lab09_ex3.c         |  48 ++++++++++++++++++
+ lab09/lab09_ex4.c         |  37 ++++++++++++++
+ lab09/lab09_ex5.c         |  53 ++++++++++++++++++++
+ lab09/lab09_var19.c       | 122 ++++++++++++++++++++++++++++++++++++++++++++++
+ lab09/out_ex1.txt         |  15 ++++++
+ lab09/out_ex2.txt         |  12 +++++
+ lab09/out_ex3.txt         |   9 ++++
+ lab09/out_ex4.txt         |   7 +++
+ lab09/out_ex5.txt         |  16 ++++++
+ lab09/out_var19.txt       |  76 +++++++++++++++++++++++++++++
+ lab10/lab10_ex1.c         |  36 ++++++++++++++
+ lab10/lab10_ex2.c         |  55 +++++++++++++++++++++
+ lab10/lab10_ex3.c         |  44 +++++++++++++++++
+ lab10/lab10_var19_t1.c    |  58 ++++++++++++++++++++++
+ lab10/lab10_var19_t2.c    |  83 +++++++++++++++++++++++++++++++
+ lab10/out_ex1.txt         |  12 +++++
+ lab10/out_ex2.txt         |  10 ++++
+ lab10/out_ex3.txt         |   9 ++++
+ lab10/out_var19_t1.txt    |  18 +++++++
+ lab10/out_var19_t2.txt    |  30 ++++++++++++
+ run.sh                    |   8 +++
+ 72 files changed, 2822 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 common_console.h
+ create mode 100644 lab01/lab01a.cpp
+ create mode 100644 lab01/lab01a.h
+ create mode 100644 lab02/lab_work_02_01.cpp
+ ... (інші файли)
+
+<span class="cmd">$ git checkout -b edit-readme-file</span>
+Switched to a new branch 'edit-readme-file'
+
+<span class="cmd">$ git diff</span>
+diff --git a/README.md b/README.md
+index 368019c..f96593d 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,17 @@
+ # Алгоритмізація та програмування — лабораторні роботи
+ 
+ Студент: Цибульський Андрій Іванович, група АВ-11, варіант 19.
++
++## Зміст
++
++- lab01 — консольний додаток
++- lab02 — лінійні процеси, потокове введення/виведення C++
++- lab02_cond — умовні оператори
++- lab04 — розгалуження, належність точки області
++- lab05 — Git та GitHub
++- lab06 — циклічні алгоритми
++- lab07 — масиви
++- lab08 — функції
++- lab09 — вказівники та динамічна памʼять
++- lab10 — рядки та символи
++- kpiz — комплексне практичне індивідуальне завдання
+
+<span class="cmd">$ git commit -am "README: додано зміст репозиторію"</span>
+[edit-readme-file 16eb16d] README: додано зміст репозиторію
+... (вивід скорочено)</pre><h3>4 Робота з GitHub</h3><p>Для виконання другої частини роботи на GitHub необхідно: зареєструвати обліковий запис; натиснути New repository, вказати назву (напр. algorithmization-labs), опис, позначку Initialize this repository with a README і натиснути Create repository; створити гілку edit-readme-file через список Branch: master; змінити README.md (іконка олівця) і виконати Commit changes; на вкладці Pull requests натиснути New pull request, вибрати гілки master ← edit-readme-file, переглянути зміни (зелене — додано, червоне — вилучено), натиснути Create pull request, потім Merge pull request → Confirm merge → Delete branch.</p><p>Локальний репозиторій, створений у цій роботі, публікується на GitHub командами:</p><pre class="code">git remote add origin https://github.com/&lt;логін&gt;/algorithmization-labs.git
+git push -u origin master</pre><p>Посилання на репозиторій: https://github.com/<логін>/algorithmization-labs <i>(вказати після публікації)</i>.</p><h2>Висновки</h2><p>Ознайомилися з основним функціоналом системи контролю версій Git: створенням локального репозиторію, індексацією та фіксацією змін, видаленням файлів, створенням і перемиканням гілок, переглядом історії та відмінностей, злиттям гілок. Розглянуто роботу з сервісом GitHub: створення репозиторію, гілки, коміт змін через вебінтерфейс, Pull Request і Merge.</p><h2 class="newpage">Відповіді на контрольні питання</h2><p><b>1. Для чого потрібні системи контролю версіями (СКВ)?</b> Для зберігання історії змін файлів проєкту, повернення до будь-якої попередньої версії та спільної роботи кількох розробників над одним кодом.</p><p><b>2. Які завдання виконують СКВ?</b> Зберігання файлів у репозиторії, збереження всіх ревізій, журнал змін (хто, коли, що змінив), робота з гілками, злиття змін, виявлення конфліктів і синхронізація між учасниками.</p><p><b>3. На які групи за архітектурою побудови поділяються СКВ?</b> Локальні, централізовані (CVS, Subversion) і розподілені (Git, Mercurial).</p><p><b>4. Що таке «Робоче дерево»?</b> Каталог з файлами поточної версії проєкту, з якими безпосередньо працює розробник (робоча копія).</p><p><b>5. Пояснити термін «коміт».</b> Коміт — зафіксований знімок стану індексованих файлів з унікальним ідентифікатором (хешем), автором, датою та повідомленням, що пояснює зміни.</p><p><b>6. Пояснити терміни Checkout та Merge. У чому їхня різниця?</b> Checkout — перемикання робочого дерева на іншу гілку або ревізію; Merge — об’єднання змін з іншої гілки в поточну. Checkout змінює те, з чим ми працюємо, а merge створює нову спільну версію.</p><p><b>7. Як створити локальний репозиторій?</b> Перейти в каталог проєкту і виконати <code>git init</code>.</p><p><b>8. Як видалити файл з репозиторію?</b> <code>git rm файл</code>, а потім <code>git commit</code>.</p><p><b>9. Як отримати історію ревізій за будь-яким файлом у репозиторії?</b> <code>git log -- файл</code> (з ключами --stat, -p для деталей змін).</p><p><b>10. Що таке GitHub?</b> Вебсервіс для хостингу Git-репозиторіїв і спільної розробки: pull request, рецензування коду, задачі, вікі, CI.</p><p><b>11. Які системи контролю версій підтримуються в GitHub?</b> Git (раніше також надавався доступ через Subversion).</p><p><b>12. Яким чином створюється нова гілка в репозиторії на GitHub?</b> У списку гілок (Branch: master) ввести назву нової гілки і вибрати Create branch.</p><p><b>13. Як додати зміни до репозиторію?</b> Локально: <code>git add</code> і <code>git commit</code>, потім <code>git push</code>; на GitHub — редагування файла і кнопка Commit changes.</p><p><b>14. Як називається основна гілка репозиторію?</b> master (у нових репозиторіях GitHub — main).</p><p><b>15. Яким чином можна перевірити відмінність контенту в гілках?</b> Командою <code>git diff гілка1 гілка2</code> або на вкладці Pull request (Compare) на GitHub.</p><p><b>16. Як називається команда злиття гілок?</b> <code>git merge</code>.</p></body></html>

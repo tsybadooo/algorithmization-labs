@@ -1,0 +1,134 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_2_Умовні_оператори_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №2</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Умовні оператори»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><p>Вивчення прийомів використання умовних операторів мови С: блоків, порожнього оператора, операторів if, if–else, ланцюжка else if та умовної операції ?:.</p><h2>Завдання (варіант 19)</h2><p class="formula">p = a² + b², якщо d = 2;&nbsp;&nbsp; p = ln a + ln b, якщо d = 3;&nbsp;&nbsp; p = ln(a/b) − ln(b/a) — інакше,</p><p>при d = 2,2; a = 2,506; b = 2,4003.</p><h2>Хід роботи</h2><p>Значення a і b задано константами, а d вводиться з клавіатури, щоб перевірити всі три гілки. Оскільки d — дійсне число, рівність перевіряється з точністю EPS = 10⁻⁹ (порівняння дійсних чисел через == є ненадійним через похибки подання). Результат обчислюється двома способами: ланцюжком if – else if – else і вкладеною тернарною операцією; збіг результатів підтверджує правильність обох реалізацій. У програмі також наведено приклад блоку з порожнім оператором.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 748 564" width="650" height="490"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="14.0" y="14.0" width="220" height="40" rx="20.0"/><text x="124.0" y="38.5" text-anchor="middle">Початок</text><line x1="124.0" y1="54.0" x2="124.0" y2="80.0"/><polygon points="30.0,80.0 234.0,80.0 218.0,120.0 14.0,120.0"/><text x="124.0" y="104.5" text-anchor="middle">Ввести d</text><line x1="124.0" y1="120.0" x2="124.0" y2="146.0"/><polygon points="124.0,146.0 234.0,178.0 124.0,210.0 14.0,178.0"/><text x="124.0" y="182.5" text-anchor="middle">|d − 2| &lt; EPS</text><line x1="234.0" y1="178.0" x2="624.0" y2="178.0"/><text x="238.0" y="173.0" class="lbl" text-anchor="start">так</text><line x1="624.0" y1="178.0" x2="624.0" y2="236.0"/><rect x="514.0" y="236.0" width="220" height="40"/><text x="624.0" y="260.5" text-anchor="middle">p = a² + b²</text><line x1="624.0" y1="276.0" x2="624.0" y2="405.0"/><line x1="624.0" y1="405.0" x2="124.0" y2="405.0" marker-end="url(#arr)"/><text x="130.0" y="222.0" class="lbl" text-anchor="start">ні</text><line x1="124.0" y1="210.0" x2="124.0" y2="236.0"/><polygon points="124.0,236.0 234.0,268.0 124.0,300.0 14.0,268.0"/><text x="124.0" y="272.5" text-anchor="middle">|d − 3| &lt; EPS</text><line x1="234.0" y1="268.0" x2="374.0" y2="268.0"/><text x="238.0" y="263.0" class="lbl" text-anchor="start">так</text><line x1="374.0" y1="268.0" x2="374.0" y2="326.0"/><rect x="264.0" y="326.0" width="220" height="40"/><text x="374.0" y="350.5" text-anchor="middle">p = ln a + ln b</text><line x1="374.0" y1="366.0" x2="374.0" y2="379.0"/><line x1="374.0" y1="379.0" x2="124.0" y2="379.0" marker-end="url(#arr)"/><text x="130.0" y="312.0" class="lbl" text-anchor="start">ні</text><line x1="124.0" y1="300.0" x2="124.0" y2="326.0"/><rect x="14.0" y="326.0" width="220" height="40"/><text x="124.0" y="350.5" text-anchor="middle">p = ln(a/b) − ln(b/a)</text><line x1="124.0" y1="366.0" x2="124.0" y2="379.0"/><line x1="124.0" y1="379.0" x2="124.0" y2="392.0"/><line x1="124.0" y1="392.0" x2="124.0" y2="405.0"/><line x1="124.0" y1="405.0" x2="124.0" y2="418.0"/><line x1="124.0" y1="418.0" x2="124.0" y2="444.0"/><polygon points="30.0,444.0 234.0,444.0 218.0,484.0 14.0,484.0"/><text x="124.0" y="468.5" text-anchor="middle">Вивести p</text><line x1="124.0" y1="484.0" x2="124.0" y2="510.0"/><rect x="14.0" y="510.0" width="220" height="40" rx="20.0"/><text x="124.0" y="534.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема алгоритму</p><div class="fname">Файл lab2_cond.c</div><pre class="code">/*
+ * Лабораторна робота 2 "Умовні оператори". Варіант 19.
+ *
+ *       | a^2 + b^2,               якщо d = 2
+ *   p = | ln a + ln b,             якщо d = 3
+ *       | ln(a/b) - ln(b/a),       інакше
+ *
+ *   при d = 2,2;  a = 2,506;  b = 2,4003.
+ *
+ * Значення d вводиться з клавіатури (щоб перевірити всі гілки),
+ * a та b задано константами за умовою.
+ * Показано обидва способи розгалуження: if - else if - else
+ * та тернарний оператор ?: .
+ */
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "../common_console.h"
+
+int main(void)
+{
+    console_utf8();
+    const double a = 2.506;     /* за умовою */
+    const double b = 2.4003;    /* за умовою */
+    const double EPS = 1e-9;    /* точність порівняння дійсних чисел */
+    double d, p, p2;
+
+    printf("Введіть d (за умовою d = 2.2): ");
+    if (scanf("%lf", &amp;d) != 1) {                 /* перевірка введення */
+        printf("Помилка: потрібно ввести число\n");
+        return 1;
+    }
+
+    /* 1-й спосіб: ланцюжок if - else if - else.
+       Дійсні числа порівнюємо з точністю EPS, а не через ==. */
+    if (fabs(d - 2.0) &lt; EPS) {
+        p = a * a + b * b;
+        printf("Гілка 1 (d = 2): p = a^2 + b^2\n");
+    } else if (fabs(d - 3.0) &lt; EPS) {
+        p = log(a) + log(b);
+        printf("Гілка 2 (d = 3): p = ln a + ln b\n");
+    } else {
+        p = log(a / b) - log(b / a);
+        printf("Гілка 3 (інакше): p = ln(a/b) - ln(b/a)\n");
+    }
+
+    /* 2-й спосіб: вкладений тернарний оператор (для перевірки) */
+    p2 = (fabs(d - 2.0) &lt; EPS) ? a * a + b * b
+       : (fabs(d - 3.0) &lt; EPS) ? log(a) + log(b)
+       : log(a / b) - log(b / a);
+
+    printf("a = %.4f, b = %.4f, d = %.4f\n", a, b, d);
+    printf("p (if-else) = %.6f\n", p);
+    printf("p (?:)      = %.6f\n", p2);
+    { ; }   /* приклад порожнього оператора всередині блоку */
+    return 0;
+}</pre><h2>Результати виконання</h2><pre class="console"><span class="cmd">&gt; lab2_cond.exe</span>
+<span class="in">2.2</span>
+Введіть d (за умовою d = 2.2): Гілка 3 (інакше): p = ln(a/b) - ln(b/a)
+a = 2.5060, b = 2.4003, d = 2.2000
+p (if-else) = 0.086188
+p (?:)      = 0.086188
+[код завершення: 0]
+
+<span class="cmd">&gt; lab2_cond.exe</span>
+<span class="in">2</span>
+Введіть d (за умовою d = 2.2): Гілка 1 (d = 2): p = a^2 + b^2
+a = 2.5060, b = 2.4003, d = 2.0000
+p (if-else) = 12.041476
+p (?:)      = 12.041476
+[код завершення: 0]
+
+<span class="cmd">&gt; lab2_cond.exe</span>
+<span class="in">3</span>
+Введіть d (за умовою d = 2.2): Гілка 2 (d = 3): p = ln a + ln b
+a = 2.5060, b = 2.4003, d = 3.0000
+p (if-else) = 1.794282
+p (?:)      = 1.794282
+[код завершення: 0]
+
+<span class="cmd">&gt; lab2_cond.exe</span>
+<span class="in">abc</span>
+Введіть d (за умовою d = 2.2): Помилка: потрібно ввести число
+[код завершення: 1]</pre><p>Для заданого d = 2,2 виконується третя гілка: p = 2·ln(2,506/2,4003) = 2·0,043094 = 0,086188. Для d = 2: p = 6,280036 + 5,761440 = 12,041476; для d = 3: p = 0,918688 + 0,875594 = 1,794282.</p><h2>Висновки</h2><p>Засвоєно використання складених і порожніх операторів, умовних операторів if, if–else, ланцюжка else if та умовної операції ?:. Показано, що дійсні числа слід порівнювати з допуском. Програма для варіанта 19 перевірена на всіх гілках і на некоректному введенні.</p></body></html>

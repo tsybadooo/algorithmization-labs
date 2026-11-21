@@ -1,0 +1,207 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_4_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №4</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Програмування розгалужених процесів за допомогою оператора if на прикладі визначення належності точки області»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><ul><li>вивчити оператор if мови С/С++;</li><li>вивчити операцію ?: мови С/С++;</li><li>ознайомитися з технологією створення розгалужених програм засобами мови С/С++.</li></ul><h2>Хід роботи</h2><h3>1 Програма з методичних вказівок (lab_work_06_01)</h3><p>Програму введено, замінено нестандартні функції clrscr()/getch() і перевірено на контрольних точках з методички — результати збігаються.</p><div class="fname">Файл lab_work_06_01.c</div><pre class="code">/**************************************************************/
+/*  lab_work_06_01 (приклад з методички).                     */
+/*  Визначити, чи належить точка M(x,y) заштрихованій області  */
+/*  (два кола, дві трапеції та кут - рис. 1 методички).        */
+/*  Замість clrscr()/getch() з conio.h використано стандарт C. */
+/**************************************************************/
+#include &lt;stdio.h&gt;
+#include "../common_console.h"
+
+int main(void)
+{
+    console_utf8();
+    float x, y;   /* координати точки M */
+    printf("\n Введіть значення абсциси та ординати: ");
+    if (scanf("%f%f", &amp;x, &amp;y) != 2) { printf("Помилка введення\n"); return 1; }
+
+    if ((((x - 3) * (x - 3) + y * y &lt;= 1) &amp;&amp; ((x - 3) * (x - 3) + (y + 0.5) * (y + 0.5) &gt;= 0.25)) ||
+        ((x &gt;= 5) &amp;&amp; (y &lt;= 1) &amp;&amp; (x &lt;= 6) &amp;&amp; (y &gt;= 2 * x - 12)) ||
+        ((x &gt;= 6) &amp;&amp; (y &lt;= 1) &amp;&amp; (x &lt;= 7) &amp;&amp; (y &gt;= -2 * x + 12)) ||
+        ((y &gt;= -x + 8) &amp;&amp; (y &lt;= 2 * x - 16)))
+        printf("\n x=%.2f y=%.2f Точка M(x,y) належить заштрихованій області.\n", x, y);
+    else
+        printf("\n x=%.2f y=%.2f Точка M(x,y) не належить заштрихованій області.\n", x, y);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab_work_06_01.exe</span>
+<span class="in">3 0.5</span>
+
+ Введіть значення абсциси та ординати: 
+ x=3.00 y=0.50 Точка M(x,y) належить заштрихованій області.
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_06_01.exe</span>
+<span class="in">5.5 0.5</span>
+
+ Введіть значення абсциси та ординати: 
+ x=5.50 y=0.50 Точка M(x,y) належить заштрихованій області.
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_06_01.exe</span>
+<span class="in">6.5 0.5</span>
+
+ Введіть значення абсциси та ординати: 
+ x=6.50 y=0.50 Точка M(x,y) належить заштрихованій області.
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_06_01.exe</span>
+<span class="in">9 0.5</span>
+
+ Введіть значення абсциси та ординати: 
+ x=9.00 y=0.50 Точка M(x,y) належить заштрихованій області.
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_06_01.exe</span>
+<span class="in">1 1.5</span>
+
+ Введіть значення абсциси та ординати: 
+ x=1.00 y=1.50 Точка M(x,y) не належить заштрихованій області.
+[код завершення: 0]
+
+<span class="cmd">&gt; lab_work_06_01.exe</span>
+<span class="in">9 9.5</span>
+
+ Введіть значення абсциси та ординати: 
+ x=9.00 y=9.50 Точка M(x,y) не належить заштрихованій області.
+... (вивід скорочено)</pre><h3>2 Індивідуальне завдання (варіант 19)</h3><p>Заштрихована область складається з квадрата у І чверті з вершинами (0; 0) і (1; 1) та чверті круга радіуса 1 з центром у початку координат, розміщеної в ІІІ чверті. Рівняння меж: x = 0, x = 1, y = 0, y = 1, x² + y² = 1. Точка M(x, y) належить області, якщо виконується хоча б одна з умов:</p><p class="formula">(0 ≤ x ≤ 1) і (0 ≤ y ≤ 1)&nbsp;&nbsp;&nbsp;або&nbsp;&nbsp;&nbsp;(x ≤ 0) і (y ≤ 0) і (x² + y² ≤ 1).</p><p>Межі вважаються такими, що належать області.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-130 -130 260 260" width="260" height="260"><defs><pattern id="h" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="1"/></pattern></defs><rect x="0" y="-80" width="80" height="80" fill="url(#h)" stroke="#000"/><path d="M0,0 L-80,0 A80,80 0 0,0 0,80 Z" fill="url(#h)" stroke="#000"/><line x1="-120" y1="0" x2="120" y2="0" stroke="#000"/><line x1="0" y1="120" x2="0" y2="-120" stroke="#000"/><text x="112" y="14" font-size="12">x</text><text x="6" y="-110" font-size="12">y</text><text x="76" y="14" font-size="11">1</text><text x="-90" y="14" font-size="11">−1</text><text x="-14" y="-76" font-size="11">1</text><text x="4" y="92" font-size="11">−1</text><text x="-12" y="14" font-size="11">0</text></svg></div><p class="caption">Рисунок 1 – Заштрихована область (варіант 19)</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 748 506" width="650" height="440"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="14.0" y="14.0" width="220" height="40" rx="20.0"/><text x="124.0" y="38.5" text-anchor="middle">Початок</text><line x1="124.0" y1="54.0" x2="124.0" y2="80.0"/><polygon points="30.0,80.0 234.0,80.0 218.0,120.0 14.0,120.0"/><text x="124.0" y="104.5" text-anchor="middle">Ввести x, y</text><line x1="124.0" y1="120.0" x2="124.0" y2="146.0"/><polygon points="124.0,146.0 234.0,178.0 124.0,210.0 14.0,178.0"/><text x="124.0" y="182.5" text-anchor="middle">0 ≤ x ≤ 1 і 0 ≤ y ≤ 1</text><line x1="234.0" y1="178.0" x2="624.0" y2="178.0"/><text x="238.0" y="173.0" class="lbl" text-anchor="start">так</text><line x1="624.0" y1="178.0" x2="624.0" y2="236.0"/><polygon points="530.0,236.0 734.0,236.0 718.0,276.0 514.0,276.0"/><text x="624.0" y="260.5" text-anchor="middle">Вивести «належить (квадрат)»</text><line x1="624.0" y1="276.0" x2="624.0" y2="413.0"/><line x1="624.0" y1="413.0" x2="124.0" y2="413.0" marker-end="url(#arr)"/><text x="130.0" y="222.0" class="lbl" text-anchor="start">ні</text><line x1="124.0" y1="210.0" x2="124.0" y2="236.0"/><polygon points="124.0,236.0 234.0,268.0 124.0,300.0 14.0,268.0"/><text x="124.0" y="272.5" text-anchor="middle">x ≤ 0 і y ≤ 0 і x² + y² ≤ 1</text><line x1="234.0" y1="268.0" x2="374.0" y2="268.0"/><text x="238.0" y="263.0" class="lbl" text-anchor="start">так</text><line x1="374.0" y1="268.0" x2="374.0" y2="326.0"/><polygon points="280.0,326.0 484.0,326.0 468.0,374.0 264.0,374.0"/><text x="374.0" y="346.5" text-anchor="middle">Вивести «належить (чверть</text><text x="374.0" y="362.5" text-anchor="middle">круга)»</text><line x1="374.0" y1="374.0" x2="374.0" y2="387.0"/><line x1="374.0" y1="387.0" x2="124.0" y2="387.0" marker-end="url(#arr)"/><text x="130.0" y="312.0" class="lbl" text-anchor="start">ні</text><line x1="124.0" y1="300.0" x2="124.0" y2="326.0"/><polygon points="30.0,326.0 234.0,326.0 218.0,366.0 14.0,366.0"/><text x="124.0" y="350.5" text-anchor="middle">Вивести «не належить»</text><line x1="124.0" y1="366.0" x2="124.0" y2="387.0"/><line x1="124.0" y1="387.0" x2="124.0" y2="400.0"/><line x1="124.0" y1="400.0" x2="124.0" y2="413.0"/><line x1="124.0" y1="413.0" x2="124.0" y2="426.0"/><line x1="124.0" y1="426.0" x2="124.0" y2="452.0"/><rect x="14.0" y="452.0" width="220" height="40" rx="20.0"/><text x="124.0" y="476.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 2 – Блок-схема алгоритму</p><div class="fname">Файл lab04_var19.c</div><pre class="code">/**************************************************************/
+/*  Лабораторна робота №4. Індивідуальне завдання, варіант 19. */
+/*  Визначити, чи належить точка M(x,y) заштрихованій області. */
+/*  Область складається з двох частин:                         */
+/*   1) квадрат у I чверті:  0 &lt;= x &lt;= 1,  0 &lt;= y &lt;= 1;        */
+/*   2) чверть круга радіуса 1 з центром O(0;0) у III чверті:  */
+/*      x &lt;= 0,  y &lt;= 0,  x^2 + y^2 &lt;= 1.                      */
+/*  Межі області вважаються такими, що належать їй.            */
+/**************************************************************/
+#include &lt;stdio.h&gt;
+#include "../common_console.h"
+
+int main(void)
+{
+    console_utf8();
+    double x, y;     /* координати точки M */
+    int in_square, in_circle;
+
+    printf("Введіть координати точки x y: ");
+    if (scanf("%lf%lf", &amp;x, &amp;y) != 2) {
+        printf("Помилка: потрібно ввести два числа\n");
+        return 1;
+    }
+
+    /* Розгалуження оператором if: окремо перевіряємо кожну частину */
+    in_square = 0;
+    if (x &gt;= 0 &amp;&amp; x &lt;= 1 &amp;&amp; y &gt;= 0 &amp;&amp; y &lt;= 1)
+        in_square = 1;
+
+    in_circle = 0;
+    if (x &lt;= 0 &amp;&amp; y &lt;= 0)
+        if (x * x + y * y &lt;= 1)
+            in_circle = 1;
+
+    if (in_square || in_circle)
+        printf("Точка M(%.3f; %.3f) належить заштрихованій області (%s)\n",
+               x, y, in_square ? "квадрат" : "чверть круга");
+    else
+        printf("Точка M(%.3f; %.3f) не належить заштрихованій області\n", x, y);
+
+    /* Те саме однією умовою з операцією ?: */
+    printf("Перевірка операцією ?: -&gt; %s\n",
+           ((x &gt;= 0 &amp;&amp; x &lt;= 1 &amp;&amp; y &gt;= 0 &amp;&amp; y &lt;= 1) ||
+            (x &lt;= 0 &amp;&amp; y &lt;= 0 &amp;&amp; x * x + y * y &lt;= 1)) ? "належить" : "не належить");
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">0.5 0.5</span>
+Введіть координати точки x y: Точка M(0.500; 0.500) належить заштрихованій області (квадрат)
+Перевірка операцією ?: -&gt; належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">1 1</span>
+Введіть координати точки x y: Точка M(1.000; 1.000) належить заштрихованій області (квадрат)
+Перевірка операцією ?: -&gt; належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">-0.5 -0.5</span>
+Введіть координати точки x y: Точка M(-0.500; -0.500) належить заштрихованій області (чверть круга)
+Перевірка операцією ?: -&gt; належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">-0.8 -0.7</span>
+Введіть координати точки x y: Точка M(-0.800; -0.700) не належить заштрихованій області
+Перевірка операцією ?: -&gt; не належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">0 0</span>
+Введіть координати точки x y: Точка M(0.000; 0.000) належить заштрихованій області (квадрат)
+Перевірка операцією ?: -&gt; належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">0.5 -0.5</span>
+Введіть координати точки x y: Точка M(0.500; -0.500) не належить заштрихованій області
+Перевірка операцією ?: -&gt; не належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">-0.5 0.5</span>
+Введіть координати точки x y: Точка M(-0.500; 0.500) не належить заштрихованій області
+Перевірка операцією ?: -&gt; не належить
+[код завершення: 0]
+
+<span class="cmd">&gt; lab04_var19.exe</span>
+<span class="in">1.2 0.3</span>
+Введіть координати точки x y: Точка M(1.200; 0.300) не належить заштрихованій області
+Перевірка операцією ?: -&gt; не належить
+[код завершення: 0]</pre><p class="tcap">Таблиця 1 – Результати тестування</p><table><tr><th>x</th><th>y</th><th>Очікується</th><th>Отримано</th><th>Що перевіряється</th></tr><tr><td>0,5</td><td>0,5</td><td>належить</td><td>належить</td><td>внутрішня точка квадрата</td></tr><tr><td>1</td><td>1</td><td>належить</td><td>належить</td><td>кут квадрата (межа)</td></tr><tr><td>−0,5</td><td>−0,5</td><td>належить</td><td>належить</td><td>всередині чверті круга</td></tr><tr><td>−0,8</td><td>−0,7</td><td>не належить</td><td>не належить</td><td>ІІІ чверть, поза колом (0,64+0,49 &gt; 1)</td></tr><tr><td>0</td><td>0</td><td>належить</td><td>належить</td><td>спільна точка частин</td></tr><tr><td>0,5</td><td>−0,5</td><td>не належить</td><td>не належить</td><td>IV чверть</td></tr><tr><td>−0,5</td><td>0,5</td><td>не належить</td><td>не належить</td><td>II чверть</td></tr><tr><td>1,2</td><td>0,3</td><td>не належить</td><td>не належить</td><td>праворуч від квадрата</td></tr></table><h2>Висновки</h2><p>Вивчено оператор if (зокрема вкладений) та операцію ?:. Побудовано математичну модель області як об’єднання двох підобластей, описаних системами нерівностей, складено алгоритм і програму. Тестування на 8 точках, зокрема граничних, підтвердило правильність роботи програми.</p></body></html>

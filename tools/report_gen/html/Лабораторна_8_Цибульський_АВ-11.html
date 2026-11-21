@@ -1,0 +1,668 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_8_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №8</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Створення програм для опрацювання функцій»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><p>Навчитись складати та реалізовувати алгоритми й програми мовою С, що використовують функції, створені користувачем; освоїти передачу параметрів, повернення значень, рекурсію та принципи модульного програмування.</p><h2>1 Практичні вправи</h2><p>Програми вправ скомпільовано і виконано. У вправі 2 компілятор попереджав про невикористану змінну m (результат мемоїзованої версії не використовувався), тому додано перевірку збігу результатів трьох способів обчислення. Вправа 3 використовує вкладену функцію — розширення GCC, яке не входить до стандарту С (з ключем -pedantic видається попередження).</p><h3>Вправа 1. Математичні функції — прості числа, НСД, факторіал</h3><div class="fname">Файл lab08_ex1.c</div><pre class="code">/* Вправа 1. Математичні функції — прості числа, НСД, факторіал (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+/* Прототипи */
+int  is_prime(int n);
+int  gcd(int a, int b);
+int  lcm(int a, int b);
+long long factorial(int n);
+int  sum_digits(int n);
+int  count_digits(int n);
+int is_prime(int n) {
+    if (n &lt; 2) return 0;
+    if (n == 2) return 1;
+    if (n % 2 == 0) return 0;
+    for (int i = 3; (long long)i*i &lt;= n; i += 2)
+        if (n % i == 0) return 0;
+    return 1;
+}
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+int lcm(int a, int b) {
+    return a / gcd(a, b) * b;  /* ділення ПЕРЕД множенням — уникаємо переповнення */
+}
+long long factorial(int n) {
+    if (n &lt;= 1) return 1;
+    return n * factorial(n - 1);
+}
+int sum_digits(int n) {
+    int s = 0;
+    if (n &lt; 0) n = -n;
+    if (n == 0) return 0;
+    while (n &gt; 0) { s += n % 10; n /= 10; }
+    return s;
+}
+int count_digits(int n) {
+    if (n == 0) return 1;
+    int c = 0;
+    if (n &lt; 0) n = -n;
+    while (n &gt; 0) { c++; n /= 10; }
+    return c;
+}
+int main(void) {
+    console_utf8();
+    /* Прості числа */
+    printf("Прості від 2 до 50: ");
+    for (int i = 2; i &lt;= 50; i++)
+        if (is_prime(i)) printf("%d ", i);
+    printf("\n");
+    /* НСД і НСК */
+    int a = 48, b = 36;
+    printf("НСД(%d,%d)=%d  НСК=%d\n", a, b, gcd(a,b), lcm(a,b));
+    /* Факторіали */
+    printf("\nТаблиця факторіалів:\n");
+    for (int n = 0; n &lt;= 12; n++)
+        printf("  %2d! = %lld\n", n, factorial(n));
+    /* Цифри числа */
+    int num = 123456;
+    printf("\nЧисло: %d\n", num);
+    printf("Кількість цифр: %d\n", count_digits(num));
+    printf("Сума цифр:      %d\n", sum_digits(num));
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab08_ex1.exe</span>
+Прості від 2 до 50: 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 
+НСД(48,36)=12  НСК=144
+
+Таблиця факторіалів:
+   0! = 1
+   1! = 1
+   2! = 2
+   3! = 6
+   4! = 24
+   5! = 120
+   6! = 720
+   7! = 5040
+   8! = 40320
+   9! = 362880
+  10! = 3628800
+  11! = 39916800
+  12! = 479001600
+
+Число: 123456
+Кількість цифр: 6
+Сума цифр:      21
+[код завершення: 0]</pre><h3>Вправа 2. Рекурсія проти ітерації — числа Фібоначчі</h3><div class="fname">Файл lab08_ex2.c</div><pre class="code">/* Вправа 2. Рекурсія проти ітерації — числа Фібоначчі (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+long long call_count;  /* лічильник викликів */
+/* Рекурсивний — O(2^n) */
+long long fib_rec(int n) {
+    call_count++;
+    if (n &lt;= 1) return n;
+    return fib_rec(n-1) + fib_rec(n-2);
+}
+/* Ітеративний — O(n) */
+long long fib_iter(int n) {
+    if (n &lt;= 1) return n;
+    long long a = 0, b = 1;
+    for (int i = 2; i &lt;= n; i++) {
+        long long c = a + b; a = b; b = c;
+    }
+    return b;
+}
+/* Мемоізований — O(n) через кеш */
+long long memo[50];
+long long fib_memo(int n) {
+    call_count++;
+    if (n &lt;= 1) return n;
+    if (memo[n] != -1) return memo[n];
+    memo[n] = fib_memo(n-1) + fib_memo(n-2);
+    return memo[n];
+}
+int main(void) {
+    console_utf8();
+    printf("%-4s %-12s %-12s %-14s %-12s\n",
+           "n", "fib(n)", "рекурс.вик.", "мемо.вик.", "ітер.");
+    printf("%s\n", "-------------------------------------------------------");
+    for (int n = 0; n &lt;= 20; n++) {
+        call_count = 0;
+        long long r = fib_rec(n);
+        long long rc = call_count;
+        for (int i = 0; i &lt; 50; i++) memo[i] = -1;
+        call_count = 0;
+        long long m = fib_memo(n);
+        long long mc = call_count;
+        long long it = fib_iter(n);
+        if (m != r || it != r) printf("Розбіжність результатів!\n");
+        printf("%-4d %-12lld %-14lld %-14lld %-12lld\n",
+               n, r, rc, mc, it);
+    }
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab08_ex2.exe</span>
+n    fib(n)       рекурс.вик. мемо.вик. ітер.   
+-------------------------------------------------------
+0    0            1              1              0           
+1    1            1              1              1           
+2    1            3              3              1           
+3    2            5              5              2           
+4    3            9              7              3           
+5    5            15             9              5           
+6    8            25             11             8           
+7    13           41             13             13          
+8    21           67             15             21          
+9    34           109            17             34          
+10   55           177            19             55          
+11   89           287            21             89          
+12   144          465            23             144         
+13   233          753            25             233         
+14   377          1219           27             377         
+15   610          1973           29             610         
+16   987          3193           31             987         
+17   1597         5167           33             1597        
+18   2584         8361           35             2584        
+19   4181         13529          37             4181        
+20   6765         21891          39             6765        
+[код завершення: 0]</pre><h3>Вправа 3. Ханойські вежі та рекурсивний відлік</h3><div class="fname">Файл lab08_ex3.c</div><pre class="code">/* Вправа 3. Ханойські вежі та рекурсивний відлік (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+int total_moves;
+void hanoi(int disks, char from, char to, char via) {
+    if (disks == 1) {
+        printf("  Диск 1: %c -&gt; %c\n", from, to);
+        total_moves++;
+        return;
+    }
+    hanoi(disks-1, from, via, to);   /* перемістити n-1 на допоміжний */
+    printf("  Диск %d: %c -&gt; %c\n", disks, from, to);
+    total_moves++;
+    hanoi(disks-1, via, to, from);   /* перемістити n-1 з допоміжного */
+}
+int main(void) {
+    console_utf8();
+    printf("=== Ханойські вежі ===\n");
+    for (int n = 1; n &lt;= 4; n++) {
+        total_moves = 0;
+        printf("\n%d дисків: (A-&gt;C через B)\n", n);
+        hanoi(n, 'A', 'C', 'B');
+        printf("  Ходів: %d  (2^%d-1=%d)\n",
+               total_moves, n, (1&lt;&lt;n)-1);
+    }
+    /* Рекурсивний зворотній відлік */
+    printf("\n=== Рекурсивний відлік від 5 до 0 ===\n");
+    /* Функція countdown через лямбду-ідею у С — вкладений виклик */
+    void countdown(int n) {
+        if (n &lt; 0) return;
+        printf("%d ", n);
+        countdown(n - 1);
+    }
+    countdown(5);
+    printf("\n");
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab08_ex3.exe</span>
+=== Ханойські вежі ===
+
+1 дисків: (A-&gt;C через B)
+  Диск 1: A -&gt; C
+  Ходів: 1  (2^1-1=1)
+
+2 дисків: (A-&gt;C через B)
+  Диск 1: A -&gt; B
+  Диск 2: A -&gt; C
+  Диск 1: B -&gt; C
+  Ходів: 3  (2^2-1=3)
+
+3 дисків: (A-&gt;C через B)
+  Диск 1: A -&gt; C
+  Диск 2: A -&gt; B
+  Диск 1: C -&gt; B
+  Диск 3: A -&gt; C
+  Диск 1: B -&gt; A
+  Диск 2: B -&gt; C
+  Диск 1: A -&gt; C
+  Ходів: 7  (2^3-1=7)
+
+4 дисків: (A-&gt;C через B)
+  Диск 1: A -&gt; B
+  Диск 2: A -&gt; C
+  Диск 1: B -&gt; C
+  Диск 3: A -&gt; B
+  Диск 1: C -&gt; A
+  Диск 2: C -&gt; B
+  Диск 1: A -&gt; B
+  Диск 4: A -&gt; C
+  Диск 1: B -&gt; C
+  Диск 2: B -&gt; A
+  Диск 1: C -&gt; A
+  Диск 3: B -&gt; C
+  Диск 1: A -&gt; B
+  Диск 2: A -&gt; C
+  Диск 1: B -&gt; C
+  Ходів: 15  (2^4-1=15)
+
+=== Рекурсивний відлік від 5 до 0 ===
+5 4 3 2 1 0 
+[код завершення: 0]</pre><h3>Вправа 4. Функції для масивів — обробка через вказівники</h3><div class="fname">Файл lab08_ex4.c</div><pre class="code">/* Вправа 4. Функції для масивів — обробка через вказівники (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+/* Бібліотека функцій для масивів */
+void   arr_print(const int *a, int n, const char *label);
+int    arr_sum(const int *a, int n);
+double arr_avg(const int *a, int n);
+int    arr_min(const int *a, int n);
+int    arr_max(const int *a, int n);
+int    arr_count_if(const int *a, int n, int (*pred)(int));
+void   arr_sort_bubble(int *a, int n);
+void arr_print(const int *a, int n, const char *label) {
+    printf("%s [ ", label);
+    for (int i = 0; i &lt; n; i++) printf("%d ", a[i]);
+    printf("]\n");
+}
+int arr_sum(const int *a, int n) {
+    int s = 0;
+    for (int i = 0; i &lt; n; i++) s += a[i];
+    return s;
+}
+double arr_avg(const int *a, int n) {
+    return n &gt; 0 ? (double)arr_sum(a, n) / n : 0.0;
+}
+int arr_min(const int *a, int n) {
+    int m = a[0];
+    for (int i = 1; i &lt; n; i++) if (a[i] &lt; m) m = a[i];
+    return m;
+}
+int arr_max(const int *a, int n) {
+    int m = a[0];
+    for (int i = 1; i &lt; n; i++) if (a[i] &gt; m) m = a[i];
+    return m;
+}
+/* Підрахувати елементи, що задовольняють предикату */
+int arr_count_if(const int *a, int n, int (*pred)(int)) {
+    int c = 0;
+    for (int i = 0; i &lt; n; i++) if (pred(a[i])) c++;
+    return c;
+}
+void arr_sort_bubble(int *a, int n) {
+    for (int i = 0; i &lt; n-1; i++)
+        for (int j = 0; j &lt; n-1-i; j++)
+            if (a[j] &gt; a[j+1]) {
+                int t = a[j]; a[j] = a[j+1]; a[j+1] = t;
+            }
+}
+/* Предикати */
+int is_even(int x)     { return x % 2 == 0; }
+int is_positive(int x) { return x &gt; 0; }
+int is_prime_p(int x)  {
+    if (x &lt; 2) return 0;
+    for (int i = 2; (long long)i*i &lt;= x; i++)
+        if (x % i == 0) return 0;
+    return 1;
+}
+int main(void) {
+    console_utf8();
+    int arr[] = {7, -3, 15, 2, 11, -8, 4, 23, 6, 1};
+    int n = 10;
+    arr_print(arr, n, "Масив:");
+    printf("Сума: %d\n", arr_sum(arr, n));
+    printf("Середнє: %.2f\n", arr_avg(arr, n));
+    printf("Мін: %d, Макс: %d\n", arr_min(arr, n), arr_max(arr, n));
+    printf("Парних: %d\n",   arr_count_if(arr, n, is_even));
+    printf("Додатніх: %d\n", arr_count_if(arr, n, is_positive));
+    printf("Простих: %d\n",  arr_count_if(arr, n, is_prime_p));
+    arr_sort_bubble(arr, n);
+    arr_print(arr, n, "Відсортований:");
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab08_ex4.exe</span>
+Масив: [ 7 -3 15 2 11 -8 4 23 6 1 ]
+Сума: 58
+Середнє: 5.80
+Мін: -8, Макс: 23
+Парних: 4
+Додатніх: 8
+Простих: 4
+Відсортований: [ -8 -3 1 2 4 6 7 11 15 23 ]
+[код завершення: 0]</pre><h3>Вправа 5. Таблиця температур та функція форматування</h3><div class="fname">Файл lab08_ex5.c</div><pre class="code">/* Вправа 5. Таблиця температур та функція форматування (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+double c_to_f(double c) { return c * 9.0/5.0 + 32.0; }
+double c_to_k(double c) { return c + 273.15; }
+double f_to_c(double f) { return (f - 32.0) * 5.0/9.0; }
+const char* temp_description(double c) {
+    if (c &lt; -20)  return "екстремальний мороз";
+    if (c &lt; 0)    return "морозно";
+    if (c &lt; 10)   return "холодно";
+    if (c &lt; 20)   return "прохолодно";
+    if (c &lt; 25)   return "комфортно";
+    if (c &lt; 35)   return "тепло";
+    return "спека";
+}
+int main(void) {
+    console_utf8();
+    printf("%-10s %-12s %-12s  %s\n",
+           "Цельсій", "Фаренгейт", "Кельвін", "Опис");
+    printf("%s\n", "----------------------------------------------------");
+    for (int c = -40; c &lt;= 100; c += 10) {
+        printf("%-10d %-12.1f %-12.2f  %s\n",
+               c, c_to_f(c), c_to_k(c), temp_description(c));
+    }
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab08_ex5.exe</span>
+Цельсій Фаренгейт Кельвін  Опис
+----------------------------------------------------
+-40        -40.0        233.15        екстремальний мороз
+-30        -22.0        243.15        екстремальний мороз
+-20        -4.0         253.15        морозно
+-10        14.0         263.15        морозно
+0          32.0         273.15        холодно
+10         50.0         283.15        прохолодно
+20         68.0         293.15        комфортно
+30         86.0         303.15        тепло
+40         104.0        313.15        спека
+50         122.0        323.15        спека
+60         140.0        333.15        спека
+70         158.0        343.15        спека
+80         176.0        353.15        спека
+90         194.0        363.15        спека
+100        212.0        373.15        спека
+[код завершення: 0]</pre><h2 class="newpage">2 Індивідуальні завдання (варіант 19)</h2><p>У методичних вказівках індивідуальні завдання подано у двох таблицях («Варіант 1» і «Варіант 2»), кожна з яких містить 20 завдань. Оскільки з вказівок не однозначно випливає, яку таблицю обирати, виконано завдання №19 з обох таблиць.</p><h3>2.1 Завдання 19 (таблиця 3.1)</h3><p><i>Написати функцію rotate_digits(n, k) — циклічно зсунути цифри числа на k позицій. Написати sum_of_proper_divisors(n).</i></p><p>Для числа з L цифр зсув уліво на k (k нормалізується до 0 ≤ k &lt; L, від’ємне k означає зсув управо) обчислюється без перетворення в рядок: перші k цифр head = n / 10<sup>L−k</sup>, решта tail = n mod 10<sup>L−k</sup>, результат tail·10<sup>k</sup> + head. Рекурсивна версія зводить зсув на k до зсуву на 1 і зсуву на k − 1 (базовий випадок k = 0). Сума власних дільників шукається перебором до √n: дільники утворюють пари i та n/i. Додатково визначається тип числа: досконале, надлишкове чи недостатнє.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 348" width="248" height="348"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="14.0" y="14.0" width="220" height="40" rx="20.0"/><text x="124.0" y="38.5" text-anchor="middle">rotate_digits(n, k)</text><line x1="124.0" y1="54.0" x2="124.0" y2="80.0"/><rect x="14.0" y="80.0" width="220" height="48"/><text x="124.0" y="100.5" text-anchor="middle">L = count_digits(n); k = ((k mod</text><text x="124.0" y="116.5" text-anchor="middle">L) + L) mod L</text><line x1="124.0" y1="128.0" x2="124.0" y2="154.0"/><rect x="14.0" y="154.0" width="220" height="48"/><text x="124.0" y="174.5" text-anchor="middle">p = 10^(L−k); head = n / p; tail</text><text x="124.0" y="190.5" text-anchor="middle">= n mod p</text><line x1="124.0" y1="202.0" x2="124.0" y2="228.0"/><rect x="14.0" y="228.0" width="220" height="40"/><text x="124.0" y="252.5" text-anchor="middle">повернути tail·10^k + head</text><line x1="124.0" y1="268.0" x2="124.0" y2="294.0"/><rect x="14.0" y="294.0" width="220" height="40" rx="20.0"/><text x="124.0" y="318.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема функції rotate_digits</p><div class="fname">Файл lab08_var19_t1.c</div><pre class="code">/*
+ * Лабораторна робота №8. Індивідуальне завдання №19 (таблиця 3.1).
+ * 1) rotate_digits(n, k) - циклічно зсунути цифри числа на k позицій
+ *    (k &gt; 0 - вліво, k &lt; 0 - вправо). Приклад: 12345, k=2 -&gt; 34512.
+ * 2) sum_of_proper_divisors(n) - сума власних дільників числа n
+ *    (усіх дільників, менших за n). Приклад: 28 -&gt; 1+2+4+7+14 = 28.
+ * Для зсуву написано ітеративну і рекурсивну версії та порівняно їх.
+ */
+#include &lt;stdio.h&gt;
+#include "../common_console.h"
+
+/* ---------- прототипи ---------- */
+int  count_digits(long n);
+long ipow10(int p);
+long rotate_digits(long n, int k);
+long rotate_left_once(long n, int len);
+long rotate_digits_rec(long n, int k, int len);
+long sum_of_proper_divisors(long n);
+void print_divisors(long n);
+
+int main(void)
+{
+    console_utf8();
+    long n;
+    int k;
+    printf("Введіть натуральне число n та зсув k: ");
+    if (scanf("%ld %d", &amp;n, &amp;k) != 2 || n &lt;= 0) {
+        printf("Помилка: n має бути натуральним, k - цілим\n");
+        return 1;
+    }
+    int len = count_digits(n);
+    int kk = ((k % len) + len) % len;           /* нормалізований зсув вліво */
+
+    long r1 = rotate_digits(n, k);
+    long r2 = rotate_digits_rec(n, kk, len);
+    printf("Кількість цифр: %d\n", len);
+    printf("rotate_digits(%ld, %d)           = %ld\n", n, k, r1);
+    printf("рекурсивна версія (вліво на %d)   = %ld  -&gt; %s\n", kk, r2,
+           r1 == r2 ? "збігається" : "РОЗБІЖНІСТЬ");
+
+    long s = sum_of_proper_divisors(n);
+    printf("Власні дільники %ld: ", n);
+    print_divisors(n);
+    printf("sum_of_proper_divisors(%ld) = %ld", n, s);
+    if (s == n)      printf("  (досконале число)\n");
+    else if (s &gt; n)  printf("  (надлишкове число)\n");
+    else             printf("  (недостатнє число)\n");
+    return 0;
+}
+
+/* Призначення: кількість десяткових цифр числа.
+   Параметри: n - невід'ємне ціле. Повертає: кількість цифр (для 0 - 1). */
+int count_digits(long n)
+{
+    int c = 1;
+    while (n &gt;= 10) { n /= 10; c++; }
+    return c;
+}
+
+/* Повертає 10 у степені p (p &gt;= 0) без використання pow(). */
+long ipow10(int p)
+{
+    long r = 1;
+    while (p-- &gt; 0) r *= 10;
+    return r;
+}
+
+/* Призначення: циклічний зсув цифр (ітеративно, за формулою).
+   Параметри: n - натуральне число, k - зсув (k&gt;0 вліво, k&lt;0 вправо).
+   Повертає: число після зсуву. Ведучі нулі, що з'являються
+   (напр. 1002 -&gt; 0021), за правилами запису числа відкидаються. */
+long rotate_digits(long n, int k)
+{
+    int len = count_digits(n);
+    k = ((k % len) + len) % len;          /* зсув вправо = зсув вліво на len-k */
+    long p = ipow10(len - k);
+    long head = n / p;                    /* перші k цифр      */
+    long tail = n % p;                    /* останні len-k цифр */
+    return tail * ipow10(k) + head;
+}
+
+/* Зсув на 1 позицію вліво з урахуванням початкової довжини len. */
+long rotate_left_once(long n, int len)
+{
+    long p = ipow10(len - 1);
+    return (n % p) * 10 + n / p;
+}
+
+/* Рекурсивна версія: зсув на k = зсув на 1 + зсув на (k-1).
+   База рекурсії: k == 0. Глибина рекурсії - k (k &lt; len). */
+long rotate_digits_rec(long n, int k, int len)
+{
+    if (k == 0) return n;
+    return rotate_digits_rec(rotate_left_once(n, len), k - 1, len);
+}
+
+/* Призначення: сума власних дільників числа (дільники &lt; n).
+   Перебір до sqrt(n): дільники йдуть парами i та n/i. */
+long sum_of_proper_divisors(long n)
+{
+    if (n == 1) return 0;
+    long s = 1;
+    for (long i = 2; i * i &lt;= n; i++)
+        if (n % i == 0) {
+            s += i;
+            if (i != n / i) s += n / i;
+        }
+    return s;
+}
+
+/* Виводить усі власні дільники числа у порядку зростання. */
+void print_divisors(long n)
+{
+    int any = 0;
+    for (long i = 1; i &lt; n; i++)
+        if (n % i == 0) { printf("%s%ld", any ? " " : "", i); any = 1; }
+    if (!any) printf("(немає)");
+    printf("\n");
+}</pre><pre class="console"><span class="cmd">&gt; lab08_var19_t1.exe</span>
+<span class="in">12345 2</span>
+Введіть натуральне число n та зсув k: Кількість цифр: 5
+rotate_digits(12345, 2)           = 34512
+рекурсивна версія (вліво на 2)   = 34512  -&gt; збігається
+Власні дільники 12345: 1 3 5 15 823 2469 4115
+sum_of_proper_divisors(12345) = 7431  (недостатнє число)
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t1.exe</span>
+<span class="in">28 1</span>
+Введіть натуральне число n та зсув k: Кількість цифр: 2
+rotate_digits(28, 1)           = 82
+рекурсивна версія (вліво на 1)   = 82  -&gt; збігається
+Власні дільники 28: 1 2 4 7 14
+sum_of_proper_divisors(28) = 28  (досконале число)
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t1.exe</span>
+<span class="in">1002 -1</span>
+Введіть натуральне число n та зсув k: Кількість цифр: 4
+rotate_digits(1002, -1)           = 2100
+рекурсивна версія (вліво на 3)   = 2100  -&gt; збігається
+Власні дільники 1002: 1 2 3 6 167 334 501
+sum_of_proper_divisors(1002) = 1014  (надлишкове число)
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t1.exe</span>
+<span class="in">12 5</span>
+Введіть натуральне число n та зсув k: Кількість цифр: 2
+rotate_digits(12, 5)           = 21
+рекурсивна версія (вліво на 1)   = 21  -&gt; збігається
+Власні дільники 12: 1 2 3 4 6
+sum_of_proper_divisors(12) = 16  (надлишкове число)
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t1.exe</span>
+<span class="in">-5 1</span>
+Введіть натуральне число n та зсув k: Помилка: n має бути натуральним, k - цілим
+[код завершення: 1]</pre><h3>2.2 Завдання 19 (таблиця 3.2)</h3><p><i>Написати функцію is_leap_year(year), days_in_month(month, year), day_of_year(day, month, year).</i></p><p>Рік високосний, якщо ділиться на 4 і не ділиться на 100, або ділиться на 400. Кількість днів у місяці береться з таблиці (static const масив) з поправкою для лютого. Порядковий номер дня — сума днів попередніх місяців плюс день; функцію реалізовано ітеративно і рекурсивно, результати порівнюються. Неіснуючі дати відкидаються.</p><div class="fname">Файл lab08_var19_t2.c</div><pre class="code">/*
+ * Лабораторна робота №8. Індивідуальне завдання №19 (таблиця 3.2).
+ * 1) is_leap_year(year) - чи є рік високосним (григоріанський календар);
+ * 2) days_in_month(month, year) - кількість днів у місяці;
+ * 3) day_of_year(day, month, year) - порядковий номер дня в році.
+ * day_of_year реалізовано ітеративно і рекурсивно (порівняння).
+ */
+#include &lt;stdio.h&gt;
+#include "../common_console.h"
+
+/* ---------- прототипи ---------- */
+int is_leap_year(int year);
+int days_in_month(int month, int year);
+int is_valid_date(int day, int month, int year);
+int day_of_year(int day, int month, int year);
+int day_of_year_rec(int day, int month, int year);
+
+int main(void)
+{
+    console_utf8();
+    int d, m, y;
+    printf("Введіть дату (день місяць рік): ");
+    if (scanf("%d %d %d", &amp;d, &amp;m, &amp;y) != 3) {
+        printf("Помилка: потрібно три цілих числа\n");
+        return 1;
+    }
+    if (!is_valid_date(d, m, y)) {
+        printf("Помилка: дата %02d.%02d.%d не існує\n", d, m, y);
+        return 1;
+    }
+    printf("Рік %d %s високосним (%d днів)\n", y,
+           is_leap_year(y) ? "є" : "не є", is_leap_year(y) ? 366 : 365);
+    printf("У місяці %d року %d - %d днів\n", m, y, days_in_month(m, y));
+    int it = day_of_year(d, m, y), rc = day_of_year_rec(d, m, y);
+    printf("Дата %02d.%02d.%d - це %d-й день року (рекурсивно: %d) -&gt; %s\n",
+           d, m, y, it, rc, it == rc ? "збігається" : "РОЗБІЖНІСТЬ");
+    return 0;
+}
+
+/* Повертає 1, якщо рік високосний: ділиться на 4, але не на 100,
+   або ділиться на 400. Інакше 0. */
+int is_leap_year(int year)
+{
+    return (year % 4 == 0 &amp;&amp; year % 100 != 0) || (year % 400 == 0);
+}
+
+/* Повертає кількість днів у місяці month (1..12) року year,
+   або 0, якщо номер місяця некоректний. */
+int days_in_month(int month, int year)
+{
+    static const int dm[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (month &lt; 1 || month &gt; 12) return 0;
+    if (month == 2 &amp;&amp; is_leap_year(year)) return 29;
+    return dm[month - 1];
+}
+
+/* Перевірка існування дати (рік &gt;= 1). Повертає 1 - коректна, 0 - ні. */
+int is_valid_date(int day, int month, int year)
+{
+    return year &gt;= 1 &amp;&amp; month &gt;= 1 &amp;&amp; month &lt;= 12 &amp;&amp;
+           day &gt;= 1 &amp;&amp; day &lt;= days_in_month(month, year);
+}
+
+/* Ітеративно: сума днів повних попередніх місяців + день. */
+int day_of_year(int day, int month, int year)
+{
+    int n = day;
+    for (int m = 1; m &lt; month; m++) n += days_in_month(m, year);
+    return n;
+}
+
+/* Рекурсивно: day_of_year(d, m) = days_in_month(m-1) + day_of_year(d, m-1);
+   база: m == 1 -&gt; d. */
+int day_of_year_rec(int day, int month, int year)
+{
+    if (month == 1) return day;
+    return days_in_month(month - 1, year) + day_of_year_rec(day, month - 1, year);
+}</pre><pre class="console"><span class="cmd">&gt; lab08_var19_t2.exe</span>
+<span class="in">21 11 2026</span>
+Введіть дату (день місяць рік): Рік 2026 не є високосним (365 днів)
+У місяці 11 року 2026 - 30 днів
+Дата 21.11.2026 - це 325-й день року (рекурсивно: 325) -&gt; збігається
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t2.exe</span>
+<span class="in">31 12 2024</span>
+Введіть дату (день місяць рік): Рік 2024 є високосним (366 днів)
+У місяці 12 року 2024 - 31 днів
+Дата 31.12.2024 - це 366-й день року (рекурсивно: 366) -&gt; збігається
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t2.exe</span>
+<span class="in">1 3 1900</span>
+Введіть дату (день місяць рік): Рік 1900 не є високосним (365 днів)
+У місяці 3 року 1900 - 31 днів
+Дата 01.03.1900 - це 60-й день року (рекурсивно: 60) -&gt; збігається
+[код завершення: 0]
+
+<span class="cmd">&gt; lab08_var19_t2.exe</span>
+<span class="in">29 2 2023</span>
+Введіть дату (день місяць рік): Помилка: дата 29.02.2023 не існує
+[код завершення: 1]</pre><h2>Висновки</h2><p>Засвоєно оголошення прототипів, визначення і виклик функцій, передачу параметрів за значенням і через вказівники, рекурсію та її порівняння з ітерацією. Усі індивідуальні функції не використовують глобальних змінних, мають прототипи і протестовані щонайменше на трьох наборах даних, у т.ч. некоректних.</p><h2 class="newpage">Відповіді на контрольні питання</h2><p><b>1. Що таке функція в С? Які обов’язкові складові визначення функції?</b> Іменований блок коду, що виконує задачу і може викликатися багаторазово. Складові: тип результату, ім’я, список параметрів, тіло.</p><p><b>2. Що таке прототип функції і навіщо він потрібен? Що буде, якщо не вказати прототип?</b> Оголошення функції до її використання (тип, ім’я, типи параметрів) — дає компілятору змогу перевіряти виклики. Без прототипу в C11 виклик невідомої функції є помилкою/попередженням, а в старих стандартах вважалось, що вона повертає int, що могло давати хибні результати.</p><p><b>3. Поясніть різницю між передачею параметра за значенням та через вказівник.</b> За значенням функція отримує копію і не змінює оригінал: <code>void f(int x)</code>; через вказівник — адресу і може змінити змінну: <code>void g(int *x){ *x = 5; }</code>, виклик <code>g(&amp;a)</code>.</p><p><b>4. Що таке локальні та глобальні змінні? Чому зловживати глобальними змінними небажано?</b> Локальні видимі в блоці, глобальні — у всьому файлі/програмі. Глобальні створюють приховані залежності, ускладнюють тестування і повторне використання.</p><p><b>5. Що таке статична локальна змінна (static)?</b> Локальна за видимістю, але існує весь час роботи програми і зберігає значення між викликами; ініціалізується один раз.</p><p><b>6. Що таке рекурсія? Що таке базовий випадок і чому він обов’язковий?</b> Виклик функцією самої себе. Базовий випадок припиняє рекурсію; без нього виклики тривають до переповнення стека.</p><p><b>7. Порівняйте рекурсивне та ітеративне обчислення чисел Фібоначчі за складністю O().</b> Наївна рекурсія — O(φⁿ) ≈ O(1,618ⁿ) викликів, ітерація — O(n) і O(1) пам’яті, мемоїзація — O(n).</p><p><b>8. Що таке функція типу void? Чи може void-функція мати оператор return?</b> Функція, що не повертає значення; може містити <code>return;</code> без виразу для дострокового виходу.</p><p><b>9. Як повернути кілька значень із функції?</b> Через параметри-вказівники, структуру як результат або масив, переданий у функцію.</p><p><b>10. Що таке вказівник на функцію? Як оголосити та викликати функцію через нього?</b> Змінна, що зберігає адресу функції: <code>int (*op)(int,int) = add; int r = op(2, 3);</code></p></body></html>

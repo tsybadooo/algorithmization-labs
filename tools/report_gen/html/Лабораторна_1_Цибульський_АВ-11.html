@@ -1,0 +1,134 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_1_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №1</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Вивчення принципів побудови консольних додатків у середовищі MS Visual Studio»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета та завдання роботи</h2><p><b>Мета роботи:</b> навчитися використовувати середовище MS Visual Studio для створення консольних додатків в операційній системі Windows.</p><p><b>Завдання (варіант 19).</b> У таблиці варіантів методичних вказівок наведено 14 варіантів, тому номер завдання визначено циклічно: (19 − 1) mod 14 + 1 = 5. <b>Варіант 5:</b> обчислити площу прямокутного трикутника за довжинами його катета <i>a</i> і гіпотенузи <i>c</i>.</p><p>Робоче завдання: скласти алгоритм і блок-схему; створити порожній проєкт Win32 Console Application; написати програму, у якій вхідні дані задано константами, а результат виводиться функцією printf(); скомпілювати проєкт; провести покрокове налагодження.</p><h2>Хід роботи</h2><h3>1 Створення проєкту консольного додатка</h3><p>Порядок створення проєкту в MS Visual Studio за методичними вказівками: меню File/New/Project → Visual C++/Win32 Console Application, назва lab01a, у вікні Application Settings — тип Console application. До папки Header Files через Add/New Item додається файл lab01a.h, який підключається до lab01a.cpp директивою #include у подвійних лапках (пошук у каталозі проєкту), а стандартні бібліотеки stdio.h і math.h — у кутових дужках (пошук у системних каталогах). Build/Build Solution компілює лише змінені файли, Build/Rebuild Solution — увесь проєкт; запуск — Debug/Start Without Debugging.</p><p>Структура проєкту в цій роботі така сама (заголовковий файл lab01a.h і файл реалізації lab01a.cpp), а збирання й налагодження виконано компілятором GCC 16.1 (MSYS2) і налагоджувачем gdb командою <code>g++ -Wall -Wextra -g -o lab01a.exe lab01a.cpp</code> — 0 помилок, 0 попереджень. Код не використовує нестандартних засобів, тому без змін компілюється і в MS Visual Studio.</p><p>Для перевірки механізму виявлення помилок у код внесено помилку <code>int i = j;</code> — використання змінної до її оголошення. Компілятор повідомляє файл, рядок і позицію помилки, а виконуваний файл не створюється:</p><pre class="console"><span class="cmd">$ g++ -Wall -o error_demo.exe error_demo.cpp</span>
+error_demo.cpp: In function 'int main()':
+error_demo.cpp:6:13: error: 'j' was not declared in this scope
+    6 |     int i = j;      /* навмисна помилка: j ще не оголошено */
+      |             ^
+[код завершення: 1]</pre><p>Після повернення рядка <code>int i = 0;</code> програма знову збирається без помилок.</p><h3>2 Алгоритм розв’язання задачі</h3><p>За теоремою Піфагора другий катет b = √(c² − a²), площа прямокутного трикутника S = a·b / 2. Алгоритм лінійний: введення (задання) даних, обчислення, виведення результату.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 398" width="248" height="398"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="14.0" y="14.0" width="220" height="40" rx="20.0"/><text x="124.0" y="38.5" text-anchor="middle">Початок</text><line x1="124.0" y1="54.0" x2="124.0" y2="80.0"/><polygon points="30.0,80.0 234.0,80.0 218.0,120.0 14.0,120.0"/><text x="124.0" y="104.5" text-anchor="middle">a = 3, c = 5 (константи)</text><line x1="124.0" y1="120.0" x2="124.0" y2="146.0"/><rect x="14.0" y="146.0" width="220" height="40"/><text x="124.0" y="170.5" text-anchor="middle">b = sqrt(c·c − a·a)</text><line x1="124.0" y1="186.0" x2="124.0" y2="212.0"/><rect x="14.0" y="212.0" width="220" height="40"/><text x="124.0" y="236.5" text-anchor="middle">S = a·b / 2</text><line x1="124.0" y1="252.0" x2="124.0" y2="278.0"/><polygon points="30.0,278.0 234.0,278.0 218.0,318.0 14.0,318.0"/><text x="124.0" y="302.5" text-anchor="middle">Вивести a, c, b, S</text><line x1="124.0" y1="318.0" x2="124.0" y2="344.0"/><rect x="14.0" y="344.0" width="220" height="40" rx="20.0"/><text x="124.0" y="368.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема алгоритму обчислення площі прямокутного трикутника</p><h3>3 Текст програми</h3><div class="fname">Файл lab01a.h</div><pre class="code">/* lab01a.h - Лабораторна робота №1, варіант 19 (за таблицею - №5)
+   Обчислення площі прямокутного трикутника за катетом a і гіпотенузою c.
+   Вхідні дані задано константами. */
+#ifndef LAB01A_H
+#define LAB01A_H
+
+#define LEG_A        3.0   /* катет a, см      */
+#define HYPOTENUSE_C 5.0   /* гіпотенуза c, см */
+
+#endif</pre><div class="fname">Файл lab01a.cpp</div><pre class="code">/* lab01a.cpp - Лабораторна робота №1
+   Варіант 19 (5): обчислити площу прямокутного трикутника
+   за довжинами його катета a і гіпотенузи c.
+   Алгоритм (лінійний):
+     1) b = sqrt(c*c - a*a)   - другий катет (теорема Піфагора);
+     2) S = a * b / 2         - площа прямокутного трикутника;
+     3) вивести a, c, b, S.                                        */
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include "../common_console.h"
+#include "lab01a.h"
+
+int main()
+{
+    console_utf8();
+    const double a = LEG_A;          /* катет      */
+    const double c = HYPOTENUSE_C;   /* гіпотенуза */
+    double b, s;
+
+    b = sqrt(c * c - a * a);         /* другий катет */
+    s = a * b / 2.0;                 /* площа        */
+
+    printf("Лабораторна робота №1. Варіант 19 (5)\n");
+    printf("Катет a      = %.3f\n", a);
+    printf("Гіпотенуза c = %.3f\n", c);
+    printf("Катет b      = %.3f\n", b);
+    printf("Площа S      = %.3f\n", s);
+    return 0;
+}</pre><p>Допоміжний заголовковий файл common_console.h перемикає консоль Windows на кодування UTF-8, щоб коректно виводився український текст:</p><div class="fname">Файл common_console.h</div><pre class="code">/* common_console.h - налаштування консолі Windows на UTF-8,
+   щоб коректно виводився український текст. */
+#ifndef COMMON_CONSOLE_H
+#define COMMON_CONSOLE_H
+#ifdef _WIN32
+#include &lt;windows.h&gt;
+static void console_utf8(void) { SetConsoleOutputCP(CP_UTF8); SetConsoleCP(CP_UTF8); }
+#else
+static void console_utf8(void) { }
+#endif
+#endif</pre><h3>4 Результат виконання</h3><pre class="console">Лабораторна робота №1. Варіант 19 (5)
+Катет a      = 3.000
+Гіпотенуза c = 5.000
+Катет b      = 4.000
+Площа S      = 6.000</pre><p>Перевірка: для a = 3, c = 5 маємо b = √(25 − 9) = 4, S = 3·4/2 = 6 — результат програми збігається з ручним розрахунком.</p><h3>5 Покрокове налагодження</h3><p>Покрокове налагодження виконано у налагоджувачі gdb (аналог Debug/Step Over у Visual Studio): встановлено точку зупину на функції main, програма виконувалась по одному рядку командою next, значення змінних переглядались командами info locals і print, а за зміною змінної s стежила контрольна точка watch.</p><pre class="console">Breakpoint 1 at 0x1400014e8: file lab01a.cpp, line 15.
+
+Thread 1 hit Breakpoint 1, main () at lab01a.cpp:15
+15	    console_utf8();
+16	    const double a = LEG_A;          /* катет      */
+17	    const double c = HYPOTENUSE_C;   /* гіпотенуза */
+a = 3
+c = 3.1082420759654499e-317
+b = 3.1082341709151164e-317
+s = 6.9523377951763846e-310
+20	    b = sqrt(c * c - a * a);         /* другий катет */
+$1 = 3.1082341709151164e-317
+21	    s = a * b / 2.0;                 /* площа        */
+$2 = 6.9523377951763846e-310
+$3 = 6
+Hardware watchpoint 2: s
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x00007ff78cbc14e8 in main() at lab01a.cpp:15
+	breakpoint already hit 1 time
+2       hw watchpoint  keep y                      s
+
+Thread 1 hit Hardware watchpoint 2: s
+
+Old value = 6.9523377951763846e-310
+New value = 6
+main () at lab01a.cpp:23
+23	    printf("Лабораторна робота №1. Варіант 19 (5)\n");</pre><p>З протоколу видно, що до виконання присвоєння змінні b і s містять випадкові («сміттєві») значення, бо локальні змінні не ініціалізуються автоматично; після рядка 21 контрольна точка зафіксувала зміну s з невизначеного значення на 6.</p><h2>Висновки</h2><p>У ході роботи вивчено структуру консольного додатка мовою С/С++: файли заголовків і реалізації, директиву #include, функцію main, процес компіляції та лінкування. Створено проєкт консольного додатка, складено лінійний алгоритм обчислення площі прямокутного трикутника за катетом і гіпотенузою, реалізовано його з вхідними даними у вигляді констант та перевірено результат ручним розрахунком. Проведено покрокове налагодження з точками зупину, переглядом змінних і контрольною точкою.</p><h2 class="newpage">Відповіді на контрольні питання</h2><p><b>1. Що таке об’ява? Наведіть приклади об’яв допустимих в мові С++.</b> Об’ява (оголошення) вводить ім’я в програму і повідомляє компілятору його тип: <code>int a;</code>, <code>const double PI = 3.14;</code>, <code>double f(int);</code>, <code>extern int g;</code>, <code>struct Point;</code>.</p><p><b>2. Що таке тип і що він визначає?</b> Тип визначає множину допустимих значень, розмір пам’яті, спосіб подання даних і набір операцій над ними.</p><p><b>3. Які вбудовані типи даних є в мові С++?</b> Логічний bool; символьні char, wchar_t, char16_t, char32_t; цілі short, int, long, long long (signed/unsigned); дійсні float, double, long double; void.</p><p><b>4. Які вимоги і обмеження пред’являються до цілочисельних типів даних в мові С++?</b> Стандарт гарантує лише мінімальні розміри і співвідношення: sizeof(char)=1 ≤ short ≤ int ≤ long ≤ long long; short і int — щонайменше 16 біт, long — 32, long long — 64. Переповнення знакових типів є невизначеною поведінкою, беззнакові обчислюються за модулем 2ⁿ.</p><p><b>5. Чим відрізняються цілочисельні типи даних від дійсних?</b> Цілі зберігають точні значення без дробової частини, ділення цілих відкидає дробову частину; дійсні зберігаються у форматі з рухомою комою (мантиса і порядок), мають великий діапазон, але обмежену точність і похибки округлення.</p><p><b>6. Для чого призначений логічний тип даних?</b> Тип bool зберігає значення true/false і використовується в умовах розгалужень, циклів та для результатів логічних і порівняльних операцій.</p><p><b>7. Визначення розміру типів даних в мові С++?</b> Операцією sizeof, напр. <code>sizeof(int)</code> або <code>sizeof x</code>; результат має тип size_t і вимірюється в байтах; межі значень — у &lt;climits&gt;/&lt;limits&gt;.</p><p><b>8. Які основні операції можуть бути застосовані до об’єктів цілочисельних типів даних?</b> Арифметичні (+ − * / %), інкремент/декремент, порівняння, логічні, порозрядні (&amp; | ^ ~ &lt;&lt; &gt;&gt;), присвоєння та складені присвоєння.</p><p><b>9. Що таке літеральні константи і які правила їх об’яви?</b> Літерали — значення, записані безпосередньо в коді: 10, 0x1F, 017, 10u, 10L, 3.14, 2.5f, 1e-3, 'A', "текст". Тип визначається формою запису і суфіксом.</p><p><b>10. Чим відрізняються об’яви змінних і констант?</b> Константа оголошується з const (або constexpr), обов’язково ініціалізується і не може змінюватися після ініціалізації; змінну можна змінювати.</p><p><b>11. Що таке масив?</b> Іменована послідовність фіксованої кількості елементів одного типу, розміщених у пам’яті поспіль; доступ — за індексом від 0.</p><p><b>12. Перерахуйте особливості ініціалізації елементів масиву.</b> Ініціалізація списком у фігурних дужках; якщо значень менше за розмір — решта нулі; розмір можна не вказувати, тоді він визначається кількістю ініціалізаторів; char-масив можна ініціалізувати рядком.</p><p><b>13. Як визначити кількість елементів в масиві?</b> <code>sizeof(a) / sizeof(a[0])</code> (лише для масиву в області його оголошення, не для покажчика-параметра).</p><p><b>14. Які особливості доступу до елементів масиву?</b> Індекси від 0 до N−1, вихід за межі не перевіряється і є невизначеною поведінкою; a[i] еквівалентно *(a + i).</p><p><b>15. Для чого застосовується модифікатор static?</b> Для локальної змінної — зберігає значення між викликами (статичний час життя); для глобальних імен і функцій — обмежує видимість поточним файлом.</p><p><b>16. Чим визначається час існування об’єктів в програмі?</b> Класом пам’яті: автоматичні (до виходу з блоку), статичні (весь час роботи програми), динамічні (від new/malloc до delete/free).</p><p><b>17. Для чого застосовується оператор кома?</b> Обчислює вирази зліва направо і повертає значення останнього; типово використовується в заголовку for: <code>for (i = 0, j = n; i &lt; j; i++, j--)</code>.</p><p><b>18. Що таке простір імен і для чого він застосовується?</b> namespace — іменована область видимості, що запобігає конфліктам імен; доступ через ::, напр. std::cout, або using namespace std.</p><p><b>19. Які способи приведення типів є в мові С++?</b> Неявне (автоматичне), C-подібне (int)x, функціональне int(x), а також static_cast, const_cast, reinterpret_cast, dynamic_cast.</p><p><b>20. Що таке приведення типів, для чого воно потрібне?</b> Перетворення значення одного типу в інший — для узгодження типів операндів, уникнення цілочисельного ділення (напр. (double)a/b), роботи з покажчиками тощо.</p></body></html>

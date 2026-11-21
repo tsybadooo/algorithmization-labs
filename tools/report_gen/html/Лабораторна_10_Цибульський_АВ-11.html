@@ -1,0 +1,392 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_10_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №10</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Обробка символьних величин та рядків»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><p>Навчитись складати та реалізовувати алгоритми обробки символьних величин і рядків мовою С; освоїти функції стандартних бібліотек &lt;string.h&gt; та &lt;ctype.h&gt;.</p><h2>1 Практичні вправи</h2><h3>Вправа 1. Статистика рядка</h3><p>Введено рядок «Hello World 123».</p><div class="fname">Файл lab10_ex1.c</div><pre class="code">/* Вправа 1. Статистика рядка (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+int main(void) {
+    console_utf8();
+    char s[256];
+    printf("Введіть рядок: ");
+    fgets(s, sizeof(s), stdin);
+    s[strcspn(s,"\n")] = '\0';
+    int letters=0,digits=0,spaces=0,upper=0,lower=0,other=0;
+    int freq[256]={0};
+    for (int i=0; s[i]; i++) {
+        unsigned char c=s[i];
+        freq[c]++;
+        if      (isupper(c)){upper++;letters++;}
+        else if (islower(c)){lower++;letters++;}
+        else if (isdigit(c)) digits++;
+        else if (isspace(c)) spaces++;
+        else                 other++;
+    }
+    printf("Довжина: %zu\n",strlen(s));
+    printf("Літери: %d (вел: %d, мал: %d)\n",letters,upper,lower);
+    printf("Цифри: %d, Пробіли: %d, Інші: %d\n",digits,spaces,other);
+    /* Паліндром? */
+    int n=strlen(s),ok=1;
+    for(int i=0;i&lt;n/2;i++)
+        if(tolower(s[i])!=tolower(s[n-1-i])){ok=0;break;}
+    printf("Паліндром: %s\n",ok?"так":"ні");
+    /* Символи з частотою &gt;= 2 */
+    printf("Частотні символи (&gt;=2):\n");
+    for(int c=32;c&lt;127;c++)
+        if(freq[c]&gt;=2) printf("  '%c': %d\n",c,freq[c]);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab10_ex1.exe</span>
+<span class="in">Hello World 123</span>
+Введіть рядок: Довжина: 15
+Літери: 10 (вел: 2, мал: 8)
+Цифри: 3, Пробіли: 2, Інші: 0
+Паліндром: ні
+Частотні символи (&gt;=2):
+  ' ': 2
+  'l': 3
+  'o': 2
+[код завершення: 0]</pre><h3>Вправа 2. Шифр Цезаря та обробка слів</h3><p>Введено рядок «Hello World» і зсув 3.</p><div class="fname">Файл lab10_ex2.c</div><pre class="code">/* Вправа 2. Шифр Цезаря та обробка слів (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+void caesar(char *dst, const char *src, int shift) {
+    shift=((shift%26)+26)%26;
+    for(int i=0;src[i];i++){
+        char c=src[i];
+        if(isupper(c))      dst[i]='A'+(c-'A'+shift)%26;
+        else if(islower(c)) dst[i]='a'+(c-'a'+shift)%26;
+        else                dst[i]=c;
+    }
+    dst[strlen(src)]='\0';
+}
+int count_words(const char *s){
+    int count=0,in_word=0;
+    for(int i=0;s[i];i++){
+        if(!isspace(s[i])){if(!in_word){count++;in_word=1;}}
+        else in_word=0;
+    }
+    return count;
+}
+void reverse_words(char *s){
+    /* Перевернути весь рядок */
+    int n=strlen(s),l=0,r=n-1;
+    while(l&lt;r){char t=s[l];s[l++]=s[r];s[r--]=t;}
+    /* Перевернути кожне слово */
+    l=0;
+    for(int i=0;i&lt;=n;i++){
+        if(i==n||isspace(s[i])){
+            int ll=l,rr=i-1;
+            while(ll&lt;rr){char t=s[ll];s[ll++]=s[rr];s[rr--]=t;}
+            l=i+1;
+        }
+    }
+}
+int main(void) {
+    console_utf8();
+    char plain[256],enc[256],dec[256];
+    int shift;
+    printf("Рядок: "); fgets(plain,sizeof(plain),stdin);
+    plain[strcspn(plain,"\n")]='\0';
+    printf("Зсув: "); scanf("%d",&amp;shift);
+    caesar(enc,plain,shift);
+    caesar(dec,enc,-shift);
+    printf("Оригінал:    %s\n",plain);
+    printf("Зашифровано: %s\n",enc);
+    printf("Розшифровано:%s\n",dec);
+    printf("Слів у рядку: %d\n",count_words(plain));
+    char buf[256]; strcpy(buf,plain);
+    reverse_words(buf);
+    printf("Слова навпаки: %s\n",buf);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab10_ex2.exe</span>
+<span class="in">Hello World</span>
+<span class="in">3</span>
+Рядок: Зсув: Оригінал:    Hello World
+Зашифровано: Khoor Zruog
+Розшифровано:Hello World
+Слів у рядку: 2
+Слова навпаки: World Hello
+[код завершення: 0]</pre><h3>Вправа 3. Балансування дужок та власні функції</h3><div class="fname">Файл lab10_ex3.c</div><pre class="code">/* Вправа 3. Балансування дужок та власні функції (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+/* Власна strlen */
+size_t my_strlen(const char *s){
+    const char *p=s; while(*p) p++; return p-s;
+}
+/* Власна strcmp */
+int my_strcmp(const char *a, const char *b){
+    while(*a&amp;&amp;*a==*b){a++;b++;}
+    return (unsigned char)*a-(unsigned char)*b;
+}
+/* Перевірка балансу дужок */
+int check_brackets(const char *s){
+    char stack[256]; int top=0;
+    for(int i=0;s[i];i++){
+        char c=s[i];
+        if(c=='('||c=='['||c=='{') stack[top++]=c;
+        else if(c==')'||c==']'||c=='}'){
+            if(top==0) return 0;
+            char open=stack[--top];
+            if((c==')'&amp;&amp;open!='(')||(c==']'&amp;&amp;open!='[')||(c=='}'&amp;&amp;open!='{'))
+                return 0;
+        }
+    }
+    return top==0;
+}
+int main(void) {
+    console_utf8();
+    /* Тест власних функцій */
+    const char *s="Hello World";
+    printf("strlen=%zu  my_strlen=%zu\n",strlen(s),my_strlen(s));
+    printf("strcmp: %d  my_strcmp: %d\n",strcmp("abc","abd"),my_strcmp("abc","abd"));
+    /* Тест балансу дужок */
+    const char *tests[]={
+        "({[]})","([)]","{[()()]}","(((",""};
+    for(int i=0;tests[i][0]||i==4;i++){
+        if(i==4) break;
+        printf("\"%s\": %s\n",tests[i],
+               check_brackets(tests[i])?"збалансовано":"незбалансовано");
+    }
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab10_ex3.exe</span>
+strlen=11  my_strlen=11
+strcmp: -1  my_strcmp: -1
+"({[]})": збалансовано
+"([)]": незбалансовано
+"{[()()]}": збалансовано
+"(((": незбалансовано
+[код завершення: 0]</pre><h2 class="newpage">2 Індивідуальні завдання (варіант 19)</h2><p>У методичних вказівках індивідуальні завдання подано у двох таблицях («Варіант 1» і «Варіант 2»), кожна з яких містить 20 завдань. Оскільки з вказівок не однозначно випливає, яку таблицю обирати, виконано завдання №19 з обох таблиць.</p><h3>2.1 Завдання 19 (таблиця 3.1)</h3><p><i>Ввести рядок. Замінити всі числа у рядку на їх квадрати. Наприклад: «abc 3 def 5» стає «abc 9 def 25».</i></p><p>Рядок читається функцією fgets(), символ нового рядка вилучається через strcspn(). Під час проходу по рядку початком числа вважається цифра, перед якою немає літери чи цифри (isdigit, isalnum), або знак «−» на початку рядка чи після пропуску. Значення числа накопичується в long long, квадрат дописується в результат функцією sprintf(). Послідовності на зразок «x2» або «12abc» є частиною слова і не змінюються.</p><div class="fname">Файл lab10_var19_t1.c</div><pre class="code">/*
+ * Лабораторна робота №10. Індивідуальне завдання №19 (таблиця 3.1).
+ * Ввести рядок. Замінити всі числа у рядку на їх квадрати.
+ * Приклад: 'abc 3 def 5' -&gt; 'abc 9 def 25'.
+ *
+ * Алгоритм:
+ *  - рядок читається fgets(), символ '\n' прибирається;
+ *  - прохід по рядку: якщо поточний символ - цифра (isdigit) і перед
+ *    ним не літера/цифра, то це початок числа; враховується знак '-',
+ *    якщо перед ним пропуск або початок рядка;
+ *  - цифри числа накопичуються у long long, квадрат дописується у
+ *    результуючий рядок через sprintf; інші символи копіюються як є;
+ *  - числа, "приклеєні" до слів (напр. 'x2'), числами не вважаються.
+ */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#include "../common_console.h"
+
+#define LEN 256
+
+int main(void)
+{
+    console_utf8();
+    char s[LEN], res[LEN * 4] = "";
+    size_t rlen = 0;
+    int count = 0;
+
+    printf("Введіть рядок: ");
+    if (fgets(s, sizeof s, stdin) == NULL) { printf("Помилка читання\n"); return 1; }
+    s[strcspn(s, "\n")] = '\0';                     /* прибрати символ нового рядка */
+
+    for (size_t i = 0; s[i] != '\0'; ) {
+        unsigned char c = (unsigned char)s[i];
+        unsigned char prev = i &gt; 0 ? (unsigned char)s[i - 1] : ' ';
+        int neg = (c == '-' &amp;&amp; isdigit((unsigned char)s[i + 1]) &amp;&amp; (i == 0 || isspace(prev)));
+        if ((isdigit(c) &amp;&amp; !isalnum(prev)) || neg) {
+            size_t j = i + (neg ? 1 : 0);
+            long long v = 0;
+            while (isdigit((unsigned char)s[j]) &amp;&amp; v &lt; 100000000LL) v = v * 10 + (s[j++] - '0');
+            if (isalpha((unsigned char)s[j]) || isdigit((unsigned char)s[j])) {
+                /* число переходить у слово або занадто довге - копіюємо без змін */
+                while (s[i] != '\0' &amp;&amp; !isspace((unsigned char)s[i])) res[rlen++] = s[i++];
+                continue;
+            }
+            if (neg) v = -v;
+            rlen += (size_t)sprintf(res + rlen, "%lld", v * v);   /* дописати квадрат */
+            count++;
+            i = j;
+        } else {
+            res[rlen++] = s[i++];                    /* звичайний символ */
+        }
+        res[rlen] = '\0';
+    }
+    printf("Результат:     %s\n", res);
+    printf("Замінено чисел: %d\n", count);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab10_var19_t1.exe</span>
+<span class="in">abc 3 def 5</span>
+Введіть рядок: Результат:     abc 9 def 25
+Замінено чисел: 2
+[код завершення: 0]
+
+<span class="cmd">&gt; lab10_var19_t1.exe</span>
+<span class="in">Ціна 12 грн, знижка -4 та x2 код 007 і 99999</span>
+Введіть рядок: Результат:     Ціна 144 грн, знижка 16 та x2 код 49 і 9999800001
+Замінено чисел: 4
+[код завершення: 0]
+
+<span class="cmd">&gt; lab10_var19_t1.exe</span>
+<span class="in">без чисел</span>
+Введіть рядок: Результат:     без чисел
+Замінено чисел: 0
+[код завершення: 0]</pre><h3>2.2 Завдання 19 (таблиця 3.2)</h3><p><i>Ввести рядок з числом у римській системі. Перетворити у арабське число. Підтримати I, V, X, L, C, D, M.</i></p><p>Пропуски вилучаються, літери переводяться у верхній регістр (toupper). Прохід зліва направо: якщо значення поточної цифри менше за наступну, воно віднімається (IV = 5 − 1), інакше додається. Щоб відкинути неправильні записи (IIII, IC, VX), отримане число переводиться назад у канонічний римський запис жадібним алгоритмом і порівнюється з введеним (strcmp).</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 808 1017" width="650" height="818"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="44.0" y="14.0" width="220" height="40" rx="20.0"/><text x="154.0" y="38.5" text-anchor="middle">Початок</text><line x1="154.0" y1="54.0" x2="154.0" y2="80.0"/><polygon points="60.0,80.0 264.0,80.0 248.0,120.0 44.0,120.0"/><text x="154.0" y="104.5" text-anchor="middle">Ввести рядок s (fgets)</text><line x1="154.0" y1="120.0" x2="154.0" y2="146.0"/><rect x="44.0" y="146.0" width="220" height="40"/><text x="154.0" y="170.5" text-anchor="middle">Вилучити пропуски, toupper</text><line x1="154.0" y1="186.0" x2="154.0" y2="212.0"/><rect x="44.0" y="212.0" width="220" height="40"/><text x="154.0" y="236.5" text-anchor="middle">total = 0</text><line x1="154.0" y1="252.0" x2="154.0" y2="278.0"/><line x1="154.0" y1="278.0" x2="154.0" y2="291.0"/><polygon points="62.0,291.0 246.0,291.0 264.0,311.0 246.0,331.0 62.0,331.0 44.0,311.0"/><text x="154.0" y="315.5" text-anchor="middle">i = 0, len − 1</text><line x1="154.0" y1="331.0" x2="154.0" y2="357.0"/><rect x="44.0" y="357.0" width="220" height="48"/><text x="154.0" y="377.5" text-anchor="middle">cur = value(si); next =</text><text x="154.0" y="393.5" text-anchor="middle">value(si+1)</text><line x1="154.0" y1="405.0" x2="154.0" y2="431.0"/><polygon points="154.0,431.0 264.0,463.0 154.0,495.0 44.0,463.0"/><text x="154.0" y="467.5" text-anchor="middle">cur = 0</text><line x1="264.0" y1="463.0" x2="654.0" y2="463.0"/><text x="268.0" y="458.0" class="lbl" text-anchor="start">так</text><line x1="654.0" y1="463.0" x2="654.0" y2="521.0"/><polygon points="560.0,521.0 764.0,521.0 748.0,561.0 544.0,561.0"/><text x="654.0" y="545.5" text-anchor="middle">Помилка: недопустимий символ</text><line x1="654.0" y1="561.0" x2="654.0" y2="587.0"/><rect x="544.0" y="587.0" width="220" height="40" rx="20.0"/><text x="654.0" y="611.5" text-anchor="middle">Кінець</text><text x="160.0" y="507.0" class="lbl" text-anchor="start">ні</text><line x1="154.0" y1="495.0" x2="154.0" y2="521.0"/><polygon points="154.0,521.0 264.0,553.0 154.0,585.0 44.0,553.0"/><text x="154.0" y="557.5" text-anchor="middle">cur &lt; next</text><line x1="264.0" y1="553.0" x2="404.0" y2="553.0"/><text x="268.0" y="548.0" class="lbl" text-anchor="start">так</text><line x1="404.0" y1="553.0" x2="404.0" y2="611.0"/><rect x="294.0" y="611.0" width="220" height="40"/><text x="404.0" y="635.5" text-anchor="middle">total = total − cur</text><line x1="404.0" y1="651.0" x2="404.0" y2="664.0"/><line x1="404.0" y1="664.0" x2="154.0" y2="664.0" marker-end="url(#arr)"/><text x="160.0" y="597.0" class="lbl" text-anchor="start">ні</text><line x1="154.0" y1="585.0" x2="154.0" y2="611.0"/><rect x="44.0" y="611.0" width="220" height="40"/><text x="154.0" y="635.5" text-anchor="middle">total = total + cur</text><line x1="154.0" y1="651.0" x2="154.0" y2="664.0"/><line x1="154.0" y1="664.0" x2="154.0" y2="677.0"/><line x1="154.0" y1="677.0" x2="154.0" y2="690.0"/><line x1="154.0" y1="690.0" x2="154.0" y2="703.0"/><line x1="154.0" y1="703.0" x2="154.0" y2="716.0"/><line x1="154.0" y1="716.0" x2="20.0" y2="716.0" marker-end="url(#arr)"/><line x1="20.0" y1="716.0" x2="20.0" y2="284.5" marker-end="url(#arr)"/><line x1="20.0" y1="284.5" x2="154.0" y2="284.5"/><line x1="264.0" y1="311.0" x2="788.0" y2="311.0"/><line x1="788.0" y1="311.0" x2="788.0" y2="742.0"/><line x1="788.0" y1="742.0" x2="154.0" y2="742.0" marker-end="url(#arr)"/><line x1="154.0" y1="742.0" x2="154.0" y2="755.0"/><line x1="154.0" y1="755.0" x2="154.0" y2="781.0"/><polygon points="154.0,781.0 264.0,813.0 154.0,845.0 44.0,813.0"/><text x="154.0" y="817.5" text-anchor="middle">to_roman(total) ≠ s</text><line x1="264.0" y1="813.0" x2="404.0" y2="813.0"/><text x="268.0" y="808.0" class="lbl" text-anchor="start">так</text><line x1="404.0" y1="813.0" x2="404.0" y2="871.0"/><polygon points="310.0,871.0 514.0,871.0 498.0,911.0 294.0,911.0"/><text x="404.0" y="895.5" text-anchor="middle">Помилка: неправильний запис</text><line x1="404.0" y1="911.0" x2="404.0" y2="924.0"/><line x1="404.0" y1="924.0" x2="154.0" y2="924.0" marker-end="url(#arr)"/><text x="160.0" y="857.0" class="lbl" text-anchor="start">ні</text><line x1="154.0" y1="845.0" x2="154.0" y2="871.0"/><polygon points="60.0,871.0 264.0,871.0 248.0,911.0 44.0,911.0"/><text x="154.0" y="895.5" text-anchor="middle">Вивести total</text><line x1="154.0" y1="911.0" x2="154.0" y2="924.0"/><line x1="154.0" y1="924.0" x2="154.0" y2="937.0"/><line x1="154.0" y1="937.0" x2="154.0" y2="963.0"/><rect x="44.0" y="963.0" width="220" height="40" rx="20.0"/><text x="154.0" y="987.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема перетворення римського числа</p><div class="fname">Файл lab10_var19_t2.c</div><pre class="code">/*
+ * Лабораторна робота №10. Індивідуальне завдання №19 (таблиця 3.2).
+ * Ввести рядок з числом у римській системі. Перетворити у арабське
+ * число. Підтримати I, V, X, L, C, D, M.
+ *
+ * Алгоритм:
+ *  - рядок читається fgets(), пропуски на краях відкидаються,
+ *    літери переводяться у верхній регістр (toupper);
+ *  - прохід зліва направо: якщо значення поточної цифри менше за
+ *    наступну - воно віднімається (IV = 5 - 1), інакше додається;
+ *  - для перевірки коректності отримане число переводиться назад
+ *    у римський запис (функція to_roman) і порівнюється з введеним:
+ *    так відкидаються записи на зразок IIII, VX, IC, MMMM.
+ */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#include "../common_console.h"
+
+int roman_value(char c);
+int roman_to_int(const char *s);
+void to_roman(int n, char *out);
+
+int main(void)
+{
+    console_utf8();
+    char line[256], s[256], back[32];
+    printf("Введіть римське число: ");
+    if (fgets(line, sizeof line, stdin) == NULL) { printf("Помилка читання\n"); return 1; }
+
+    /* вилучити пропуски та перевести у верхній регістр */
+    size_t k = 0;
+    for (size_t i = 0; line[i] != '\0'; i++)
+        if (!isspace((unsigned char)line[i])) s[k++] = (char)toupper((unsigned char)line[i]);
+    s[k] = '\0';
+
+    if (k == 0) { printf("Помилка: порожній рядок\n"); return 1; }
+    int v = roman_to_int(s);
+    if (v &lt;= 0) { printf("Помилка: '%s' містить недопустимі символи\n", s); return 1; }
+    to_roman(v, back);
+    if (strcmp(back, s) != 0) {
+        printf("Помилка: '%s' не є правильним римським записом (правильно для %d: %s)\n", s, v, back);
+        return 1;
+    }
+    printf("%s = %d\n", s, v);
+    return 0;
+}
+
+/* Значення однієї римської цифри або 0, якщо символ недопустимий. */
+int roman_value(char c)
+{
+    switch (c) {
+        case 'I': return 1;    case 'V': return 5;
+        case 'X': return 10;   case 'L': return 50;
+        case 'C': return 100;  case 'D': return 500;
+        case 'M': return 1000; default:  return 0;
+    }
+}
+
+/* Перетворення римського запису в ціле; повертає -1 для недопустимих символів. */
+int roman_to_int(const char *s)
+{
+    int total = 0;
+    size_t n = strlen(s);
+    for (size_t i = 0; i &lt; n; i++) {
+        int cur = roman_value(s[i]);
+        if (cur == 0) return -1;
+        int next = (i + 1 &lt; n) ? roman_value(s[i + 1]) : 0;
+        if (cur &lt; next) total -= cur; else total += cur;
+    }
+    return total;
+}
+
+/* Канонічний римський запис числа 1..3999 (жадібний алгоритм). */
+void to_roman(int n, char *out)
+{
+    static const int val[13] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    static const char *sym[13] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    out[0] = '\0';
+    if (n &lt;= 0 || n &gt; 3999) return;
+    for (int i = 0; i &lt; 13; i++)
+        while (n &gt;= val[i]) { strcat(out, sym[i]); n -= val[i]; }
+}</pre><pre class="console"><span class="cmd">&gt; lab10_var19_t2.exe</span>
+<span class="in">XIX</span>
+Введіть римське число: XIX = 19
+[код завершення: 0]
+
+<span class="cmd">&gt; lab10_var19_t2.exe</span>
+<span class="in">mcmxcix</span>
+Введіть римське число: MCMXCIX = 1999
+[код завершення: 0]
+
+<span class="cmd">&gt; lab10_var19_t2.exe</span>
+<span class="in">  MMXXVI </span>
+Введіть римське число: MMXXVI = 2026
+[код завершення: 0]
+
+<span class="cmd">&gt; lab10_var19_t2.exe</span>
+<span class="in">IIII</span>
+Введіть римське число: Помилка: 'IIII' не є правильним римським записом (правильно для 4: IV)
+[код завершення: 1]
+
+<span class="cmd">&gt; lab10_var19_t2.exe</span>
+<span class="in">IC</span>
+Введіть римське число: Помилка: 'IC' не є правильним римським записом (правильно для 99: XCIX)
+[код завершення: 1]
+
+<span class="cmd">&gt; lab10_var19_t2.exe</span>
+<span class="in">ABC</span>
+Введіть римське число: Помилка: 'ABC' містить недопустимі символи
+[код завершення: 1]</pre><h2>Висновки</h2><p>Засвоєно подання рядків у С (масив char з нульовим термінатором), безпечне введення fgets(), функції &lt;string.h&gt; (strlen, strcmp, strcpy, strcat, strcspn, strtok) і &lt;ctype.h&gt;. Індивідуальні програми протестовано на коректних, граничних і помилкових даних.</p><h2 class="newpage">Відповіді на контрольні питання</h2><p><b>1. Як рядок представлений у пам’яті мови С? Що таке нульовий термінатор?</b> Масив char, що закінчується символом '\0' (нульовий термінатор), який позначає кінець рядка.</p><p><b>2. Чому не можна порівнювати рядки через ==? Яку функцію слід використовувати?</b> == порівнює адреси масивів, а не вміст; слід використовувати strcmp().</p><p><b>3. Яка різниця між sizeof(s) та strlen(s) для масиву char s[20]?</b> sizeof(s) = 20 — розмір масиву; strlen(s) — кількість символів до '\0'.</p><p><b>4. Поясніть роботу strtok(). Чому перший виклик і наступні відрізняються?</b> strtok замінює роздільники на '\0' і повертає черговий токен; при першому виклику передається рядок, далі — NULL, бо функція запам’ятовує позицію у внутрішньому статичному стані.</p><p><b>5. Як безпечно скопіювати рядок, уникаючи переповнення буфера?</b> snprintf(dst, sizeof dst, "%s", src) або strncpy з явним встановленням dst[size−1] = '\0'; попередньо перевіряти довжину.</p><p><b>6. Що повертає strcmp(s1, s2) для рівних рядків та для s1 &lt; s2?</b> 0 для рівних, від’ємне значення, якщо s1 лексикографічно менший.</p><p><b>7. Як видалити символ \n із рядка, прочитаного через fgets()?</b> <code>s[strcspn(s, "\n")] = '\0';</code></p><p><b>8. Що таке isalpha(), isdigit(), isspace()? Для якого типу аргументу їх слід викликати?</b> Перевірки, чи є символ літерою, цифрою, пробільним символом. Аргумент має бути значенням unsigned char (або EOF), тому char приводять: isdigit((unsigned char)c).</p><p><b>9. Як знайти кількість входжень символу у рядку без &lt;string.h&gt;?</b> Цикл до '\0': <code>for (n = 0; *s; s++) if (*s == c) n++;</code></p><p><b>10. Поясніть принцип шифру Цезаря. Як коректно обробити від’ємний зсув?</b> Кожна літера зсувається на k позицій алфавіту по колу: (c − 'a' + k) mod 26. Для від’ємного k використовують ((x % 26) + 26) % 26.</p></body></html>

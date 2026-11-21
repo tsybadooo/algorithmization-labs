@@ -60,7 +60,7 @@ def read(path):
         return f.read()
 
 
-def title_page(kind_line, topic, number=None, teacher='_______________________'):
+def title_page(kind_line, topic, number=None, teacher='ст. викл. Смолянкін О. О.'):
     num = f' №{number}' if number else ''
     return f"""
 <div class="title">

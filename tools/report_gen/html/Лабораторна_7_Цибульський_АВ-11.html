@@ -1,0 +1,543 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>Лабораторна_7_Цибульський_АВ-11</title><style>
+@page { size: A4; margin: 20mm 10mm 20mm 25mm; }
+html { font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.5; color: #000; }
+body { margin: 0; }
+p { text-align: justify; text-indent: 1.25cm; margin: 0; }
+p.ni { text-indent: 0; }
+h1 { font-size: 14pt; text-transform: uppercase; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 14pt; text-indent: 1.25cm; margin: 14pt 0 6pt; font-weight: bold; page-break-after: avoid; }
+h3 { font-size: 14pt; text-indent: 1.25cm; margin: 10pt 0 4pt; font-weight: bold; font-style: italic; page-break-after: avoid; }
+.newpage { page-break-before: always; }
+ul, ol { margin: 0 0 0 1.25cm; padding-left: 0.6cm; }
+li { text-align: justify; }
+pre.code { font-family: 'Courier New', monospace; font-size: 10pt; line-height: 1.15; border: 0.6pt solid #888;
+           padding: 4pt 6pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all; background: #fafafa; }
+pre.console { font-family: Consolas, 'Courier New', monospace; font-size: 8.5pt; line-height: 1.15; background: #0c0c0c;
+              color: #e8e8e8; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; word-break: break-all;
+              border-radius: 3pt; }
+pre.console .in { color: #7fd17f; }
+pre.console .cmd { color: #f2d15b; }
+.fname { font-family: 'Courier New', monospace; font-size: 11pt; font-weight: bold; margin-top: 8pt; page-break-after: avoid; }
+.fig { text-align: center; margin: 8pt 0; page-break-inside: avoid; }
+.fig svg, .fig img { max-width: 100%; height: auto; }
+.caption { text-align: center; text-indent: 0; margin: 2pt 0 10pt; }
+.tcap { text-indent: 1.25cm; text-align: left; margin: 8pt 0 2pt; page-break-after: avoid; }
+table { border-collapse: collapse; width: 100%; margin: 2pt 0 10pt; font-size: 12pt; line-height: 1.2; }
+td, th { border: 0.7pt solid #000; padding: 2pt 4pt; vertical-align: top; text-align: left; }
+th { font-weight: bold; text-align: center; }
+.formula { text-align: center; text-indent: 0; margin: 6pt 0; }
+.title { text-align: center; text-indent: 0; line-height: 1.5; height: 250mm; position: relative; }
+.title p { text-align: center; text-indent: 0; }
+.title .who { position: absolute; right: 0; top: 150mm; text-align: left; width: 95mm; }
+.title .who p { text-align: left; }
+.title .city { position: absolute; bottom: 0; width: 100%; }
+code { font-family: 'Courier New', monospace; font-size: 12pt; }
+</style></head><body>
+<div class="title">
+<p>МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ</p>
+<p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p>
+<p>Кафедра автоматизації та безпілотних систем</p>
+<p style="margin-top:55mm"><b>ЗВІТ</b></p>
+<p>про виконання лабораторної роботи №7</p>
+<p>з дисципліни «Алгоритмізація, програмування та тестування програмного забезпечення»</p>
+<p>на тему: «Обробка одновимірних та двовимірних масивів»</p>
+<p>Варіант 19</p>
+<div class="who">
+<p>Виконав: студент групи АВ-11</p>
+<p>Цибульський Андрій Іванович</p>
+<p style="margin-top:10mm">Перевірив: ст. викл. Смолянкін О. О.</p>
+</div>
+<div class="city"><p>Луцьк – 2026</p></div>
+</div>
+<h2 class="newpage">Мета роботи</h2><p>Вивчити основні функціональні можливості С для обробки одновимірних та двовимірних масивів; освоїти оголошення, ініціалізацію та індексний доступ до масивів; навчитись реалізовувати алгоритми сортування, пошуку та обробки матриць.</p><h2>1 Практичні вправи</h2><p>Програми вправ введено з методичних вказівок, скомпільовано (gcc -std=c11 -Wall -Wextra) і виконано. Вправи 1–2 використовують генератор випадкових чисел, тому значення масивів під час кожного запуску різні.</p><h3>Вправа 1. Базові операції з одновимірним масивом</h3><div class="fname">Файл lab07_ex1.c</div><pre class="code">/* Вправа 1. Базові операції з одновимірним масивом (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#define N 10
+void print_arr(int a[], int n) {
+    printf("[ ");
+    for (int i = 0; i &lt; n; i++) printf("%4d", a[i]);
+    printf(" ]\n");
+}
+void bubble_sort(int a[], int n) {
+    for (int i = 0; i &lt; n-1; i++)
+        for (int j = 0; j &lt; n-i-1; j++)
+            if (a[j] &gt; a[j+1]) {
+                int t = a[j]; a[j] = a[j+1]; a[j+1] = t;
+            }
+}
+int main(void) {
+    console_utf8();
+    srand((unsigned)time(NULL));
+    int a[N];
+    /* Заповнення випадковими числами від -50 до 50 */
+    for (int i = 0; i &lt; N; i++)
+        a[i] = rand() % 101 - 50;
+    printf("Масив:  "); print_arr(a, N);
+    /* Статистика */
+    int sum = 0, mn = a[0], mx = a[0];
+    int neg = 0, pos = 0, zero = 0;
+    for (int i = 0; i &lt; N; i++) {
+        sum += a[i];
+        if (a[i] &lt; mn) mn = a[i];
+        if (a[i] &gt; mx) mx = a[i];
+        if      (a[i] &lt; 0) neg++;
+        else if (a[i] &gt; 0) pos++;
+        else               zero++;
+    }
+    printf("Сума: %d,  Середнє: %.2f\n", sum, (double)sum/N);
+    printf("Мін: %d,  Макс: %d\n", mn, mx);
+    printf("Від'ємних: %d, Нулів: %d, Додатніх: %d\n",
+           neg, zero, pos);
+    /* Сортування */
+    bubble_sort(a, N);
+    printf("Sorted: "); print_arr(a, N);
+    /* Медіана */
+    double median = (N % 2 == 0)
+        ? (a[N/2-1] + a[N/2]) / 2.0
+        : a[N/2];
+    printf("Медіана: %.1f\n", median);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_ex1.exe</span>
+Масив:  [  -22  -9 -22   5 -31 -33  -8  -2  17 -39 ]
+Сума: -144,  Середнє: -14.40
+Мін: -39,  Макс: 17
+Від'ємних: 8, Нулів: 0, Додатніх: 2
+Sorted: [  -39 -33 -31 -22 -22  -9  -8  -2   5  17 ]
+Медіана: -15.5
+[код завершення: 0]</pre><h3>Вправа 2. Пошук у масиві: лінійний та бінарний</h3><p>Під час запуску введено значення 37.</p><div class="fname">Файл lab07_ex2.c</div><pre class="code">/* Вправа 2. Пошук у масиві: лінійний та бінарний (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#define N 15
+int linear_search(int a[], int n, int x) {
+    for (int i = 0; i &lt; n; i++)
+        if (a[i] == x) return i;
+    return -1;
+}
+int binary_search(int a[], int n, int x) {
+    int lo = 0, hi = n - 1;
+    while (lo &lt;= hi) {
+        int mid = (lo + hi) / 2;
+        printf("  Перевіряємо a[%d]=%d\n", mid, a[mid]);
+        if      (a[mid] == x) return mid;
+        else if (a[mid] &lt; x)  lo = mid + 1;
+        else                  hi = mid - 1;
+    }
+    return -1;
+}
+void qsort_arr(int a[], int n) {  /* простий qsort через stdlib */
+    /* використаємо бульбашку для простоти */
+    for (int i=0;i&lt;n-1;i++)
+        for (int j=0;j&lt;n-i-1;j++)
+            if(a[j]&gt;a[j+1]){int t=a[j];a[j]=a[j+1];a[j+1]=t;}
+}
+int main(void) {
+    console_utf8();
+    srand(42);
+    int a[N];
+    for (int i = 0; i &lt; N; i++) a[i] = rand() % 50;
+    printf("До сортування: ");
+    for (int i = 0; i &lt; N; i++) printf("%3d", a[i]);
+    printf("\n");
+    qsort_arr(a, N);
+    printf("Після сортув.: ");
+    for (int i = 0; i &lt; N; i++) printf("%3d", a[i]);
+    printf("\n");
+    int target;
+    printf("Шукаємо: "); scanf("%d", &amp;target);
+    int idx_l = linear_search(a, N, target);
+    printf("Лінійний пошук: %d\n",
+           idx_l &gt;= 0 ? idx_l : -1);
+    printf("Бінарний пошук (кроки):\n");
+    int idx_b = binary_search(a, N, target);
+    printf("Результат: %s (індекс %d)\n",
+           idx_b &gt;= 0 ? "знайдено" : "не знайдено", idx_b);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_ex2.exe</span>
+<span class="in">37</span>
+До сортування:  25  0 19  6 33 29 16 44  9 19  9  0 21 49 36
+Після сортув.:   0  0  6  9  9 16 19 19 21 25 29 33 36 44 49
+Шукаємо: Лінійний пошук: -1
+Бінарний пошук (кроки):
+  Перевіряємо a[7]=19
+  Перевіряємо a[11]=33
+  Перевіряємо a[13]=44
+  Перевіряємо a[12]=36
+Результат: не знайдено (індекс -1)
+[код завершення: 0]</pre><h3>Вправа 3. Операції з матрицею</h3><div class="fname">Файл lab07_ex3.c</div><pre class="code">/* Вправа 3. Операції з матрицею (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#define ROWS 4
+#define COLS 4
+void print_matrix(int a[][COLS], int r, int c) {
+    for (int i = 0; i &lt; r; i++) {
+        for (int j = 0; j &lt; c; j++)
+            printf("%5d", a[i][j]);
+        printf("\n");
+    }
+}
+int main(void) {
+    console_utf8();
+    srand(7);
+    int m[ROWS][COLS];
+    /* Заповнення */
+    for (int i = 0; i &lt; ROWS; i++)
+        for (int j = 0; j &lt; COLS; j++)
+            m[i][j] = rand() % 20 - 5;
+    printf("Матриця %dx%d:\n", ROWS, COLS);
+    print_matrix(m, ROWS, COLS);
+    /* Суми рядків */
+    printf("\nСуми рядків: ");
+    for (int i = 0; i &lt; ROWS; i++) {
+        int s = 0;
+        for (int j = 0; j &lt; COLS; j++) s += m[i][j];
+        printf("%d ", s);
+    }
+    /* Суми стовпців */
+    printf("\nСуми стовп.: ");
+    for (int j = 0; j &lt; COLS; j++) {
+        int s = 0;
+        for (int i = 0; i &lt; ROWS; i++) s += m[i][j];
+        printf("%d ", s);
+    }
+    /* Максимум і його координати */
+    int mx = m[0][0], ri = 0, ci = 0;
+    for (int i = 0; i &lt; ROWS; i++)
+        for (int j = 0; j &lt; COLS; j++)
+            if (m[i][j] &gt; mx) { mx = m[i][j]; ri = i; ci = j; }
+    printf("\nМакс: %d на позиції [%d][%d]\n", mx, ri, ci);
+    /* Транспонування (квадратна матриця) */
+    for (int i = 0; i &lt; ROWS; i++)
+        for (int j = i+1; j &lt; COLS; j++) {
+            int t = m[i][j]; m[i][j] = m[j][i]; m[j][i] = t;
+        }
+    printf("\nТранспонована:\n");
+    print_matrix(m, ROWS, COLS);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_ex3.exe</span>
+Матриця 4x4:
+   -4   -3   10   -5
+   -4   11    7    9
+    2   -1   13    4
+   -3   -4   -3   10
+
+Суми рядків: -2 23 18 0 
+Суми стовп.: -9 3 27 18 
+Макс: 13 на позиції [2][2]
+
+Транспонована:
+   -4   -4    2   -3
+   -3   11   -1   -4
+   10    7   13   -3
+   -5    9    4   10
+[код завершення: 0]</pre><h3>Вправа 4. Решето Ератосфена</h3><p>Введено N = 50.</p><div class="fname">Файл lab07_ex4.c</div><pre class="code">/* Вправа 4. Решето Ератосфена (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;math.h&gt;
+#define MAXN 1000
+int main(void) {
+    console_utf8();
+    int n;
+    printf("Знайти прості числа до N (≤ %d): ", MAXN);
+    scanf("%d", &amp;n);
+    char is_prime[MAXN + 1];
+    memset(is_prime, 1, sizeof(is_prime));
+    is_prime[0] = is_prime[1] = 0;
+    /* Решето */
+    for (int i = 2; (long long)i*i &lt;= n; i++)
+        if (is_prime[i])
+            for (int j = i*i; j &lt;= n; j += i)
+                is_prime[j] = 0;
+    /* Виведення */
+    int count = 0;
+    long long sum = 0;
+    printf("Прості числа до %d:\n", n);
+    for (int i = 2; i &lt;= n; i++) {
+        if (is_prime[i]) {
+            printf("%5d", i);
+            count++;
+            sum += i;
+            if (count % 12 == 0) printf("\n");
+        }
+    }
+    printf("\n");
+    printf("Кількість: %d\n", count);
+    printf("Сума:      %lld\n", sum);
+    printf("Найбільше: ");
+    for (int i = n; i &gt;= 2; i--)
+        if (is_prime[i]) { printf("%d\n", i); break; }
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_ex4.exe</span>
+<span class="in">50</span>
+Знайти прості числа до N (≤ 1000): Прості числа до 50:
+    2    3    5    7   11   13   17   19   23   29   31   37
+   41   43   47
+Кількість: 15
+Сума:      328
+Найбільше: 47
+[код завершення: 0]</pre><h3>Вправа 5. Множення матриць</h3><p>Введено матриці A(2×3) і B(3×2) з методички.</p><div class="fname">Файл lab07_ex5.c</div><pre class="code">/* Вправа 5. Множення матриць (з методичних вказівок) */
+#include "../common_console.h"
+#include &lt;stdio.h&gt;
+#define MAXD 10
+void read_matrix(int a[][MAXD], int r, int c, char name) {
+    printf("Матриця %c (%dx%d):\n", name, r, c);
+    for (int i = 0; i &lt; r; i++)
+        for (int j = 0; j &lt; c; j++) {
+            printf("  %c[%d][%d] = ", name, i, j);
+            scanf("%d", &amp;a[i][j]);
+        }
+}
+void print_matrix(int a[][MAXD], int r, int c) {
+    for (int i = 0; i &lt; r; i++) {
+        for (int j = 0; j &lt; c; j++) printf("%6d", a[i][j]);
+        printf("\n");
+    }
+}
+int main(void) {
+    console_utf8();
+    int rA, cA, rB, cB;
+    printf("Розміри матриці A (рядки стовпці): "); scanf("%d %d",&amp;rA,&amp;cA);
+    printf("Розміри матриці B (рядки стовпці): "); scanf("%d %d",&amp;rB,&amp;cB);
+    if (cA != rB) {
+        printf("Помилка: кількість стовпців A (%d) != рядків B (%d)\n",cA,rB);
+        return 1;
+    }
+    int A[MAXD][MAXD], B[MAXD][MAXD], C[MAXD][MAXD];
+    read_matrix(A, rA, cA, 'A');
+    read_matrix(B, rB, cB, 'B');
+    /* Множення C = A * B */
+    for (int i = 0; i &lt; rA; i++)
+        for (int j = 0; j &lt; cB; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k &lt; cA; k++)
+                C[i][j] += A[i][k] * B[k][j];
+        }
+    printf("\nA (%dx%d):\n", rA, cA); print_matrix(A, rA, cA);
+    printf("B (%dx%d):\n", rB, cB); print_matrix(B, rB, cB);
+    printf("C = A*B (%dx%d):\n", rA, cB); print_matrix(C, rA, cB);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_ex5.exe</span>
+<span class="in">2 3</span>
+<span class="in">3 2</span>
+<span class="in">1 2 3 4 5 6</span>
+<span class="in">7 8 9 10 11 12</span>
+Розміри матриці A (рядки стовпці): Розміри матриці B (рядки стовпці): Матриця A (2x3):
+  A[0][0] =   A[0][1] =   A[0][2] =   A[1][0] =   A[1][1] =   A[1][2] = Матриця B (3x2):
+  B[0][0] =   B[0][1] =   B[1][0] =   B[1][1] =   B[2][0] =   B[2][1] = 
+A (2x3):
+     1     2     3
+     4     5     6
+B (3x2):
+     7     8
+     9    10
+    11    12
+C = A*B (2x2):
+    58    64
+   139   154
+[код завершення: 0]</pre><h2 class="newpage">2 Індивідуальні завдання (варіант 19)</h2><p>У методичних вказівках індивідуальні завдання подано у двох таблицях («Варіант 1» і «Варіант 2»), кожна з яких містить 20 завдань. Оскільки з вказівок не однозначно випливає, яку таблицю обирати, виконано завдання №19 з обох таблиць.</p><h3>2.1 Завдання 19 (таблиця 3.1)</h3><p><i>Знайти в масиві пару елементів з найменшою різницею. Вивести пару та різницю.</i></p><p>Основний алгоритм — перебір усіх пар (i &lt; j) з обчисленням |a[i] − a[j]| і запам’ятовуванням мінімуму, складність O(n²). Для контролю копія масиву сортується вставками: у відсортованому масиві найближчі за значенням елементи стоять поруч, тому мінімальна різниця знаходиться за один прохід. Розмір масиву вводиться з клавіатури (2 ≤ n ≤ MAX = 100), заповнення — з клавіатури або випадковими числами.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 618 776" width="618" height="776"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="74.0" y="14.0" width="220" height="40" rx="20.0"/><text x="184.0" y="38.5" text-anchor="middle">Початок</text><line x1="184.0" y1="54.0" x2="184.0" y2="80.0"/><polygon points="90.0,80.0 294.0,80.0 278.0,120.0 74.0,120.0"/><text x="184.0" y="104.5" text-anchor="middle">Ввести n, масив a</text><line x1="184.0" y1="120.0" x2="184.0" y2="146.0"/><rect x="74.0" y="146.0" width="220" height="40"/><text x="184.0" y="170.5" text-anchor="middle">best = |a0 − a1|; bi = 0; bj = 1</text><line x1="184.0" y1="186.0" x2="184.0" y2="212.0"/><line x1="184.0" y1="212.0" x2="184.0" y2="225.0"/><polygon points="92.0,225.0 276.0,225.0 294.0,245.0 276.0,265.0 92.0,265.0 74.0,245.0"/><text x="184.0" y="249.5" text-anchor="middle">i = 0, n − 2</text><line x1="184.0" y1="265.0" x2="184.0" y2="291.0"/><line x1="184.0" y1="291.0" x2="184.0" y2="304.0"/><polygon points="92.0,304.0 276.0,304.0 294.0,324.0 276.0,344.0 92.0,344.0 74.0,324.0"/><text x="184.0" y="328.5" text-anchor="middle">j = i + 1, n − 1</text><line x1="184.0" y1="344.0" x2="184.0" y2="370.0"/><polygon points="184.0,370.0 294.0,402.0 184.0,434.0 74.0,402.0"/><text x="184.0" y="406.5" text-anchor="middle">|ai − aj| &lt; best</text><line x1="294.0" y1="402.0" x2="434.0" y2="402.0"/><text x="298.0" y="397.0" class="lbl" text-anchor="start">так</text><line x1="434.0" y1="402.0" x2="434.0" y2="460.0"/><rect x="324.0" y="460.0" width="220" height="40"/><text x="434.0" y="484.5" text-anchor="middle">best = |ai − aj|; bi = i; bj = j</text><line x1="434.0" y1="500.0" x2="434.0" y2="513.0"/><line x1="434.0" y1="513.0" x2="184.0" y2="513.0" marker-end="url(#arr)"/><text x="190.0" y="446.0" class="lbl" text-anchor="start">ні</text><line x1="184.0" y1="434.0" x2="184.0" y2="513.0"/><line x1="184.0" y1="513.0" x2="184.0" y2="526.0"/><line x1="184.0" y1="526.0" x2="184.0" y2="539.0"/><line x1="184.0" y1="539.0" x2="50.0" y2="539.0" marker-end="url(#arr)"/><line x1="50.0" y1="539.0" x2="50.0" y2="297.5" marker-end="url(#arr)"/><line x1="50.0" y1="297.5" x2="184.0" y2="297.5"/><line x1="294.0" y1="324.0" x2="568.0" y2="324.0"/><line x1="568.0" y1="324.0" x2="568.0" y2="565.0"/><line x1="568.0" y1="565.0" x2="184.0" y2="565.0" marker-end="url(#arr)"/><line x1="184.0" y1="565.0" x2="184.0" y2="578.0"/><line x1="184.0" y1="578.0" x2="184.0" y2="591.0"/><line x1="184.0" y1="591.0" x2="20.0" y2="591.0" marker-end="url(#arr)"/><line x1="20.0" y1="591.0" x2="20.0" y2="218.5" marker-end="url(#arr)"/><line x1="20.0" y1="218.5" x2="184.0" y2="218.5"/><line x1="294.0" y1="245.0" x2="598.0" y2="245.0"/><line x1="598.0" y1="245.0" x2="598.0" y2="617.0"/><line x1="598.0" y1="617.0" x2="184.0" y2="617.0" marker-end="url(#arr)"/><line x1="184.0" y1="617.0" x2="184.0" y2="630.0"/><line x1="184.0" y1="630.0" x2="184.0" y2="656.0"/><polygon points="90.0,656.0 294.0,656.0 278.0,696.0 74.0,696.0"/><text x="184.0" y="680.5" text-anchor="middle">Вивести a[bi], a[bj], best</text><line x1="184.0" y1="696.0" x2="184.0" y2="722.0"/><rect x="74.0" y="722.0" width="220" height="40" rx="20.0"/><text x="184.0" y="746.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 1 – Блок-схема алгоритму пошуку пари з найменшою різницею</p><div class="fname">Файл lab07_var19_t1.c</div><pre class="code">/*
+ * Лабораторна робота №7. Індивідуальне завдання №19 (таблиця 3.1).
+ * Знайти в масиві пару елементів з найменшою різницею.
+ * Вивести пару та різницю.
+ *
+ * Алгоритм: перебір усіх пар (i &lt; j), різниця |a[i] - a[j]|,
+ * запам'ятовується пара з мінімальною різницею. Складність O(n^2).
+ * Додатково для перевірки: копію масиву сортуємо вставками - тоді
+ * найближча пара обов'язково стоїть поруч, і мінімум шукається за O(n).
+ */
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include "../common_console.h"
+
+#define MAX 100
+
+static void print_arr(const char *title, const int a[], int n)
+{
+    printf("%s[", title);
+    for (int i = 0; i &lt; n; i++) printf("%5d", a[i]);
+    printf(" ]\n");
+}
+
+int main(void)
+{
+    console_utf8();
+    int a[MAX], s[MAX], n, mode;
+
+    printf("Кількість елементів (2..%d): ", MAX);
+    if (scanf("%d", &amp;n) != 1 || n &lt; 2 || n &gt; MAX) {
+        printf("Помилка: n має бути від 2 до %d\n", MAX);
+        return 1;
+    }
+    printf("Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: ");
+    if (scanf("%d", &amp;mode) != 1 || (mode != 1 &amp;&amp; mode != 2)) {
+        printf("Помилка вибору режиму\n");
+        return 1;
+    }
+    if (mode == 1) {
+        printf("Введіть %d цілих чисел: ", n);
+        for (int i = 0; i &lt; n; i++)
+            if (scanf("%d", &amp;a[i]) != 1) { printf("Помилка введення\n"); return 1; }
+    } else {
+        srand((unsigned)time(NULL));
+        for (int i = 0; i &lt; n; i++) a[i] = rand() % 101 - 50;
+    }
+    print_arr("Масив до обробки:     ", a, n);
+
+    /* --- основний алгоритм: перебір усіх пар --- */
+    int bi = 0, bj = 1;
+    int best = abs(a[0] - a[1]);
+    for (int i = 0; i &lt; n - 1; i++)
+        for (int j = i + 1; j &lt; n; j++) {
+            int d = abs(a[i] - a[j]);
+            if (d &lt; best) { best = d; bi = i; bj = j; }
+        }
+    printf("Пара з найменшою різницею: a[%d] = %d, a[%d] = %d\n", bi, a[bi], bj, a[bj]);
+    printf("Різниця: %d\n", best);
+
+    /* --- перевірка через відсортовану копію (сортування вставками) --- */
+    for (int i = 0; i &lt; n; i++) s[i] = a[i];
+    for (int i = 1; i &lt; n; i++) {
+        int key = s[i], j = i - 1;
+        while (j &gt;= 0 &amp;&amp; s[j] &gt; key) { s[j + 1] = s[j]; j--; }
+        s[j + 1] = key;
+    }
+    int best2 = s[1] - s[0];
+    for (int i = 1; i &lt; n - 1; i++)
+        if (s[i + 1] - s[i] &lt; best2) best2 = s[i + 1] - s[i];
+    print_arr("Відсортована копія:   ", s, n);
+    printf("Перевірка (сусідні у відсортованому): мінімальна різниця = %d -&gt; %s\n",
+           best2, best2 == best ? "збігається" : "ПОМИЛКА");
+    print_arr("Масив після обробки:  ", a, n);   /* вихідний масив не змінено */
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_var19_t1.exe</span>
+<span class="in">8</span>
+<span class="in">1</span>
+<span class="in">15 -3 42 7 -10 9 30 -1</span>
+Кількість елементів (2..100): Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: Введіть 8 цілих чисел: Масив до обробки:     [   15   -3   42    7  -10    9   30   -1 ]
+Пара з найменшою різницею: a[1] = -3, a[7] = -1
+Різниця: 2
+Відсортована копія:   [  -10   -3   -1    7    9   15   30   42 ]
+Перевірка (сусідні у відсортованому): мінімальна різниця = 2 -&gt; збігається
+Масив після обробки:  [   15   -3   42    7  -10    9   30   -1 ]
+[код завершення: 0]
+
+<span class="cmd">&gt; lab07_var19_t1.exe</span>
+<span class="in">6</span>
+<span class="in">1</span>
+<span class="in">100 4 -20 55 -17 70</span>
+Кількість елементів (2..100): Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: Введіть 6 цілих чисел: Масив до обробки:     [  100    4  -20   55  -17   70 ]
+Пара з найменшою різницею: a[2] = -20, a[4] = -17
+Різниця: 3
+Відсортована копія:   [  -20  -17    4   55   70  100 ]
+Перевірка (сусідні у відсортованому): мінімальна різниця = 3 -&gt; збігається
+Масив після обробки:  [  100    4  -20   55  -17   70 ]
+[код завершення: 0]
+
+<span class="cmd">&gt; lab07_var19_t1.exe</span>
+<span class="in">10</span>
+<span class="in">2</span>
+Кількість елементів (2..100): Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: Масив до обробки:     [   31  -35   46   27   -4   27  -46    3    2  -14 ]
+Пара з найменшою різницею: a[3] = 27, a[5] = 27
+Різниця: 0
+Відсортована копія:   [  -46  -35  -14   -4    2    3   27   27   31   46 ]
+Перевірка (сусідні у відсортованому): мінімальна різниця = 0 -&gt; збігається
+Масив після обробки:  [   31  -35   46   27   -4   27  -46    3    2  -14 ]
+[код завершення: 0]
+
+<span class="cmd">&gt; lab07_var19_t1.exe</span>
+<span class="in">1</span>
+<span class="in">1</span>
+Кількість елементів (2..100): Помилка: n має бути від 2 до 100
+[код завершення: 1]</pre><h3>2.2 Завдання 19 (таблиця 3.2)</h3><p><i>Переставити елементи масиву так, щоб парні стояли перед непарними, зберігаючи відносний порядок.</i></p><p>Застосовано стабільний алгоритм на місці: кожен знайдений парний елемент вставляється одразу після вже зібраних парних, а елементи між ними зсуваються вправо на одну позицію (як у сортуванні вставками). Відносний порядок зберігається і серед парних, і серед непарних. Складність O(n²), додаткова пам’ять O(1). Перевірка парності a[i] % 2 == 0 коректна і для від’ємних чисел.</p><div class="fig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 618 908" width="585" height="860"><style>rect,polygon{fill:#fff;stroke:#000;stroke-width:1.3}line{stroke:#000;stroke-width:1.3}text{font-family:"Times New Roman",serif;font-size:13px;fill:#000}.lbl{font-size:12px;font-style:italic}</style><defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs><rect x="44.0" y="14.0" width="220" height="40" rx="20.0"/><text x="154.0" y="38.5" text-anchor="middle">Початок</text><line x1="154.0" y1="54.0" x2="154.0" y2="80.0"/><polygon points="60.0,80.0 264.0,80.0 248.0,120.0 44.0,120.0"/><text x="154.0" y="104.5" text-anchor="middle">Ввести n, масив a</text><line x1="154.0" y1="120.0" x2="154.0" y2="146.0"/><rect x="44.0" y="146.0" width="220" height="40"/><text x="154.0" y="170.5" text-anchor="middle">k = 0</text><line x1="154.0" y1="186.0" x2="154.0" y2="212.0"/><line x1="154.0" y1="212.0" x2="154.0" y2="225.0"/><polygon points="62.0,225.0 246.0,225.0 264.0,245.0 246.0,265.0 62.0,265.0 44.0,245.0"/><text x="154.0" y="249.5" text-anchor="middle">i = 0, n − 1</text><line x1="154.0" y1="265.0" x2="154.0" y2="291.0"/><polygon points="154.0,291.0 264.0,323.0 154.0,355.0 44.0,323.0"/><text x="154.0" y="327.5" text-anchor="middle">ai парне</text><line x1="264.0" y1="323.0" x2="434.0" y2="323.0"/><text x="268.0" y="318.0" class="lbl" text-anchor="start">так</text><line x1="434.0" y1="323.0" x2="434.0" y2="381.0"/><rect x="324.0" y="381.0" width="220" height="40"/><text x="434.0" y="405.5" text-anchor="middle">t = ai</text><line x1="434.0" y1="421.0" x2="434.0" y2="447.0"/><line x1="434.0" y1="447.0" x2="434.0" y2="460.0"/><polygon points="342.0,460.0 526.0,460.0 544.0,480.0 526.0,500.0 342.0,500.0 324.0,480.0"/><text x="434.0" y="484.5" text-anchor="middle">j = i, k + 1 (крок −1)</text><line x1="434.0" y1="500.0" x2="434.0" y2="526.0"/><rect x="324.0" y="526.0" width="220" height="40"/><text x="434.0" y="550.5" text-anchor="middle">aj = aj−1</text><line x1="434.0" y1="566.0" x2="434.0" y2="579.0"/><line x1="434.0" y1="579.0" x2="300.0" y2="579.0" marker-end="url(#arr)"/><line x1="300.0" y1="579.0" x2="300.0" y2="453.5" marker-end="url(#arr)"/><line x1="300.0" y1="453.5" x2="434.0" y2="453.5"/><line x1="544.0" y1="480.0" x2="568.0" y2="480.0"/><line x1="568.0" y1="480.0" x2="568.0" y2="605.0"/><line x1="568.0" y1="605.0" x2="434.0" y2="605.0" marker-end="url(#arr)"/><line x1="434.0" y1="605.0" x2="434.0" y2="618.0"/><line x1="434.0" y1="618.0" x2="434.0" y2="644.0"/><rect x="324.0" y="644.0" width="220" height="40"/><text x="434.0" y="668.5" text-anchor="middle">ak = t; k = k + 1</text><line x1="434.0" y1="684.0" x2="434.0" y2="697.0"/><line x1="434.0" y1="697.0" x2="154.0" y2="697.0" marker-end="url(#arr)"/><text x="160.0" y="367.0" class="lbl" text-anchor="start">ні</text><line x1="154.0" y1="355.0" x2="154.0" y2="697.0"/><line x1="154.0" y1="697.0" x2="154.0" y2="710.0"/><line x1="154.0" y1="710.0" x2="154.0" y2="723.0"/><line x1="154.0" y1="723.0" x2="20.0" y2="723.0" marker-end="url(#arr)"/><line x1="20.0" y1="723.0" x2="20.0" y2="218.5" marker-end="url(#arr)"/><line x1="20.0" y1="218.5" x2="154.0" y2="218.5"/><line x1="264.0" y1="245.0" x2="598.0" y2="245.0"/><line x1="598.0" y1="245.0" x2="598.0" y2="749.0"/><line x1="598.0" y1="749.0" x2="154.0" y2="749.0" marker-end="url(#arr)"/><line x1="154.0" y1="749.0" x2="154.0" y2="762.0"/><line x1="154.0" y1="762.0" x2="154.0" y2="788.0"/><polygon points="60.0,788.0 264.0,788.0 248.0,828.0 44.0,828.0"/><text x="154.0" y="812.5" text-anchor="middle">Вивести масив</text><line x1="154.0" y1="828.0" x2="154.0" y2="854.0"/><rect x="44.0" y="854.0" width="220" height="40" rx="20.0"/><text x="154.0" y="878.5" text-anchor="middle">Кінець</text></svg></div><p class="caption">Рисунок 2 – Блок-схема стабільного переставлення парних елементів</p><div class="fname">Файл lab07_var19_t2.c</div><pre class="code">/*
+ * Лабораторна робота №7. Індивідуальне завдання №19 (таблиця 3.2).
+ * Дано масив. Переставити елементи так, щоб парні стояли перед
+ * непарними, зберігаючи відносний порядок.
+ *
+ * Алгоритм (стабільний, на місці): прохід зліва направо; кожен
+ * знайдений парний елемент "вставляється" одразу після вже
+ * зібраних парних - елементи між ними зсуваються вправо на 1
+ * (як у сортуванні вставками). Відносний порядок і парних, і
+ * непарних зберігається. Складність O(n^2), додаткова пам'ять O(1).
+ */
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include "../common_console.h"
+
+#define MAX 100
+
+static void print_arr(const char *title, const int a[], int n)
+{
+    printf("%s[", title);
+    for (int i = 0; i &lt; n; i++) printf("%5d", a[i]);
+    printf(" ]\n");
+}
+
+int main(void)
+{
+    console_utf8();
+    int a[MAX], n, mode;
+
+    printf("Кількість елементів (1..%d): ", MAX);
+    if (scanf("%d", &amp;n) != 1 || n &lt; 1 || n &gt; MAX) {
+        printf("Помилка: n має бути від 1 до %d\n", MAX);
+        return 1;
+    }
+    printf("Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: ");
+    if (scanf("%d", &amp;mode) != 1 || (mode != 1 &amp;&amp; mode != 2)) {
+        printf("Помилка вибору режиму\n");
+        return 1;
+    }
+    if (mode == 1) {
+        printf("Введіть %d цілих чисел: ", n);
+        for (int i = 0; i &lt; n; i++)
+            if (scanf("%d", &amp;a[i]) != 1) { printf("Помилка введення\n"); return 1; }
+    } else {
+        srand((unsigned)time(NULL));
+        for (int i = 0; i &lt; n; i++) a[i] = rand() % 101 - 50;
+    }
+    print_arr("До обробки:    ", a, n);
+
+    int k = 0;                      /* кількість уже переставлених парних */
+    for (int i = 0; i &lt; n; i++) {
+        if (a[i] % 2 == 0) {        /* працює і для від'ємних: -4 % 2 == 0 */
+            int t = a[i];
+            for (int j = i; j &gt; k; j--) a[j] = a[j - 1];   /* зсув вправо */
+            a[k] = t;
+            k++;
+        }
+    }
+    print_arr("Після обробки: ", a, n);
+    printf("Парних: %d, непарних: %d\n", k, n - k);
+    return 0;
+}</pre><pre class="console"><span class="cmd">&gt; lab07_var19_t2.exe</span>
+<span class="in">10</span>
+<span class="in">1</span>
+<span class="in">3 8 5 2 7 -4 1 6 9 0</span>
+Кількість елементів (1..100): Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: Введіть 10 цілих чисел: До обробки:    [    3    8    5    2    7   -4    1    6    9    0 ]
+Після обробки: [    8    2   -4    6    0    3    5    7    1    9 ]
+Парних: 5, непарних: 5
+[код завершення: 0]
+
+<span class="cmd">&gt; lab07_var19_t2.exe</span>
+<span class="in">6</span>
+<span class="in">1</span>
+<span class="in">1 3 5 7 2 4</span>
+Кількість елементів (1..100): Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: Введіть 6 цілих чисел: До обробки:    [    1    3    5    7    2    4 ]
+Після обробки: [    2    4    1    3    5    7 ]
+Парних: 2, непарних: 4
+[код завершення: 0]
+
+<span class="cmd">&gt; lab07_var19_t2.exe</span>
+<span class="in">12</span>
+<span class="in">2</span>
+Кількість елементів (1..100): Заповнення: 1 - з клавіатури, 2 - випадкові [-50; 50]: До обробки:    [   34  -36   34    8  -36   14   37    5    7   -1  -46   50 ]
+Після обробки: [   34  -36   34    8  -36   14  -46   50   37    5    7   -1 ]
+Парних: 8, непарних: 4
+[код завершення: 0]</pre><h2>Висновки</h2><p>Засвоєно оголошення, ініціалізацію і обробку одновимірних та двовимірних масивів, алгоритми сортування (бульбашкою, вставками), лінійного і бінарного пошуку, решета Ератосфена, множення матриць. Для варіанта 19 реалізовано пошук пари з найменшою різницею (з перевіркою через сортування) і стабільне переставлення парних елементів перед непарними; програми протестовано на ручних і випадкових даних та на некоректному розмірі.</p><h2 class="newpage">Відповіді на контрольні питання</h2><p><b>1. Що таке масив у мові С? Як оголосити масив з N елементів типу double?</b> Послідовність однотипних елементів у суміжних комірках пам’яті: <code>double a[N];</code> (N — константа).</p><p><b>2. Яким є діапазон допустимих індексів масиву розміром N? Що відбувається при виході за межі?</b> Від 0 до N−1. Вихід за межі не перевіряється — це невизначена поведінка: пошкодження сусідніх даних або аварійне завершення.</p><p><b>3. Як ініціалізувати масив нулями одним рядком коду?</b> <code>int a[N] = {0};</code></p><p><b>4. Опишіть алгоритм сортування методом бульбашки. Яка його часова складність?</b> Порівнюються сусідні елементи і міняються місцями, якщо стоять неправильно; за кожен прохід найбільший елемент «спливає» в кінець. O(n²), у кращому випадку з прапорцем обмінів — O(n).</p><p><b>5. Яка умова обов’язкова для бінарного пошуку? Скільки кроків максимально для масиву з 1000 елементів?</b> Масив має бути відсортований. Не більше ⌈log₂(1001)⌉ = 10 порівнянь.</p><p><b>6. Як оголосити двовимірний масив 5×7? Як отримати доступ до елемента в рядку 2, стовпці 4?</b> <code>int m[5][7];</code>, елемент — <code>m[2][4]</code> (нумерація з 0).</p><p><b>7. Що означає row-major order? Як двовимірний масив зберігається в пам’яті?</b> Зберігання по рядках: спочатку всі елементи рядка 0, потім рядка 1 тощо; адреса m[i][j] = база + (i·COLS + j)·sizeof(елемента).</p><p><b>8. Як транспонувати квадратну матрицю на місці? Чому перебираємо лише j &gt; i?</b> Міняти місцями a[i][j] і a[j][i] для j &gt; i; якщо перебирати всі j, кожну пару буде обміняно двічі і матриця повернеться до початкового стану.</p><p><b>9. Поясніть алгоритм решета Ератосфена. Чому закреслення починають з i²?</b> Для кожного ще не закресленого i закреслюються його кратні; менші кратні i·k (k &lt; i) уже закреслені при обробці меншого дільника k.</p><p><b>10. Що таке складність алгоритму множення матриць? Напишіть три вкладені цикли для множення A(M×K) * B(K×N).</b> O(M·K·N): <code>for(i=0;i&lt;M;i++) for(j=0;j&lt;N;j++){C[i][j]=0; for(k=0;k&lt;K;k++) C[i][j]+=A[i][k]*B[k][j];}</code></p></body></html>
